@@ -1,9 +1,15 @@
 from flask import Flask
+import os.path
+import sys
+
+sys.path.append(os.path.dirname(__file__))
+from user import User
+
 app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return 'Hello World!'
+    return('Hello World')
 
 @app.route('/user/<username>')
 def show_user_profile(username):

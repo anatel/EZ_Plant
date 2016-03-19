@@ -24,5 +24,6 @@ class Plant(object):
                 self.repeat_on = water_data["repeat_on"]
                 self.start_on = water_data["start_on"]
             else:
+                return True
                 #raise exception
             self.last_watered = None
