@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 import os.path
 import sys
 
@@ -9,7 +9,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return('Hello World')
+    return jsonify(username="shibi", email="shibi@gmail.com")
+    # return('Hello World')
 
 @app.route('/user/<username>')
 def show_user_profile(username):
