@@ -1,3 +1,0 @@
-[console_scripts]
-ez_plant = ez_plant.app:main
-
