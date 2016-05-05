@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, render_template, request
 import os.path
 from user import User
+from moisture_data import MoistureData
 from plant import Plant
 import sys
 
@@ -11,9 +12,6 @@ app = Flask(__name__)
 @app.route('/')
 def root():
     return render_template('index.html')
-    # Comment for github
-    #return jsonify(username="shibi", email="shibi@gmail.com")
-    # return('Hello World')
 
 @app.route('/templates/<page_name>')
 def angularPage(page_name):
@@ -38,11 +36,14 @@ def signup():
     print(data['password'])
     return jsonify(success="true")
 
-@app.route('/post/<int:post_id>')
-def show_post(post_id):
-    # show the post with the given id, the id is an integer
-    return 'Post %d' % post_id
-
+@app.route('/push_moisture_data', methods=['POST'])
+def push_moisture_data():
+    data = request.get_json()
+    print(data['moisture_value'])
+    print(data['plant_id'])
+    moisture_data = MoistureData(data['plant_id'], data['moisture_value'])
+    moisture_data.save_to_database()
+    return jsonify(success="true")
 
 if __name__ == '__main__':
     #app.run(debug=True)

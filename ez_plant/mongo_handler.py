@@ -21,5 +21,6 @@ class MongoHandler(object):
     def delete_object(self):
         return True
 
-    def get_object(self):
-        return True
+    def get_single_object(self, collection_name, query):
+        document = self.db[collection_name].find_one(query)
+        return document
