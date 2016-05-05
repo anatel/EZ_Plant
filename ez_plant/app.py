@@ -15,14 +15,18 @@ def root():
     #return jsonify(username="shibi", email="shibi@gmail.com")
     # return('Hello World')
 
+@app.route('/templates/<page_name>')
+def angularPage(page_name):
+    return render_template(page_name)
+
 @app.route('/signup', methods=['POST'])
 def signup():
     data = request.get_json()
-    user = User(data['email'], data['password'])
+    user = User(data['email'], data['password'], data['firstName'], data['lastName'])
     user.save_to_database()
 
     print(data['email'])
-    print(data['userName'])
+    #print(data['userName'])
     print(data['password'])
     return jsonify(success="true")
 
