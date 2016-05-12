@@ -19,6 +19,14 @@ def root():
 def angularPage(page_name):
     return render_template(page_name)
 
+@app.route('/login', methods=['POST']) #TODO: build authentication
+def login():
+    data = request.get_json()
+    username = data['username'];
+    password = data['password'];
+
+    return jsonify(result="success")
+
 @app.route('/signup', methods=['POST'])
 def signup():
     data = request.get_json()
