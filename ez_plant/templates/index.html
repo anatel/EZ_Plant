@@ -3,6 +3,8 @@
 <html ng-app="ez_plant">
 <head>
   <!-- load bootstrap and fontawesome via CDN -->
+  <title>EZ-Plant</title>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='assets/images/favicon.ico') }}">
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css')}}" />
@@ -14,6 +16,7 @@
   <script src="{{ url_for('static', filename='js/services.js')}}"></script>
   <script src="{{ url_for('static', filename='js/aboutController.js')}}"></script>
   <script src="{{ url_for('static', filename='js/loginController.js')}}"></script>
+  <script src="{{ url_for('static', filename='js/registerController.js')}}"></script>
 
 
 </head>
@@ -34,6 +37,7 @@
               <ul class="nav navbar-nav navbar-right">
                   <li><a href="#/"><i class="fa fa-home"></i> Home</a></li>
                   <li><a href="#about"><i class="fa fa-shield"></i> About</a></li>
+                  <li><a href="#" ng-click="logout()">Logout</a></li>
               </ul>
           </div>
         </nav>

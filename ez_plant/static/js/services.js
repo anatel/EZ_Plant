@@ -20,7 +20,7 @@ angular.module('ez_plant').factory('AuthService',
     }
   }
 
-  function login(email, password) {
+  function login(username, password) {
   // create a new instance of deferred
     var deferred = $q.defer();
 
@@ -49,7 +49,7 @@ angular.module('ez_plant').factory('AuthService',
       // create a new instance of deferred
       var deferred = $q.defer();
       // send a get request to the server
-      $http.get('/api/logout')
+      $http.get('/logout')
         // handle success
         .success(function (data) {
           user = false;
@@ -64,22 +64,22 @@ angular.module('ez_plant').factory('AuthService',
       return deferred.promise;
     }
 
-    function register(email, password) {
+    function register(user_data) {
       // create a new instance of deferred
       var deferred = $q.defer();
       // send a post request to the server
-      $http.post('/register', {username: email, password: password})
+      $http.post('/register', user_data)
         // handle success
         .success(function (data, status) {
           if(status === 200 && data.result){
-            deferred.resolve();
+            deferred.resolve(data);
           } else {
-            deferred.reject();
+            deferred.reject(data);
           }
         })
         // handle error
         .error(function (data) {
-          deferred.reject();
+          deferred.reject(data);
         });
       // return promise object
       return deferred.promise;

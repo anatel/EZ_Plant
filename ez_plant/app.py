@@ -25,16 +25,16 @@ def login():
 
     return jsonify(result="success")
 
-@app.route('/signup', methods=['POST'])
-def signup():
+@app.route('/register', methods=['POST'])
+def register():
     data = request.get_json()
-    user = User(data['email'], data['password'], data['firstName'], data['lastName'])
+    user = User(data['username'], data['password'], data['firstName'], data['lastName'])
     user.save_to_database()
 
-    print(data['email'])
+    print(data['username'])
     #print(data['userName'])
     print(data['password'])
-    return jsonify(success="true")
+    return jsonify(result="success")
 
 @app.route('/push_moisture_data', methods=['POST'])
 def push_moisture_data():
