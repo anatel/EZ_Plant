@@ -14,7 +14,6 @@ class Plant(object):
     class WateringData(object): #add try catch
         def __init__(self, water_data):
             self.water_mode = water_data["water_mode"]
-
             if self.water_mode == WaterMode.MOISTURE.value:
                 self.low = water_data["low_threshold"]
                 self.high = water_data["high_threshold"]
