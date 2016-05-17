@@ -1,4 +1,6 @@
 from flask import Flask, jsonify, render_template, request
+from flask.ext.login import LoginManager, login_user, logout_user
+from ez_plant.hashing_handler import HashingHandler
 import os.path
 from user import User
 from moisture_data import MoistureData
@@ -8,6 +10,9 @@ import sys
 sys.path.append(os.path.dirname(__file__))
 
 app = Flask(__name__)
+app.secret_key = '3\xbb\xd8X\x07\x19\xad[\x1eB\xbb!\x8d\x9eES&\tf\x10\x19P\xac\x18'
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 @app.route('/')
 def root():
@@ -17,20 +22,36 @@ def root():
 def angularPage(page_name):
     return render_template(page_name)
 
-@app.route('/login', methods=['POST']) #TODO: build authentication
-def login():
-    data = request.get_json()
-    username = data['username'];
-    password = data['password'];
+@login_manager.user_loader
+def load_user(username):
+    user = User.get_from_database(username)
+    if not user:
+        return None
 
-    return jsonify(result="success")
+    return User(user['username'], user['password'], user['first_name'], user['last_name'])
+
+@app.route('/login', methods=['POST'])
+def login():
+    hashing_handler = HashingHandler()
+    data = request.get_json()
+    user_doc = User.get_from_database(data['username'])
+    if user_doc and hashing_handler.verify(data['password'], user_doc['password']):
+        user = User(user_doc['username'], user_doc['password'], user_doc['first_name'], user_doc['last_name'])
+        login_user(user)
+        return jsonify(result=True)
+
+    return jsonify(result=False, message="Wrong username or password")
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
     user = User(data['username'], data['password'], data['firstName'], data['lastName'])
     user.save_to_database()
-
     print(data['username'])
     #print(data['userName'])
     print(data['password'])

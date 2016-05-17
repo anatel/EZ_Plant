@@ -9,5 +9,5 @@ class HashingHandler(object):
         encrypted_string = pbkdf2_sha256.encrypt(plain_text_string, rounds=self.rounds, salt_size=self.salt_size)
         return encrypted_string
 
-    def verify(self, plain_text_string, encrypted_string):
+    def verify(self, plain_text_password, encrypted_password):
         return pbkdf2_sha256.verify(plain_text_password, encrypted_password)

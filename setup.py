@@ -1,7 +1,7 @@
 from setuptools import setup
 import sys
 
-install_requires = ['Flask==0.10.1', 'enum34==1.1.2', 'ipython==4.1.2', 'pymongo==3.2.2', 'passlib==1.6.5']
+install_requires = ['Flask==0.10.1', 'enum34==1.1.2', 'ipython==4.1.2', 'pymongo==3.2.2', 'passlib==1.6.5', 'flask-login==0.3.2']
 
 setup(name='ez_plant',
     version='0.0.1',
