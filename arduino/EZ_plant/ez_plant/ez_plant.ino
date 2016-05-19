@@ -4,8 +4,8 @@
 
 //char ssid[] = "Living The Dream_2.4";
 //char pass[] = "0546757191";
-char ssid[] = "Shibiz";
-char pass[] = "rugh_tcrvo33";
+char ssid[] = "xxxx";
+char pass[] = "xxxx";
 char address[] = "192.168.1.4";
 int port = 5000;
 int moisture_analog_pin_num = A0;
