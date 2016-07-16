@@ -1,4 +1,3 @@
-import uuid
 from ez_plant.mongo_handler import MongoHandler
 from flask.ext.login import UserMixin
 

@@ -31,7 +31,7 @@ def load_user(username):
 
     return User(user['username'], user['password'], user['first_name'], user['last_name'])
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
     hashing_handler = HashingHandler()
     data = request.get_json()
@@ -44,22 +44,22 @@ def login():
     return jsonify(result=False, message="Wrong username or password")
 
 @app.route('/protected')
-@flask_login.login_required
+@flask_login.login_required 
 def protected():
     return 'Logged in as: ' + flask_login.current_user.username
 
 @app.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('login'))
+    return redirect(url_for('root'))
 
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
-    user = User(data['username'], data['password'], data['firstName'], data['lastName'])
+    hashing_handler = HashingHandler()
+    encrypted_password = hashing_handler.encrypt(data['password'])
+    user = User(data['username'], encrypted_password, data['firstName'], data['lastName'])
     user.save_to_database()
-    print(data['username'])
-    print(data['password'])
     return jsonify(result="success")
 
 @app.route('/push_moisture_data', methods=['POST'])
