@@ -1,0 +1,14 @@
+from relay (starting from right):
+
+1 - (+, orange) - 5V
+2 - (control, blue) - Digital 3.
+3 - (GND, black) - Ground (through bread board)
+4 - Connected to self at normally open.
+Load input - (+, yellow) - Connect to + of pump.
+
+pump:
+
+(-) input connected to Vin in arduino through another cable.
+
+
+The big relay has 6 inputs: 1 as +, 1 as -, and 4 relays.

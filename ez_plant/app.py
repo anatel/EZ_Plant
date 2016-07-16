@@ -1,4 +1,5 @@
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, redirect, url_for
+import flask.ext.login as flask_login
 from flask.ext.login import LoginManager, login_user, logout_user
 from ez_plant.hashing_handler import HashingHandler
 import os.path
@@ -30,7 +31,7 @@ def load_user(username):
 
     return User(user['username'], user['password'], user['first_name'], user['last_name'])
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     hashing_handler = HashingHandler()
     data = request.get_json()
@@ -41,6 +42,11 @@ def login():
         return jsonify(result=True)
 
     return jsonify(result=False, message="Wrong username or password")
+
+@app.route('/protected')
+@flask_login.login_required
+def protected():
+    return 'Logged in as: ' + flask_login.current_user.username
 
 @app.route('/logout')
 def logout():
@@ -53,7 +59,6 @@ def register():
     user = User(data['username'], data['password'], data['firstName'], data['lastName'])
     user.save_to_database()
     print(data['username'])
-    #print(data['userName'])
     print(data['password'])
     return jsonify(result="success")
 
@@ -67,5 +72,4 @@ def push_moisture_data():
     return jsonify(success="true")
 
 if __name__ == '__main__':
-    #app.run(debug=True)
     app.run(host='0.0.0.0', debug=True)
