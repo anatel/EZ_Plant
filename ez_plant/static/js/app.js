@@ -44,10 +44,6 @@ ez_plant.run(function ($rootScope, $location, $route, AuthService) {
         $location.path('/login');
         // $route.reload();
       }
-      else if (next.$$route.originalPath != '/login' && AuthService.checkUser())
-      {
-        $location.path('/');
-      }
     });
   });
 });
