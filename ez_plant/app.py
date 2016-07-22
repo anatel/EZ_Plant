@@ -19,6 +19,13 @@ login_manager.init_app(app)
 def root():
     return render_template('index.html')
 
+@app.route('/get_user_data')
+def get_user_data():
+    if flask_login.current_user.is_authenticated:
+        return jsonify({'is_logged_in': True, 'first_name': flask_login.current_user.first_name, 'last_name': flask_login.current_user.last_name})
+
+    return jsonify({'is_logged_in': False})
+
 @app.route('/templates/<page_name>')
 def angularPage(page_name):
     return render_template(page_name)
@@ -31,7 +38,7 @@ def load_user(username):
 
     return User(user['username'], user['password'], user['first_name'], user['last_name'])
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     hashing_handler = HashingHandler()
     data = request.get_json()
@@ -44,21 +51,22 @@ def login():
     return jsonify(result=False, message="Wrong username or password")
 
 @app.route('/protected')
-@flask_login.login_required 
+@flask_login.login_required
 def protected():
     return 'Logged in as: ' + flask_login.current_user.username
 
 @app.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('root'))
+    return redirect(url_for('login'))
 
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
     hashing_handler = HashingHandler()
     encrypted_password = hashing_handler.encrypt(data['password'])
-    user = User(data['username'], encrypted_password, data['firstName'], data['lastName'])
+    user = User(data['username'], enc, data['firstName'], data['lastName'])
+
     user.save_to_database()
     return jsonify(result="success")
 

@@ -39,14 +39,16 @@ ez_plant.controller('mainController', ['$scope', 'AuthService', '$location',
 
 ez_plant.run(function ($rootScope, $location, $route, AuthService) {
   $rootScope.$on('$routeChangeStart', function (event, next, current) {
-    if (next.$$route.originalPath != '/register' && AuthService.isLoggedIn() === false) {
-      $location.path('/login');
-      // $route.reload();
-    }
-    else if (next.$$route.originalPath != '/login' && AuthService.isLoggedIn() === true)
-    {
-      $location.path('/');
-    }
+    AuthService.isLoggedIn().then (function(){
+      if (next.$$route.originalPath != '/register' && !AuthService.checkUser()) {
+        $location.path('/login');
+        // $route.reload();
+      }
+      else if (next.$$route.originalPath != '/login' && AuthService.checkUser())
+      {
+        $location.path('/');
+      }
+    });
   });
 });
 // https://realpython.com/blog/python/handling-user-authentication-with-angular-and-flask/

@@ -8,16 +8,44 @@ angular.module('ez_plant').factory('AuthService',
       isLoggedIn: isLoggedIn,
       login: login,
       logout: logout,
-      register: register
+      register: register,
+      checkUser: checkUser
   });
 
   function isLoggedIn() {
     console.log('user: ' + user);
-    if(user) {
-      return true;
-    } else {
-      return false;
-    }
+    var deferred = $q.defer();
+
+    // send a post request to the server
+    $http.get('/get_user_data')
+      // handle success
+      .success(function (data, status) {
+        console.log(data);
+        if(status === 200 && data.is_logged_in == true){
+          user = data;
+          deferred.resolve();
+        } else if (status === 200) {
+          user = null;
+          deferred.resolve();
+        }
+      })
+    // handle error
+      .error(function (data) {
+        user = false;
+        deferred.reject();
+      });
+      // return promise object
+      return deferred.promise;
+    // if(user) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
+  }
+
+  function checkUser()
+  {
+    return user != null;
   }
 
   function login(username, password) {
