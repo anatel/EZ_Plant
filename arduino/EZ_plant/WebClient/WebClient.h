@@ -16,12 +16,12 @@ class WebClient
     IPAddress get_ip_address_from_string(char * ip_address);
     void init_wifi(char * ssid, char * pass);
     void print_wifi_status();
-    void get_json_from_server();
 
   public:
     WebClient();
     WebClient(char * address, int i_port, char * ssid, char * pass);
     void post_json_to_server(JsonObject& json, String route);
+    char * get_json_from_server(String route);
     void close_server_connection();
 };
 

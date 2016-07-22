@@ -12,6 +12,8 @@ class JsonParser
   public:
     JsonParser();
     JsonObject& create_json_from_moisture_values(int plant_id, int moisture_value);
+    const char * get_watering_mode(char * json, int plant_id);
+    long get_low_moisture_value(char * json, int plant_id);
 };
 
 #endif

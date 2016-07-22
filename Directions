@@ -4,7 +4,7 @@ from relay (starting from right):
 2 - (control, blue) - Digital 3.
 3 - (GND, black) - Ground (through bread board)
 4 - Connected to self at normally open.
-Load input - (+, yellow) - Connect to + of pump.
+Load input - (+, yellow) - Connect to + (Red) of pump.
 
 pump:
 

@@ -68,18 +68,23 @@ def register():
     hashing_handler = HashingHandler()
     encrypted_password = hashing_handler.encrypt(data['password'])
     user = User(data['username'], encrypted_password, data['firstName'], data['lastName'])
-
     user.save_to_database()
+
     return jsonify(result="success")
 
 @app.route('/push_moisture_data', methods=['POST'])
 def push_moisture_data():
     data = request.get_json()
-    print(data['moisture_value'])
-    print(data['plant_id'])
-    moisture_data = MoistureData(data['plant_id'], data['moisture_value'])
-    moisture_data.save_to_database()
+    if 'plant_id' in data and 'moisture_value' in data:
+        moisture_data = MoistureData(data['plant_id'], data['moisture_value'])
+        moisture_data.save_to_database()
+
     return jsonify(success="true")
+
+@app.route('/get_config', methods=['GET'])
+def get_configuration():
+    print(request.args.get('username'))
+    return jsonify({ 'config': [ {"plant_id": 0, "watering_mode": "moisture", "low": 2000}, {"plant_id": 1, "watering_mode": "schedule"}]})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
