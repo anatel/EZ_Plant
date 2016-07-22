@@ -3,6 +3,7 @@ angular.module('ez_plant').factory('AuthService',
   function ($q, $timeout, $http) {
     // create user variable
     var user = null;
+    var errMsg = '';
     // return available functions for use in controllers
     return ({
       isLoggedIn: isLoggedIn,
@@ -56,18 +57,18 @@ angular.module('ez_plant').factory('AuthService',
     $http.post('/login', {username: username, password: password})
       // handle success
       .success(function (data, status) {
-        if(status === 200 && data.result){
-          user = true;
-          deferred.resolve();
-        } else {
-          user = false;
-          deferred.reject();
+        if(status === 200 && data.is_logged_in){
+          user = data;
+          deferred.resolve(user);
+        } else if (status === 200) {
+          user = null;
+          deferred.reject("Inavlid Username or password.");
         }
       })
     // handle error
       .error(function (data) {
-        user = false;
-        deferred.reject();
+        user = null;
+        deferred.reject("Unexpected Error");
       });
       // return promise object
       return deferred.promise;

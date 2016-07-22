@@ -6,22 +6,21 @@ ez_plant.controller('loginController',['$scope', 'AuthService', '$location',
  function($scope, AuthService, $location) {
   $scope.dataLoading = false;
   $scope.userDetails = {};
+  $scope.errorMessage = '';
 
   $scope.login = function () {
       // initial values
       $scope.dataLoading = true;
-
       // call login from service
-      AuthService.login($scope.userDetails.username, $scope.userDetails.password)
+      var promise = AuthService.login($scope.userDetails.username, $scope.userDetails.password);
         // handle success
-        .then(function () {
-          $location.path('/about');
+        promise.then(function(userObject){
+          $location.path('/');
           $scope.dataLoading = false;
           $scope.loginForm = {};
-        })
-        // handle error
-        .catch(function () {
-          $scope.errorMessage = "Invalid username and/or password";
+          $scope.errorMessage = '';
+        }, function(errMsg){
+          $scope.errorMessage = errMsg;
           $scope.dataLoading = false;
           $scope.loginForm = {};
         });

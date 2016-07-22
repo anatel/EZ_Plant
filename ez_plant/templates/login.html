@@ -19,5 +19,8 @@
             <img ng-if="dataLoading" src="{{ url_for('static', filename='assets/images/loading.gif')}}" />
             <a href="#/register" class="btn btn-link">Register</a>
         </div>
+        <div>
+          <span ng-show="errorMessage != ''" class="help-block">{{errorMessage}}</span>
+        </div>
     </form>
 </div>

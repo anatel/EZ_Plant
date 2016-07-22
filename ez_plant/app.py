@@ -46,9 +46,10 @@ def login():
     if user_doc and hashing_handler.verify(data['password'], user_doc['password']):
         user = User(user_doc['username'], user_doc['password'], user_doc['first_name'], user_doc['last_name'])
         login_user(user)
-        return jsonify(result=True)
+        return jsonify({'is_logged_in': True, 'first_name': flask_login.current_user.first_name, 'last_name': flask_login.current_user.last_name})
 
-    return jsonify(result=False, message="Wrong username or password")
+    return jsonify({'is_logged_in': False})
+
 
 @app.route('/protected')
 @flask_login.login_required
