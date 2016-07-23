@@ -37,11 +37,6 @@ angular.module('ez_plant').factory('AuthService',
       });
       // return promise object
       return deferred.promise;
-    // if(user) {
-    //   return true;
-    // } else {
-    //   return false;
-    // }
   }
 
   function checkUser()
@@ -62,7 +57,7 @@ angular.module('ez_plant').factory('AuthService',
           deferred.resolve(user);
         } else if (status === 200) {
           user = null;
-          deferred.reject("Inavlid Username or password.");
+          deferred.reject("Invalid username and/or password.");
         }
       })
     // handle error

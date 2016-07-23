@@ -1,7 +1,9 @@
 <div class="col-md-6 col-md-offset-3">
     <h2>Login</h2>
-    <div class="alert alert-danger message-animation" role="alert" ng-if="showError">
-        Invalid username and/or password.
+    <div class="alert alert-danger message-animation" role="alert" ng-if="errorMessage != ''">
+      {% raw %}
+        {{ errorMessage }}
+      {% endraw %}
     </div>
     <form name="loginForm" ng-submit="login()" role="form">
         <div class="form-group" ng-class="{ 'has-error': loginForm.username.$dirty && loginForm.username.$error.required }">
@@ -18,9 +20,6 @@
             <button type="submit" ng-disabled="loginForm.$invalid || dataLoading" class="btn btn-primary">Login</button>
             <img ng-if="dataLoading" src="{{ url_for('static', filename='assets/images/loading.gif')}}" />
             <a href="#/register" class="btn btn-link">Register</a>
-        </div>
-        <div>
-          <span ng-show="errorMessage != ''" class="help-block">{{errorMessage}}</span>
         </div>
     </form>
 </div>

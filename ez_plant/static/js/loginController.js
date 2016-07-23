@@ -6,7 +6,7 @@ ez_plant.controller('loginController',['$scope', 'AuthService', '$location',
  function($scope, AuthService, $location) {
   $scope.dataLoading = false;
   $scope.userDetails = {};
-  $scope.errorMessage = '';
+  $scope.errorMessage = "";
 
   $scope.login = function () {
       // initial values
@@ -17,12 +17,10 @@ ez_plant.controller('loginController',['$scope', 'AuthService', '$location',
         promise.then(function(userObject){
           $location.path('/');
           $scope.dataLoading = false;
-          $scope.loginForm = {};
           $scope.errorMessage = '';
         }, function(errMsg){
           $scope.errorMessage = errMsg;
           $scope.dataLoading = false;
-          $scope.loginForm = {};
         });
     };
 }]);

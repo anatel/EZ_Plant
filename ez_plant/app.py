@@ -66,7 +66,7 @@ def register():
     data = request.get_json()
     hashing_handler = HashingHandler()
     encrypted_password = hashing_handler.encrypt(data['password'])
-    user = User(data['username'], enc, data['firstName'], data['lastName'])
+    user = User(data['username'], encrypted_password, data['firstName'], data['lastName'])
 
     user.save_to_database()
     return jsonify(result="success")
