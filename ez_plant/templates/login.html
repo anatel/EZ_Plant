@@ -1,9 +1,7 @@
 <div class="col-md-6 col-md-offset-3">
     <h2>Login</h2>
     <div class="alert alert-danger message-animation" role="alert" ng-if="errorMessage != ''">
-      {% raw %}
-        {{ errorMessage }}
-      {% endraw %}
+        [[ errorMessage ]]
     </div>
     <form name="loginForm" ng-submit="login()" role="form">
         <div class="form-group" ng-class="{ 'has-error': loginForm.username.$dirty && loginForm.username.$error.required }">

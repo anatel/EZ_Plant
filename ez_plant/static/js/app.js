@@ -1,16 +1,12 @@
-// create the module and name it ez_plant
-// var ez_plant = angular.module('ez_plant', ['ngRoute', '$http', 'AuthService']);
 var ez_plant = angular.module('ez_plant', ['ngRoute']);
 
 // configure our routes
 ez_plant.config(function($routeProvider) {
   $routeProvider
-     // route for the home page
      .when('/', {
-         templateUrl : 'templates/home.html',
-        //  controller  : 'loginController'
+         templateUrl : 'templates/garden.html',
+         controller  : 'gardenController'
      })
-     // route for the about page
      .when('/about', {
          templateUrl : 'templates/about.html',
          controller  : 'aboutController'
@@ -24,6 +20,11 @@ ez_plant.config(function($routeProvider) {
          controller  : 'registerController'
      })
 });
+
+ez_plant.config(['$interpolateProvider', function($interpolateProvider) {
+  $interpolateProvider.startSymbol('[[');
+  $interpolateProvider.endSymbol(']]');
+}]);
 
 ez_plant.controller('mainController', ['$scope', 'AuthService', '$location',
   function($scope, AuthService, $location) {
@@ -42,9 +43,7 @@ ez_plant.run(function ($rootScope, $location, $route, AuthService) {
     AuthService.isLoggedIn().then (function(){
       if (next.$$route.originalPath != '/register' && !AuthService.checkUser()) {
         $location.path('/login');
-        // $route.reload();
       }
     });
   });
 });
-// https://realpython.com/blog/python/handling-user-authentication-with-angular-and-flask/

@@ -1,0 +1,30 @@
+</head>
+  <link href='https://fonts.googleapis.com/css?family=Lobster+Two:700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/garden.css')}}" />
+<body>
+    <div class="headDiv">
+      <!-- <img class="sign" src="{{ url_for('static', filename='assets/images/wooden-sign.png')}}"> -->
+      <div class="image">
+        <span class="text-over-sign">
+                [[ userDetails.first_name ]]'s Garden
+            </span>
+      </div>
+    </div>
+
+    <div class="plantsContainer">
+      <div class="row">
+        <div class="col-sm-6 col-md-3" ng-repeat="plant in plants">
+          <div class="thumbnail">
+            <img ng-src="[[plant.img_url]]" alt="...">
+            <div class="caption">
+              <h3>Thumbnail label</h3>
+              <p>...</p>
+              <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+</body>
+</html>

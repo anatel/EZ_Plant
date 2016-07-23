@@ -3,16 +3,22 @@ angular.module('ez_plant').factory('AuthService',
   function ($q, $timeout, $http) {
     // create user variable
     var user = null;
-    var errMsg = '';
+
     // return available functions for use in controllers
     return ({
       isLoggedIn: isLoggedIn,
       login: login,
       logout: logout,
       register: register,
-      checkUser: checkUser
+      checkUser: checkUser,
+      getUser: getUser
   });
 
+  function getUser()
+  {
+    return user;
+  }
+  
   function isLoggedIn() {
     console.log('user: ' + user);
     var deferred = $q.defer();

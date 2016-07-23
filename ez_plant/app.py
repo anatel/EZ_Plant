@@ -59,7 +59,8 @@ def protected():
 @app.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('login'))
+    return jsonify({'logged_out': True})
+    # return redirect(url_for('login'))
 
 @app.route('/register', methods=['POST'])
 def register():
