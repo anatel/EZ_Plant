@@ -27,6 +27,8 @@
 .thumbnail{
     width: 200px;
     overflow: auto;
+    cursor: pointer;
+    border-radius: 10px;
 }
 
 .row {
@@ -39,4 +41,54 @@
   margin-right: auto;
   border: 1px solid;
   margin-top: 20px;
+}
+
+.btn{
+  cursor: pointer;
+  color: #3a3939;
+}
+
+.btn:hover {
+  color: green;
+  text-decoration: none;
+}
+.plantNameTxt{
+  margin-top: 0px;
+  color: #5a5454;
+}
+
+.plantNameType{
+  color: #b5b1b1;
+}
+
+.lastWateredTxt{
+  font-size: smaller;
+  color: gray;
+}
+
+.marginFix{
+  margin-bottom: 0px;
+}
+
+.addPlant{
+  height: 307px;
+  border-style: dashed;
+  border-width: medium;
+}
+
+.plusTxt{
+  font-size: 120px;
+  color: gray;
+}
+
+.addPlantTxt{
+  color: gray;
+  font-size: 18px;
+  font-weight: lighter;
+  margin-top: -25px;
+}
+
+.thumbnail img{
+  width: 190px;
+  height: 190px;
 }

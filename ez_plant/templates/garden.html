@@ -1,6 +1,8 @@
 </head>
   <link href='https://fonts.googleapis.com/css?family=Lobster+Two:700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/garden.css')}}" />
+  <!-- <script src="{{ url_for('static', filename='js/plantController.js')}}"></script> -->
+
 <body>
     <div class="headDiv">
       <!-- <img class="sign" src="{{ url_for('static', filename='assets/images/wooden-sign.png')}}"> -->
@@ -14,17 +16,31 @@
     <div class="plantsContainer">
       <div class="row">
         <div class="col-sm-6 col-md-3" ng-repeat="plant in plants">
-          <div class="thumbnail">
-            <img ng-src="[[plant.img_url]]" alt="...">
+          <div class="thumbnail" ng-click="openPlantDetails($index)">
+            <img ng-if="[[plant.img_url]] != ''" ng-src="[[plant.img_url]]" alt="...">
+            <img ng-if="[[plant.img_url]] ==''" ng-src="static/assets/images/default_plant.png" alt="...">
             <div class="caption">
-              <h3>Thumbnail label</h3>
-              <p>...</p>
-              <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+              <h4 class="plantNameTxt marginFix">[[plant.name]]</h4>
+              <p class="plantNameType marginFix">[[plant.type]]</p>
+              <p class="marginFix">
+                <a title="Edit" class="btn" onclick="alert('Edited!')" role="button"> <i class="fa fa-pencil fa-lg" aria-hidden="true"></i></a>
+                <!-- <a title="Delete" class="btn" onclick="alert('Deleted!')" role="button"> <i class="fa fa-trash fa-lg" aria-hidden="true"></i></a> -->
+              </p>
+              <p class="lastWateredTxt marginFix">Last watered: [[plant.water_data.last_watered]]</p>
             </div>
           </div>
         </div>
+        <div class="col-sm-6 col-md-3" ng-if="plants.length < 4">
+          <div class="thumbnail addPlant">
+            <span class="plusTxt">+</span>
+            <div class="addPlantTxt">Add Plant</div>
+          </div>
       </div>
-
     </div>
+  </div>
+
+  <div class="plantDetails" ng-controller="plantController">
+    [[$root.plant]]
+  </div>
 </body>
 </html>
