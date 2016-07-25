@@ -16,7 +16,7 @@
     <div class="plantsContainer">
       <div class="row">
         <div class="col-sm-6 col-md-3" ng-repeat="plant in plants">
-          <div class="thumbnail" ng-click="openPlantDetails($index)">
+          <div id="[[plant.plant_id]]"class="thumbnail" ng-click="openPlantDetails($index)">
             <img ng-if="[[plant.img_url]] != ''" ng-src="[[plant.img_url]]" alt="...">
             <img ng-if="[[plant.img_url]] ==''" ng-src="static/assets/images/default_plant.png" alt="...">
             <div class="caption">
@@ -31,7 +31,7 @@
           </div>
         </div>
         <div class="col-sm-6 col-md-3" ng-if="plants.length < 4">
-          <div class="thumbnail addPlant">
+          <div id="new" class="thumbnail addPlant" ng-click="openPlantDetails()">
             <span class="plusTxt">+</span>
             <div class="addPlantTxt">Add Plant</div>
           </div>
@@ -39,8 +39,14 @@
     </div>
   </div>
 
-  <div class="plantDetails" ng-controller="plantController">
-    [[$root.plant]]
+<span class="plantDetailsWrapper">
+  <div class="plantDetails" ng-if="showForm">
+    <div class="arrow" >
+      <img src="static/assets/images/arrow.png" ng-style="{left: arrowPosLeft}"/>
+    </div>
+    <div class="formDiv">
+    </div>
   </div>
+</span>
 </body>
 </html>
