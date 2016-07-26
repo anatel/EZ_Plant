@@ -45,8 +45,49 @@
       <img src="static/assets/images/arrow.png" ng-style="{left: arrowPosLeft}"/>
     </div>
     <div class="formDiv">
+      <form>
+        <div class="plantFields col-sm-offset-3">
+            <div class="form-group row">
+              <label for="nickname1" class="col-sm-3 form-control-label">Nickname</label>
+              <div class="col-sm-5">
+                <input type="text" class="form-control" id="nickname1" placeholder="Nickname">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="type1" class="col-sm-3 form-control-label">Type</label>
+              <div class="col-sm-5">
+                <input type="text" class="form-control" id="type1" placeholder="Type">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-3">Watering Method</label>
+              <div class="col-sm-3">
+                <div class="radio">
+                  <label class="col-sm-1"><input type="radio" name="gridRadios" id="gridRadios1" value="optionScheduled" checked>Scheduled</label>
+                </div>
+
+              </div>
+
+              <div class="col-sm-4">
+                <div class="radio">
+                  <label class="col-sm-1"><input type="radio" name="gridRadios" id="gridRadios1" value="optionScheduled" checked>Moisture</label>
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="form-group row">
+              <div class="col-sm-offset-2 col-sm-5">
+                <button type="submit" class="btn btn-secondary">Sign in</button>
+              </div>
+            </div>
+        </div>
+      </form>
     </div>
-  </div>
+    </div>
 </span>
 </body>
 </html>
