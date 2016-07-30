@@ -1,4 +1,4 @@
-var ez_plant = angular.module('ez_plant', ['ngRoute']);
+var ez_plant = angular.module('ez_plant', ['ngRoute', 'dnTimepicker', 'ui.bootstrap']);
 
 // configure our routes
 ez_plant.config(function($routeProvider) {

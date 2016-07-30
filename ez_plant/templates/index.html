@@ -4,21 +4,30 @@
 <head>
   <!-- load bootstrap and fontawesome via CDN -->
   <title>EZ-Plant</title>
-  <link rel="shortcut icon" href="{{ url_for('static', filename='assets/images/favicon.ico') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='assets/images/favicon.ico') }}"/>
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
   <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" /> -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css')}}" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>  <!-- SPELLS -->
   <!-- load angular and angular route via CDN -->
   <script src="https://use.fontawesome.com/2b4f6247e1.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular-route.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.0.0/ui-bootstrap-tpls.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.0.0/ui-bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-strap/2.3.9/angular-strap.compat.min.js"></script>
+
+
+
+
   <script src="{{ url_for('static', filename='js/app.js')}}"></script>
   <script src="{{ url_for('static', filename='js/services.js')}}"></script>
   <script src="{{ url_for('static', filename='js/aboutController.js')}}"></script>
   <script src="{{ url_for('static', filename='js/loginController.js')}}"></script>
   <script src="{{ url_for('static', filename='js/registerController.js')}}"></script>
   <script src="{{ url_for('static', filename='js/gardenController.js')}}"></script>
+  <script src="{{ url_for('static', filename='js/angular-dateparser.min.js')}}"></script>
+  <script src="{{ url_for('static', filename='js/angular-timepicker.js')}}"></script>
 
 
 </head>

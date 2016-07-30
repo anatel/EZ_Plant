@@ -26,6 +26,7 @@
 
 .thumbnail{
     width: 200px;
+    height: 293px;
     overflow: auto;
     cursor: pointer;
     border-radius: 10px;
@@ -38,8 +39,28 @@
   width: 80%;
   margin-left: auto;
   margin-right: auto;
-  border: 1px solid;
   margin-top: 20px;
+}
+
+.schedule-input {
+  display: inline;
+  width: 100px;
+  padding-left: 2px;
+  padding-right: 2px;
+  text-align: center;
+}
+
+.water-every{
+  padding-right: 10px;
+}
+
+.moisture-input{
+    margin-left: -62px;
+}
+
+.days-at {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .editPlantBtn{
@@ -74,7 +95,7 @@
 }
 
 .addPlant{
-  height: 307px;
+  /*height: 307px;*/
   border-style: dashed;
   border-width: medium;
 }

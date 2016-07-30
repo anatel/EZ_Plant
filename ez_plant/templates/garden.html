@@ -1,6 +1,8 @@
 </head>
   <link href='https://fonts.googleapis.com/css?family=Lobster+Two:700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/garden.css')}}" />
+
+
   <!-- <script src="{{ url_for('static', filename='js/plantController.js')}}"></script> -->
 
 <body>
@@ -58,7 +60,6 @@
               <input id="inputId" type="file" onchange="angular.element(this).scope().readURL(this);" style="position: fixed; top: -100em" />
             </div>
             <div class="col-sm-7 text-left">
-
               <div class="form-group row">
                 <label for="nickname" class="col-sm-3 form-control-label">Nickname</label>
                 <div class="col-sm-5">
@@ -77,17 +78,39 @@
                 <label  for class="col-sm-3">Watering Method</label>
                 <div class="radioiDiv col-sm-6">
                   <div class="radio-inline">
-                    <label class="col-sm-1"><input type="radio" name="gridRadios" id="gridRadios1" value="optionScheduled" checked>Scheduled</label>
+                    <label class="col-sm-1">
+                      <input type="radio" name="gridRadios" value="schedule" ng-model="plant.water_data.water_mode">Scheduled
+                    </label>
                   </div>
                   <div class="radio-inline">
-                      <label class="col-sm-1"><input type="radio" name="gridRadios" id="gridRadios1" value="optionMoisture">Moisture</label>
+                    <label class="col-sm-1">
+                      <input type="radio" name="gridRadios" value="moisture" ng-model="plant.water_data.water_mode" >Moisture
+                    </label>
                   </div>
+              </div>
+            </div>
+            <div class="well col-sm-offset-3">
+              <div class="row" ng-show="plant.water_data.water_mode == 'schedule'">
+                <span class="water-every col-sm-3">Water every</span>
+                <input type="text" ng-model="plant.water_data.repeat_every" class="form-control col-sm-1 schedule-input"></input>
+                <span class="days-at col-sm-2">days, at</span>
+                <input type="text" dn-timepicker ng-model="plant.water_data.hour" class="form-control col-sm-1" />
+                <!-- <input type="text" dn-timepicker="h:mm a" min-time="00:00" max-time="23:59" step="15" ng-model="plant.water_data.hour"/> -->
+                <!-- <input type="text" ng-model="plant.water_data.hour" class="form-control col-sm-3 schedule-input"></input> -->
+              </div>
+
+              <div class="row" ng-show="plant.water_data.water_mode == 'moisture'">
+                <span class="col-sm-8 text-left">Water when moisture level is below</span>
+                <span class="input-group moisture-input">
+                  <input type="text" ng-model="plant.water_data.low_threshold" class="form-control col-sm-1"></input>
+                  <span class="input-group-addon">%</span>
+                </span>
               </div>
             </div>
         </div>
       </div>
       <div class="form-group row clearfix">
-          <button type="submit" class="btn btn-info"><i class="fa fa-pagelines" aria-hidden="true"></i> Submit Plant</button>
+          <button type="submit" class="btn btn-info"><i class="fa fa-envira" aria-hidden="true"></i> Submit Plant</button>
       </div>
       </form>
     </div>
