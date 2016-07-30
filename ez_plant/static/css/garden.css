@@ -42,12 +42,16 @@
   margin-top: 20px;
 }
 
-.btn{
+.editPlantBtn{
   cursor: pointer;
   color: #3a3939;
 }
 
-.btn:hover {
+.btn-info{
+    background: green;
+}
+
+.editPlantBtn:hover {
   color: green;
   text-decoration: none;
 }
@@ -117,4 +121,42 @@
 
 .plantFields{
   /*width: 60%;*/
+}
+
+.imgContainer {
+  position: relative;
+  width: 190px;
+  height: 190px;
+  cursor: pointer;
+}
+
+.imgContainer:hover .pencil {
+  display: block;
+  color: green;
+}
+
+.innerFormDiv {
+  padding-top: 17px;
+}
+.imgContainer img {
+  width: 190px;
+  height: 190px;
+  border-radius: 10px;
+  border: solid;
+  border-style: outset;
+}
+
+.radioiDiv{
+  padding-left: 0px;
+}
+.pencil {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  display: none;
+}
+
+.pencil:hover {
+  cursor: pointer;
+  color: green;
 }
