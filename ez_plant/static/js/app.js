@@ -7,7 +7,11 @@ ez_plant.config(function($routeProvider) {
          templateUrl : 'templates/garden.html',
          controller  : 'gardenController'
      })
-     .when('/about', {
+    //  .when('/statsTab', {
+    //      templateUrl : 'templates/statistics.html',
+    //      controller  : 'gardenController'
+    //  })
+   .when('/about', {
          templateUrl : 'templates/about.html',
          controller  : 'aboutController'
      })
@@ -41,7 +45,7 @@ ez_plant.controller('mainController', ['$scope', 'AuthService', '$location',
 ez_plant.run(function ($rootScope, $location, $route, AuthService) {
   $rootScope.$on('$routeChangeStart', function (event, next, current) {
     AuthService.isLoggedIn().then (function(){
-      if (next.$$route.originalPath != '/register' && !AuthService.checkUser()) {
+      if (next && next.$$route.originalPath != '/register' && !AuthService.checkUser()) {
         $location.path('/login');
       }
     });

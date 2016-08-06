@@ -118,8 +118,22 @@
 }
 
 .plantDetails {
+  margin-bottom: 20px;
 }
 
+.nav-tabs {
+  margin-top: 12px;
+}
+
+.nav li {
+  cursor: pointer;
+}
+.nextWatering {
+  padding-left: 15px;
+  color: green;
+  text-align: left;
+  margin-top: 10px;
+}
 .arrow {
 }
 
