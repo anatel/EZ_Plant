@@ -11,7 +11,7 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
 
   $scope.openPlantDetails = function(plantIndex){
     $scope.showForm = true;
-    $scope.plant = plantIndex==undefined? {"water_data": { "water_mode": "schedule"}} : angular.copy($scope.plants[plantIndex]);
+    $scope.plant = plantIndex==undefined? {"water_data": { "water_mode": "schedule", "last_watered": "Never"}} : angular.copy($scope.plants[plantIndex]);
     placeArrow();
 
     $('html, body').animate({
@@ -55,6 +55,10 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
   $scope.submitPlant = function() {
     $scope.success = true;
     $(".plantDetails").slideUp( "slow");
+    // $scope.$apply( function () {$scope.plants.push($scope.plant);} );
+    $scope.plant.img_url = "static/assets/images/demo.jpg";
+    $scope.plant_id = "d";
+    $scope.plants.push($scope.plant);
   };
 
   $scope.readURL = function(input) {
