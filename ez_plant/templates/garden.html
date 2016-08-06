@@ -1,8 +1,8 @@
 </head>
   <link href='https://fonts.googleapis.com/css?family=Lobster+Two:700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/garden.css')}}" />
-
-
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.timepicker.css')  }}">
+  <script src="{{ url_for('static', filename='js/jquery.timepicker.min.js')}}"></script>
   <!-- <script src="{{ url_for('static', filename='js/plantController.js')}}"></script> -->
 
 <body>
@@ -94,7 +94,7 @@
                 <span class="water-every col-sm-3">Water every</span>
                 <input type="text" ng-model="plant.water_data.repeat_every" class="form-control col-sm-1 schedule-input"></input>
                 <span class="days-at col-sm-2">days, at</span>
-                <input type="text" dn-timepicker ng-model="plant.water_data.hour" class="form-control col-sm-1" />
+                <input type="text" ng-model="plant.water_data.hour" class="waterTime form-control col-sm-1" />
                 <!-- <input type="text" dn-timepicker="h:mm a" min-time="00:00" max-time="23:59" step="15" ng-model="plant.water_data.hour"/> -->
                 <!-- <input type="text" ng-model="plant.water_data.hour" class="form-control col-sm-3 schedule-input"></input> -->
               </div>

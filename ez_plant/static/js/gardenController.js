@@ -1,7 +1,7 @@
 var ez_plant = angular.module('ez_plant');
 
 
-ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', function($scope, AuthService, $rootScope) {
+ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', '$timeout', function($scope, AuthService, $rootScope, $timeout) {
   $scope.userDetails = AuthService.getUser();
   var plantsString = [{"plant_id":"a","name":"Plant1","type":"Rose","port_number":"A1","img_url":"static/assets/images/red-rose-plant.png","water_data":{"water_mode":"schedule","repeat_every":5,"hour":"14:00","last_watered":"23/07/16 16:39"}},{"plant_id":"b","name":"Plant2","type":"Cactus","port_number":"A0","img_url":"static/assets/images/img-thing.jpg","water_data":{"water_mode":"moisture","low_threshold":50,"last_watered":"23/07/17 17:00"}},{"plant_id":"c","name":"Lilu","type":"Lilac","port_number":"A4","img_url":"static/assets/images/lilac.jpg","water_data":{"water_mode":"moisture","low_threshold":20,"last_watered":"23/07/18 17:00"}}];
   $scope.plants = plantsString;
@@ -15,6 +15,8 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
     $('html, body').animate({
         scrollTop: $(".plantDetailsWrapper").offset().top
     }, 2000);
+
+    $timeout(function () { $('.waterTime').timepicker(); });
   };
 
   $scope.openDialog = function() {
