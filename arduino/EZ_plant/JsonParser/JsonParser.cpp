@@ -16,12 +16,12 @@ const char * JsonParser::get_watering_mode(char * json, int plant_id)
 {
   JsonObject& root = jsonBuffer.parseObject(json);
 
-  return root["config"][plant_id]["watering_mode"];
+  return root["config"][plant_id]["water_mode"];
 }
 
 long JsonParser::get_low_moisture_value(char * json, int plant_id)
 {
   JsonObject& root = jsonBuffer.parseObject(json);
 
-  return root["config"][plant_id]["low"];
+  return root["config"][plant_id]["low_threshold"];
 }

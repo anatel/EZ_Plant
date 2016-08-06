@@ -24,3 +24,9 @@ class MongoHandler(object):
     def get_single_object(self, collection_name, query):
         document = self.db[collection_name].find_one(query)
         return document
+
+    def add_doc_to_array(self, collection_name, query, array_name, doc):
+        self.db[collection_name].update_one(query, { '$push': { array_name: doc } } )
+
+    def delete_doc_from_array(self, collection_name, query, array_name, del_query):
+        self.db[collection_name].update_one(query, { '$pull': { array_name: del_query } })
