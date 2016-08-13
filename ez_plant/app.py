@@ -7,6 +7,7 @@ from user import User
 from moisture_data import MoistureData
 from plant import Plant
 import sys
+import json
 
 sys.path.append(os.path.dirname(__file__))
 
@@ -22,7 +23,15 @@ def root():
 @app.route('/get_user_data', methods=['GET'])
 def get_user_data():
     if current_user.is_authenticated:
-        return jsonify({'is_logged_in': True, 'first_name': current_user.first_name, 'last_name': current_user.last_name, 'plants': current_user.plants})
+        plants = { 'plants': [] }
+        if current_user.plants:
+            for plant in current_user.plants:
+                water_data_json = vars(plant.water_data)
+                plant_json = vars(plant)
+                plant_json['water_data'] = water_data_json
+                plants['plants'].append(plant_json)
+
+        return jsonify(is_logged_in=True, first_name=current_user.first_name, last_name=current_user.last_name, plants=plants)
 
     return jsonify({'is_logged_in': False})
 
@@ -100,8 +109,8 @@ def plant():
 def get_watering_config():
     user_doc = User.get_from_database(request.args.get('username'))
     user = User(user_doc['username'], user_doc['password'], user_doc['first_name'], user_doc['last_name'], user_doc['plants'])
-    # return jsonify({ 'config': user.plants})
-    return jsonify({ 'config': [ {"plant_id": 0, "water_mode": "moisture", "low_threshold": 400}]})
+    return jsonify({ 'config': user.plants})
+    # return jsonify({ 'config': [ {"plant_id": 0, "water_mode": "moisture", "low_threshold": 400}]})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
