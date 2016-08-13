@@ -2,3 +2,10 @@
 {
   background: url("../assets/images/bg.jpg") 50% 50% /cover no-repeat fixed;
 }
+
+.logo
+{
+  height: 50px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}

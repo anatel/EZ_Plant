@@ -53,7 +53,6 @@
           <li role="presentation" class="active"><a ng-click="changeTabContent('details')" aria-controls="addplant" role="tab" data-toggle="tab">Details</a></li>
           <li role="presentation"><a  ng-click="changeTabContent('stats')" aria-controls="statistics" role="tab" data-toggle="tab">Statistics</a></li>
         </ul>
-
         <div class="tab-content">
           <form role="tabpanel" class="tab-pane active" id="formTab" ng-show="content == 'details'" ng-submit="submitPlant()">
             <div class="innerFormDiv form-group row">
@@ -100,7 +99,7 @@
                 <div class="well col-sm-offset-3">
                   <div class="row" ng-show="plant.water_data.water_mode == 'schedule'">
                     <span class="water-every col-sm-3">Water every</span>
-                    <input id="daysInput" ng-change="calcNextWatering()" type="text" ng-model="plant.water_data.repeat_every" class="form-control col-sm-1 schedule-input"></input>
+                    <input type="number" id="daysInput" ng-change="calcNextWatering()" ng-model="plant.water_data.repeat_every" class="form-control col-sm-1 schedule-input"></input>
                     <span class="days-at col-sm-2">days, at</span>
                     <input id="hourInput" type="text" ng-model="plant.water_data.hour" ng-change="calcNextWatering()" class="waterTime schedule-input form-control col-sm-1" />
                     <!-- <input type="text" dn-timepicker="h:mm a" min-time="00:00" max-time="23:59" step="15" ng-model="plant.water_data.hour"/> -->
@@ -114,7 +113,7 @@
                   <div class="row" ng-show="plant.water_data.water_mode == 'moisture'">
                     <span class="col-sm-8  col-lg-8 text-left">Water when moisture level is below</span>
                     <span class="input-group moisture-input">
-                      <input type="text" ng-model="plant.water_data.low_threshold" class="form-control col-sm-1 col-lg-1"></input>
+                      <input type="number" min="0" max="80" ng-model="plant.water_data.low_threshold" class="form-control col-sm-1 col-lg-1"></input>
                       <span class="input-group-addon">%</span>
                     </span>
                   </div>
