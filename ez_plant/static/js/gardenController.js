@@ -55,10 +55,10 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
   $scope.submitPlant = function() {
     console.log($scope.plant);
     var formData = new FormData();
-    angular.forEach($scope.plant, function (value, key) {
-        formData.append(key, value);
-    });
-    formData.append("file", $("#inputId")[0].files[0]);
+    // angular.forEach($scope.plant, function (value, key) {
+    //     formData.append(key, value);
+    // });
+    formData.append("files", $("#inputId")[0].files);
     $http({
       method  : 'POST',
       url     : '/plant',

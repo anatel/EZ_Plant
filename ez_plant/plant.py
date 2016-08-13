@@ -1,5 +1,6 @@
 from ez_plant.mongo_handler import MongoHandler
 from enum import Enum
+import random
 
 class WaterMode(Enum):
     SCHEDULE = "schedule"
@@ -7,6 +8,9 @@ class WaterMode(Enum):
 
 class Plant(object):
     def __init__(self, plant_id=None, name=None, water_data=None):
+        if not plant_id:
+            plant_id = ''.join(random.choice(chars) for _ in range(12))
+            
         self.id = plant_id
         self.name = name
         self.port_number = None #need to understand how arduino works

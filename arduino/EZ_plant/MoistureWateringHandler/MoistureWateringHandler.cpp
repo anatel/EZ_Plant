@@ -7,5 +7,5 @@ MoistureWateringHandler::MoistureWateringHandler(int i_low_threshold)
 
 bool MoistureWateringHandler::is_it_time_to_water()
 {
-  return current_moisture_value <= low_threshold;
+  return current_moisture_value >= low_threshold;
 }

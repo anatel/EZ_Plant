@@ -1,6 +1,8 @@
 #ifndef Plant_h
 #define Plant_h
 
+#include <SPI.h>
+#include "Arduino.h"
 #include "../WateringHandler/WateringHandler.h"
 #include "../WaterPump/WaterPump.h"
 #include "../MoistureSensor/MoistureSensor.h"
