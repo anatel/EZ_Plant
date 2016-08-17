@@ -89,28 +89,43 @@ def push_moisture_data():
 @app.route('/plant', methods=['GET', 'POST', 'DELETE'])
 def plant():
     if request.method == 'POST':
-        data = request.get_json()
-        if 'plant_id' in data and 'plant_name' in data and 'water_data' in data:
-            current_user.add_plant(data['plant_id'], data['plant_name'], data['water_data'])
-            return jsonify(result="success")
-
-        return jsonify(result="error")
-    elif request.method == 'GET':
-        plant = current_user.get_plant(request.args.get('plant_id'))
-        if plant:
-            return plant
-
-        return jsonify(result="error")
-    else:
-        current_user.delete_plant(int(request.args.get('plant_id')))
-        return jsonify(result="success")
+        if not request.files:
+            print("request files is empty")
+        # if 'file' not in request.files:
+        #     print("no image sent.")
+        #
+        # file = request.files['file']
+        # print(file)
+    #     data = request.get_json()
+    #     if 'plant_name' in data and 'water_data' in data:
+    #         current_user.add_plant(data['plant_name'], data['water_data'])
+    #         return jsonify(result="success")
+    #
+    #     return jsonify(result="error")
+    # elif request.method == 'GET':
+    #     plant = current_user.get_plant(request.args.get('plant_id'))
+    #     if plant:
+    #         return plant
+    #
+    #     return jsonify(result="error")
+    # else:
+    #     current_user.delete_plant(int(request.args.get('plant_id')))
+    #     return jsonify(result="success")
 
 @app.route('/get_config', methods=['GET'])
 def get_watering_config():
     user_doc = User.get_from_database(request.args.get('username'))
     user = User(user_doc['username'], user_doc['password'], user_doc['first_name'], user_doc['last_name'], user_doc['plants'])
-    return jsonify({ 'config': user.plants})
-    # return jsonify({ 'config': [ {"plant_id": 0, "water_mode": "moisture", "low_threshold": 400}]})
+    plants = { 'plants': [] }
+    if user.plants:
+        for plant in user.plants:
+            water_data_json = vars(plant.water_data)
+            plant_json = {}
+            plant_json['water_mode'] = water_data_json['water_mode']
+            plant_json['low_threshold'] = water_data_json['low_threshold']
+            plants['plants'].append(plant_json)
+
+    return jsonify(plants)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
