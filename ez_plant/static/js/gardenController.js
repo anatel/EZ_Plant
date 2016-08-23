@@ -58,12 +58,12 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
     // angular.forEach($scope.plant, function (value, key) {
     //     formData.append(key, value);
     // });
-    formData.append("files", $("#inputId")[0].files);
+    formData.append("file", $("#inputId")[0].files[0]);
     $http({
       method  : 'POST',
       url     : '/plant',
       data    : formData,  // pass in data as strings
-      headers : { 'Content-Type': 'multipart/form-data' }  // set the headers so angular passing info as form data (not request payload)
+      headers : { 'Content-Type': undefined }  // set the headers so angular passing info as form data (not request payload)
    })
    .success(function(data) {
      console.log(data);
