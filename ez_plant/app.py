@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template, request, redirect, url_for
+from flask import Flask, jsonify, render_template, request, redirect, url_for, send_from_directory
 import flask.ext.login as flask_login
 from flask.ext.login import LoginManager, login_user, logout_user, current_user
 from ez_plant.hashing_handler import HashingHandler
@@ -10,8 +10,11 @@ import sys
 import json
 
 sys.path.append(os.path.dirname(__file__))
+PLANT_IMAGES_FOLDER = 'plant_images'
+UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), PLANT_IMAGES_FOLDER)
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = '3\xbb\xd8X\x07\x19\xad[\x1eB\xbb!\x8d\x9eES&\tf\x10\x19P\xac\x18'
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -91,26 +94,23 @@ def plant():
     if request.method == 'POST':
         if not request.files:
             print("request files is empty")
-        if 'file' not in request.files:
-            print("no image sent.")
+        if 'file' in request.files:
+            file = request.files['file']
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
 
-        file = request.files['file']
-        print(file)
-    #     data = request.get_json()
-    #     if 'plant_name' in data and 'water_data' in data:
-    #         current_user.add_plant(data['plant_name'], data['water_data'])
-    #         return jsonify(result="success")
-    #
-    #     return jsonify(result="error")
-    # elif request.method == 'GET':
-    #     plant = current_user.get_plant(request.args.get('plant_id'))
-    #     if plant:
-    #         return plant
-    #
-    #     return jsonify(result="error")
-    # else:
-    #     current_user.delete_plant(int(request.args.get('plant_id')))
-    #     return jsonify(result="success")
+        water_data = { "water_mode": "moisture", "last_watered": None, "low_threshold": 50 }
+        current_user.add_plant('shibi', water_data, '%s/%s' % (PLANT_IMAGES_FOLDER, file.filename))
+
+        return jsonify(result="success")
+    elif request.method == 'GET':
+        plant = current_user.get_plant(request.args.get('plant_id'))
+        if plant:
+            return plant
+
+        return jsonify(result="error")
+    else:
+        current_user.delete_plant(int(request.args.get('plant_id')))
+        return jsonify(result="success")
 
 @app.route('/get_config', methods=['GET'])
 def get_watering_config():

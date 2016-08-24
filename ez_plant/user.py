@@ -27,8 +27,8 @@ class User(UserMixin):
     def get_id(self):
         return self.username
 
-    def add_plant(self, plant_id, plant_name, water_data):
-        plant = Plant(name=plant_name, water_data=water_data)
+    def add_plant(self, plant_name, water_data, image_url):
+        plant = Plant(name=plant_name, water_data=water_data, image_url=image_url)
         self.plants.append(plant)
         plant.save_to_database(self.username)
 
