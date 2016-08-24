@@ -32,6 +32,46 @@
     border-radius: 10px;
 }
 
+.imgContainer:hover .pencil {
+  display: block;
+  color: green;
+}
+
+.thumbnail:hover #editPlantPencil {
+  color: green;
+  transition: all .2s ease-in-out;
+  transform: scale(1.5);
+}
+
+.thumbnail:hover{
+  transition: all .2s ease-in-out;
+  transform: scale(1.1);
+}
+
+#editPlantPencil{
+  margin-right:5px;
+
+}
+
+#deletePlantTrash{
+  margin-left: 5px;
+  transition: all .2s ease-in-out;
+}
+
+#deletePlantTrash:hover{
+  transform: scale(1.5);
+}
+#deletePlantTrash:hover ~#editPlantPencil {
+  color: #3a3939;
+  transform: scale(1.0);
+}
+
+.btnContainer{
+  margin-right: 3px;
+  display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+}
 .row {
   text-align: -webkit-center;
 }
@@ -63,7 +103,7 @@
   padding-right: 10px;
 }
 
-.editPlantBtn{
+.plantBtn{
   cursor: pointer;
   color: #3a3939;
 }
@@ -72,7 +112,7 @@
     background: green;
 }
 
-.editPlantBtn:hover {
+.plantBtn:hover {
   color: green;
   text-decoration: none;
 }
@@ -200,3 +240,24 @@
 {
   border-color: red;
 }
+
+.submit-msg{
+  width: 50%;
+  margin: auto;
+  margin-top: 5px;
+  text-align: center;
+}
+
+.hideClass{
+  display: none;
+}
+/*.fadeTransition{
+  transition: opacity .5s;
+}
+
+.fadeOut {
+		opacity:0;
+    height: 0px;
+    padding: 0px;
+    margin: 0px;
+}*/

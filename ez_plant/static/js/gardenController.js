@@ -11,8 +11,10 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
 
   $scope.openPlantDetails = function(plantIndex){
     $scope.showForm = true;
+    $(".plantDetails").show();
     $scope.plant = plantIndex==undefined? {"water_data": { "water_mode": "schedule", "last_watered": "Never"}} : angular.copy($scope.plants[plantIndex]);
     placeArrow();
+
 
     $('html, body').animate({
         scrollTop: $(".plantDetailsWrapper").offset().top
@@ -52,6 +54,18 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
     $("#inputId").click();
   };
 
+  $scope.deletePlant = function(plantIndex)
+  {
+    var plantId = $scope.plants[plantIndex].plant_id;
+    if ($scope.showForm)
+    {
+      $(".plantDetails").slideUp("slow",function(){
+        $scope.showForm = false;
+      });
+    }
+    console.log(plantId);
+  }
+
   $scope.submitPlant = function() {
     console.log($scope.plant);
     var formData = new FormData();
@@ -65,8 +79,29 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
       data    : formData,  // pass in data as strings
       headers : { 'Content-Type': undefined }  // set the headers so angular passing info as form data (not request payload)
    })
-   .success(function(data) {
+   .then(function onSuccess(data) {
      console.log(data);
+     if (data.data.result == 'success')
+     {
+       $(".plantDetails").slideUp("slow",function(){
+         $scope.showForm = false;
+       });
+
+       $scope.plants.push(data.plant); //fix push if existing plant, by index.
+       if($('#errMsg').length > 0)
+       {
+         $("#errMsg").fadeOut("fast");
+       }
+       $("#successMsg").fadeIn("fast");
+      //  $scope.errMsg = false;
+       $scope.successMsg = "Plant successfully submitted!";
+
+       $timeout(function () { $("#successMsg").fadeOut("fast"); }, 5000);
+     }
+   }, function onFailure(){
+     $("#errMsg").fadeIn("fast");
+     $scope.errMsg = "An error occured while trying to submit plant...";
+     console.log('error');
    });
     // $scope.success = true;
     // $(".plantDetails").slideUp( "slow");

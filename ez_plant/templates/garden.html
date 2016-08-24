@@ -1,8 +1,12 @@
 </head>
   <link href='https://fonts.googleapis.com/css?family=Lobster+Two:700' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+
   <link rel="stylesheet" href="{{ url_for('static', filename='css/garden.css')}}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.timepicker.css')  }}">
   <script src="{{ url_for('static', filename='js/jquery.timepicker.min.js')}}"></script>
+  <!-- <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"> -->
   <!-- <script src="{{ url_for('static', filename='js/plantController.js')}}"></script> -->
 
 <body>
@@ -24,9 +28,9 @@
             <div class="caption">
               <h4 class="plantNameTxt marginFix">[[plant.name]]</h4>
               <p class="plantNameType marginFix">[[plant.type]]</p>
-              <p class="marginFix">
-                <a title="Edit" class="editPlantBtn" onclick="alert('Edited!')" role="button"> <i class="fa fa-pencil fa-lg" aria-hidden="true"></i></a>
-                <!-- <a title="Delete" class="btn" onclick="alert('Deleted!')" role="button"> <i class="fa fa-trash fa-lg" aria-hidden="true"></i></a> -->
+              <p class="marginFix btnContainer">
+                <a id="deletePlantTrash" title="Delete" class="plantBtn"  ng-click="$event.stopPropagation();deletePlant($index)" role="button"> <i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
+                <a id="editPlantPencil" title="Edit" class="plantBtn" role="button"> <i class="fa fa-pencil fa-lg" aria-hidden="true"></i></a>
               </p>
               <p class="lastWateredTxt marginFix">Last watered: [[plant.water_data.last_watered]]</p>
             </div>
@@ -40,7 +44,12 @@
       </div>
     </div>
   </div>
-
+  <div id="errMsg" class="alert alert-danger message-animation submit-msg fadeTransition hideClass" ng-class="{'fadeOut': !errMsg}" role="alert">
+     [[errMsg]]
+  </div>
+  <div id="successMsg" class="alert alert-success message-animation submit-msg fadeTransition hideClass"  ng-class="{'fadeOut': !successMsg}" role="alert">
+      [[successMsg]]<i class="material-icons">local_florist</i>
+  </div>
   <span class="plantDetailsWrapper">
     <div class="plantDetails" ng-if="showForm">
       <div class="arrow" >
