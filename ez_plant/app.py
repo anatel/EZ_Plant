@@ -91,11 +91,11 @@ def plant():
     if request.method == 'POST':
         if not request.files:
             print("request files is empty")
-        # if 'file' not in request.files:
-        #     print("no image sent.")
-        #
-        # file = request.files['file']
-        # print(file)
+        if 'file' not in request.files:
+            print("no image sent.")
+
+        file = request.files['file']
+        print(file)
     #     data = request.get_json()
     #     if 'plant_name' in data and 'water_data' in data:
     #         current_user.add_plant(data['plant_name'], data['water_data'])
