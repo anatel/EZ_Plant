@@ -8,15 +8,16 @@ class WaterMode(Enum):
     MOISTURE = "moisture"
 
 class Plant(object):
-    def __init__(self, plant_id=None, name=None, water_data=None, image_url=None):
+    def __init__(self, moisture_sensor_port, water_pump_port, plant_id=None, name=None, water_data=None, image_url=None):
         if not plant_id:
             plant_id = ''.join(random.choice(string.ascii_uppercase) for _ in range(12))
 
         self.id = plant_id
         self.name = name
-        self.port_number = None #need to understand how arduino works
         self.water_data = self.WateringData(water_data)
         self.image_url = image_url
+        self.moisture_sensor_port = moisture_sensor_port
+        self.water_pump_port = water_pump_port
 
     class WateringData(object): #add try catch
         def __init__(self, water_data):

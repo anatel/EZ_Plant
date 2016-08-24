@@ -78,29 +78,20 @@ def register():
 
     return jsonify(result="success")
 
-@app.route('/push_moisture_data', methods=['POST'])
-def push_moisture_data():
-    data = request.get_json()
-    if 'plant_id' in data and 'moisture_value' in data:
-        moisture_data = MoistureData(data['plant_id'], data['moisture_value'])
-        moisture_data.save_to_database()
-        return jsonify(result="success")
-
-    return jsonify(result="error")
-
 @flask_login.login_required
 @app.route('/plant', methods=['GET', 'POST', 'DELETE'])
 def plant():
     if request.method == 'POST':
-        if not request.files:
-            print("request files is empty")
-        if 'file' in request.files:
-            file = request.files['file']
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
+        image_file = None
+        if request.files:
+            if 'file' in request.files:
+                image_file = request.files['file']
+                image_file.save(os.path.join(app.config['UPLOAD_FOLDER'], image_file.filename))
 
+        image_url = None if image_file is None else ('%s/%s' % (PLANT_IMAGES_FOLDER, image_file.filename))
         water_data = { "water_mode": "moisture", "last_watered": None, "low_threshold": 50 }
-        current_user.add_plant('shibi', water_data, '%s/%s' % (PLANT_IMAGES_FOLDER, file.filename))
 
+        current_user.add_plant('A0', 3, request.form['name'], water_data, image_url)
         return jsonify(result="success")
     elif request.method == 'GET':
         plant = current_user.get_plant(request.args.get('plant_id'))
@@ -109,8 +100,15 @@ def plant():
 
         return jsonify(result="error")
     else:
-        current_user.delete_plant(int(request.args.get('plant_id')))
+        current_user.delete_plant(request.args.get('plant_id'))
         return jsonify(result="success")
+
+@flask_login.login_required
+@app.route('/get_free_ports', methods=['GET'])
+def get_free_ports():
+    free_moisture_ports = current_user.get_free_ports('moisture')
+    free_water_pump_ports = current_user.get_free_ports('water_pump')
+    return jsonify(free_moisture_ports=free_moisture_ports, free_water_pump_ports=free_water_pump_ports)
 
 @app.route('/get_config', methods=['GET'])
 def get_watering_config():
@@ -126,6 +124,16 @@ def get_watering_config():
             plants['plants'].append(plant_json)
 
     return jsonify(plants)
+
+@app.route('/push_moisture_data', methods=['POST'])
+def push_moisture_data():
+    data = request.get_json()
+    if 'plant_id' in data and 'moisture_value' in data:
+        moisture_data = MoistureData(data['plant_id'], data['moisture_value'])
+        moisture_data.save_to_database()
+        return jsonify(result="success")
+
+    return jsonify(result="error")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
