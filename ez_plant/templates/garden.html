@@ -27,7 +27,7 @@
             <img ng-if="[[plant.img_url]] ==''" ng-src="static/assets/images/default_plant.png" alt="...">
             <div class="caption">
               <h4 class="plantNameTxt marginFix">[[plant.name]]</h4>
-              <p class="plantNameType marginFix">[[plant.type]]</p>
+              <p class="plantName marginFix">[[plant.plant_type]]</p>
               <p class="marginFix btnContainer">
                 <a id="deletePlantTrash" title="Delete" class="plantBtn"  ng-click="$event.stopPropagation();deletePlant()" role="button"> <i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
                 <a id="editPlantPencil" title="Edit" class="plantBtn" role="button"> <i class="fa fa-pencil fa-lg" aria-hidden="true"></i></a>
@@ -84,9 +84,9 @@
                   </div>
 
                   <div class="form-group row">
-                    <label for="type" class="col-sm-3 form-control-label">Type</label>
+                    <label for="plant_type" class="col-sm-3 form-control-label">Type</label>
                     <div class="col-sm-5">
-                      <input name="type" type="text" class="form-control" id="type" ng-model="plant.type" placeholder="Type" required>
+                      <input name="plant_type" type="text" class="form-control" id="plant_type" ng-model="plant.plant_type" placeholder="Type" required>
                     </div>
                   </div>
 

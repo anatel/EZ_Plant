@@ -30,3 +30,7 @@ class MongoHandler(object):
 
     def delete_doc_from_array(self, collection_name, query, array_name, del_query):
         self.db[collection_name].update_one(query, { '$pull': { array_name: del_query } })
+
+    def update_array_doc(self, collection_name, query, array_name, doc):
+        array_with_dollar = '%s.$' % (array_name)
+        self.db[collection_name].update_one(query, { '$set': { array_with_dollar: doc } } )

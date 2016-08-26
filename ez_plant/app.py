@@ -1,13 +1,13 @@
-from flask import Flask, jsonify, render_template, request, redirect, url_for, send_from_directory
+import sys
+import json
+import os.path
+from flask import Flask, jsonify, render_template, request
 import flask.ext.login as flask_login
 from flask.ext.login import LoginManager, login_user, logout_user, current_user
 from ez_plant.hashing_handler import HashingHandler
-import os.path
-from user import User
-from moisture_data import MoistureData
-from plant import Plant
-import sys
-import json
+from ez_plant.user import User
+from ez_plant.moisture_data import MoistureData
+from ez_plant.plant_controller import PlantController
 
 sys.path.append(os.path.dirname(__file__))
 PLANT_IMAGES_FOLDER = 'plant_images'
@@ -26,7 +26,7 @@ def root():
 @app.route('/get_user_data', methods=['GET'])
 def get_user_data():
     if current_user.is_authenticated:
-        plants = { 'plants': [] }
+        plants = {'plants': []}
         if current_user.plants:
             for plant in current_user.plants:
                 water_data_json = vars(plant.water_data)
@@ -34,7 +34,8 @@ def get_user_data():
                 plant_json['water_data'] = water_data_json
                 plants['plants'].append(plant_json)
 
-        return jsonify(is_logged_in=True, first_name=current_user.first_name, last_name=current_user.last_name, plants=plants)
+        return jsonify(is_logged_in=True, first_name=current_user.first_name,
+                       last_name=current_user.last_name, plants=plants)
 
     return jsonify({'is_logged_in': False})
 
@@ -81,6 +82,7 @@ def register():
 @flask_login.login_required
 @app.route('/plant', methods=['GET', 'POST', 'DELETE'])
 def plant():
+    plant_controller = PlantController(current_user)
     if request.method == 'POST':
         image_file = None
         if request.files:
@@ -89,10 +91,22 @@ def plant():
                 image_file.save(os.path.join(app.config['UPLOAD_FOLDER'], image_file.filename))
 
         image_url = None if image_file is None else ('%s/%s' % (PLANT_IMAGES_FOLDER, image_file.filename))
-        # water_data = { "water_mode": "moisture", "last_watered": None, "low_threshold": 50 }
-        print(request.form['water_data'])
-        # current_user.add_plant('A0', 3, request.form['name'], water_data, image_url)
-        return jsonify(result="success")
+        if 'plant_id' in request.form:
+            new_plant = plant_controller.update_plant(request.form['plant_id'],
+                                                      request.form['moisture_sensor_port'],
+                                                      request.form['water_pump_port'],
+                                                      request.form['plant_type'],
+                                                      request.form['name'],
+                                                      json.loads(request.form['water_data']), image_url)
+        else:
+            new_plant = plant_controller.create_plant(request.form['moisture_sensor_port'],
+                                                      request.form['water_pump_port'],
+                                                      request.form['plant_type'],
+                                                      request.form['name'],
+                                                      json.loads(request.form['water_data']),
+                                                      image_url)
+
+        return jsonify(result="success", plant=new_plant)
     elif request.method == 'GET':
         plant = current_user.get_plant(request.args.get('plant_id'))
         if plant:
@@ -114,7 +128,7 @@ def get_free_ports():
 def get_watering_config():
     user_doc = User.get_from_database(request.args.get('username'))
     user = User(user_doc['username'], user_doc['password'], user_doc['first_name'], user_doc['last_name'], user_doc['plants'])
-    plants = { 'plants': [] }
+    plants = {'plants': []}
     if user.plants:
         for plant in user.plants:
             water_data_json = vars(plant.water_data)

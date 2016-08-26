@@ -2,8 +2,8 @@ from ez_plant.mongo_handler import MongoHandler
 from ez_plant.plant import Plant
 from flask.ext.login import UserMixin
 
-AVAILABLE_MOISTURE_PORTS = [ 'A0', 'A1', 'A2', 'A3', 'A4', 'A5' ]
-AVAILABLE_WATER_PUMP_PORTS = [ 2, 3, 4, 5, 6, 7 ]
+AVAILABLE_MOISTURE_PORTS = ['A0', 'A1', 'A2', 'A3', 'A4', 'A5']
+AVAILABLE_WATER_PUMP_PORTS = [2, 3, 4, 5, 6, 7]
 
 class User(UserMixin):
     def __init__(self, email, password, first_name, last_name, plants=None):
@@ -13,7 +13,9 @@ class User(UserMixin):
         self.plants = []
         if plants:
             for plant in plants:
-                self.plants.append(Plant(plant['moisture_sensor_port'], plant['water_pump_port'], plant['id'], plant['name'], plant['water_data']))
+                self.plants.append(Plant(plant['moisture_sensor_port'], plant['water_pump_port'],
+                                         plant['plant_type'], plant['plant_id'],
+                                         plant['name'], plant['water_data']))
         self.password = password
 
     def save_to_database(self):
@@ -23,28 +25,37 @@ class User(UserMixin):
     @classmethod
     def get_from_database(self, username):
         mongo_worker = MongoHandler()
-        user_doc = mongo_worker.get_single_object('users', { "username": username })
+        user_doc = mongo_worker.get_single_object('users', {"username": username})
         return user_doc
 
     # override
     def get_id(self):
         return self.username
 
-    def add_plant(self, m_port, w_port, plant_name, water_data, image_url):
-        plant = Plant(m_port, w_port, name=plant_name, water_data=water_data, image_url=image_url)
+    def add_plant(self, m_port, w_port, plant_type, plant_name, water_data, image_url):
+        plant = Plant(m_port, w_port, plant_type, name=plant_name, water_data=water_data, image_url=image_url)
         self.plants.append(plant)
         plant.save_to_database(self.username)
 
+        return plant
+
+    def update_plant(self, plant_id, m_port, w_port, plant_type, plant_name, water_data, image_url):
+        plant_to_update = self.get_plant(plant_id)
+        plant_to_update.update(self.username, m_port, w_port, plant_type,
+                               plant_name, water_data, image_url)
+
+        return plant_to_update
+
     def get_plant(self, plant_id):
         for plant in self.plants:
-            if plant.id == plant_id:
+            if plant.plant_id == plant_id:
                 return plant
 
         return None
 
     def delete_plant(self, plant_id):
         for plant in self.plants:
-            if plant.id == plant_id:
+            if plant.plant_id == plant_id:
                 plant_to_delete = plant
 
         if not plant_to_delete:
