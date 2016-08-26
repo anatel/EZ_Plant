@@ -89,9 +89,9 @@ def plant():
                 image_file.save(os.path.join(app.config['UPLOAD_FOLDER'], image_file.filename))
 
         image_url = None if image_file is None else ('%s/%s' % (PLANT_IMAGES_FOLDER, image_file.filename))
-        water_data = { "water_mode": "moisture", "last_watered": None, "low_threshold": 50 }
-
-        current_user.add_plant('A0', 3, request.form['name'], water_data, image_url)
+        # water_data = { "water_mode": "moisture", "last_watered": None, "low_threshold": 50 }
+        print(request.form['water_data'])
+        # current_user.add_plant('A0', 3, request.form['name'], water_data, image_url)
         return jsonify(result="success")
     elif request.method == 'GET':
         plant = current_user.get_plant(request.args.get('plant_id'))
