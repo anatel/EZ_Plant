@@ -19,15 +19,19 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
           $scope.showPlantDetails(plantIndex);
         }
         else {
-          //error
+          $scope.errMsg = 'There was an error loading plant\'s details...';
+          $scope.handleAlerts('fail');
         }
     }, function myError(response) {
+        $scope.errMsg = 'There was an error loading plant\'s details...';
+        $scope.handleAlerts('fail');
         console.log('error');
     });
   };
 
   $scope.showPlantDetails = function(plantIndex){
     $scope.showForm = true;
+    $scope.changeTabContent('details');
     $(".plantDetails").show();
     $scope.plantIndex = plantIndex;
     $scope.plant = plantIndex==undefined? {"water_data": { "water_mode": "schedule", "last_watered": "Never"}} : angular.copy($scope.plants[plantIndex]);
@@ -35,7 +39,7 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
 
     $('html, body').animate({
         scrollTop: $(".plantDetailsWrapper").offset().top
-    }, 2000);
+    }, 1000);
     $timeout(function () { $('.waterTime').timepicker({ 'timeFormat': 'H:i' }); $scope.plantForm.$setPristine();});
 
   }
@@ -102,30 +106,36 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
      console.log(data);
      if (data.data.result == 'success')
      {
-       $(".plantDetails").slideUp("slow",function(){
-         $scope.showForm = false;
-       });
-
        if ($scope.plantIndex != undefined){
          $scope.plants[$scope.plantIndex] = data.plant;
        } else {
-         $scope.plants.push();
+         $scope.plants.push(data.plant);
        }
-
-       if($('#errMsg').length > 0)
-       {
-         $("#errMsg").fadeOut("fast");
-       }
-       $("#successMsg").fadeIn("fast");
        $scope.successMsg = "Plant successfully submitted!";
-       $timeout(function () { $("#successMsg").fadeOut("fast"); }, 5000);
+       $scope.handleAlerts('success');
      }
    }, function onFailure(){
      $scope.errMsg = "An error occured while trying to submit plant...";
-     $("#errMsg").fadeIn("fast");
+     $scope.handleAlerts('fail');
    });
   };
 
+  $scope.handleAlerts = function(alertType){
+    if (alertType == 'success'){
+      $(".plantDetails").slideUp("slow",function(){
+        $scope.showForm = false;
+      });
+      if($('#errMsg').length > 0)
+      {
+        $("#errMsg").fadeOut("fast");
+      }
+      $("#successMsg").fadeIn("fast");
+      $timeout(function () { $("#successMsg").fadeOut("fast"); }, 5000);
+    }
+    else if (alertType == 'fail'){
+      $("#errMsg").fadeIn("fast");
+    }
+  }
   $scope.readURL = function(input) {
     if (input.files && input.files[0]) {
       var reader = new FileReader();
