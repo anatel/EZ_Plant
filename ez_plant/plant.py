@@ -62,8 +62,13 @@ class Plant(object):
         mongo_worker.update_array_doc('users', { "username": username, "plants.plant_id": self.plant_id } , 'plants', self.to_doc())
 
     def get_image_url(self, image_dir, image_type):
+        if hasattr(self, 'image_url'):
+            curr_version = 0 if self.image_url is None else int(self.image_url.rsplit('-', 1)[1].split('.')[0]) + 1
+        else:
+            curr_version = 0
+
         if image_dir:
-            return '%s/%s.%s' % (image_dir, self.plant_id, image_type)
+            return '%s/%s-%d.%s' % (image_dir, self.plant_id, curr_version, image_type)
 
         return None
 
