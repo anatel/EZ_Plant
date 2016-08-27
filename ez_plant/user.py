@@ -32,17 +32,18 @@ class User(UserMixin):
     def get_id(self):
         return self.username
 
-    def add_plant(self, m_port, w_port, plant_type, plant_name, water_data, image_url):
-        plant = Plant(m_port, w_port, plant_type, name=plant_name, water_data=water_data, image_url=image_url)
+    def add_plant(self, m_port, w_port, plant_type, plant_name, water_data, image_dir, image_type):
+        plant = Plant(m_port, w_port, plant_type, name=plant_name, water_data=water_data,
+                      image_dir=image_dir, image_type=image_type)
         self.plants.append(plant)
         plant.save_to_database(self.username)
 
         return plant
 
-    def update_plant(self, plant_id, m_port, w_port, plant_type, plant_name, water_data, image_url):
+    def update_plant(self, plant_id, m_port, w_port, plant_type, plant_name, water_data, image_dir, image_type):
         plant_to_update = self.get_plant(plant_id)
         plant_to_update.update(self.username, m_port, w_port, plant_type,
-                               plant_name, water_data, image_url)
+                               plant_name, water_data, image_dir=image_dir, image_type=image_type)
 
         return plant_to_update
 
@@ -54,16 +55,12 @@ class User(UserMixin):
         return None
 
     def delete_plant(self, plant_id):
-        for plant in self.plants:
-            if plant.plant_id == plant_id:
-                plant_to_delete = plant
-
+        plant_to_delete = self.get_plant(plant_id)
         if not plant_to_delete:
             raise ValueError
 
         self.plants.remove(plant_to_delete)
         plant_to_delete.remove_from_database(self.username)
-        return True
 
     def get_free_ports(self, port_type):
         used_ports = []

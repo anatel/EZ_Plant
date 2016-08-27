@@ -7,6 +7,6 @@ dist/*
 *.egg-info/*
 *.swp
 .DS_Store
-ez_plant/plant_images/*.jpeg
-ez_plant/plant_images/*.png
-ez_plant/plant_images/*.jpg
+ez_plant/static/plant_images/*.jpeg
+ez_plant/static/plant_images/*.png
+ez_plant/static/plant_images/*.jpg

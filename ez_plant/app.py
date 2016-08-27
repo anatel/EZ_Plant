@@ -1,5 +1,6 @@
 import sys
 import json
+import glob
 import os.path
 from flask import Flask, jsonify, render_template, request
 import flask.ext.login as flask_login
@@ -10,7 +11,7 @@ from ez_plant.moisture_data import MoistureData
 from ez_plant.plant_controller import PlantController
 
 sys.path.append(os.path.dirname(__file__))
-PLANT_IMAGES_FOLDER = 'plant_images'
+PLANT_IMAGES_FOLDER = 'static/plant_images'
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), PLANT_IMAGES_FOLDER)
 
 app = Flask(__name__)
@@ -88,23 +89,33 @@ def plant():
         if request.files:
             if 'file' in request.files:
                 image_file = request.files['file']
-                image_file.save(os.path.join(app.config['UPLOAD_FOLDER'], image_file.filename))
 
-        image_url = None if image_file is None else ('%s/%s' % (PLANT_IMAGES_FOLDER, image_file.filename))
+        image_dir = None if image_file is None else PLANT_IMAGES_FOLDER
+        image_type = None if image_file is None else image_file.filename.rsplit('.', 1)[1]
+
         if 'plant_id' in request.form:
             new_plant = plant_controller.update_plant(request.form['plant_id'],
                                                       request.form['moisture_sensor_port'],
                                                       request.form['water_pump_port'],
                                                       request.form['plant_type'],
                                                       request.form['name'],
-                                                      json.loads(request.form['water_data']), image_url)
+                                                      json.loads(request.form['water_data']),
+                                                      image_dir, image_type)
         else:
             new_plant = plant_controller.create_plant(request.form['moisture_sensor_port'],
                                                       request.form['water_pump_port'],
                                                       request.form['plant_type'],
                                                       request.form['name'],
                                                       json.loads(request.form['water_data']),
-                                                      image_url)
+                                                      image_dir, image_type)
+
+        if image_dir:
+            for filename in glob.iglob('%s/*' % (app.config['UPLOAD_FOLDER'])):
+                if new_plant['plant_id'] in filename:
+                    os.remove(filename)
+
+            image_filename = new_plant['image_url'].rsplit('/', 1)[1]
+            image_file.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
 
         return jsonify(result="success", plant=new_plant)
     elif request.method == 'GET':
@@ -114,8 +125,11 @@ def plant():
 
         return jsonify(result="error")
     else:
-        current_user.delete_plant(request.args.get('plant_id'))
-        return jsonify(result="success")
+        if request.args.get('plant_id'):
+            plant_controller.delete_plant(request.args.get('plant_id'))
+            return jsonify(result="success")
+
+        return jsonify(result="error")
 
 @flask_login.login_required
 @app.route('/get_free_ports', methods=['GET'])

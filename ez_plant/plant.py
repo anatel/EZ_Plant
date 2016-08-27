@@ -8,7 +8,7 @@ class WaterMode(Enum):
     MOISTURE = "moisture"
 
 class Plant(object):
-    def __init__(self, moisture_sensor_port, water_pump_port, plant_type, plant_id=None, name=None, water_data=None, image_url=None):
+    def __init__(self, moisture_sensor_port, water_pump_port, plant_type, plant_id=None, name=None, water_data=None, image_dir=None, image_type=None):
         if not plant_id:
             plant_id = ''.join(random.choice(string.ascii_uppercase) for _ in range(12))
 
@@ -16,7 +16,7 @@ class Plant(object):
         self.plant_type = plant_type
         self.name = name
         self.water_data = self.WateringData(water_data)
-        self.image_url = image_url
+        self.image_url = self.get_image_url(image_dir, image_type)
         self.moisture_sensor_port = moisture_sensor_port
         self.water_pump_port = water_pump_port
 
@@ -45,16 +45,22 @@ class Plant(object):
         mongo_worker = MongoHandler()
         mongo_worker.delete_doc_from_array('users', { "username": username}, 'plants', { "plant_id": self.plant_id } )
 
-    def update(self, username, m_port, w_port, plant_type, plant_name, water_data, image_url):
+    def update(self, username, m_port, w_port, plant_type, plant_name, water_data, image_dir, image_type):
         self.moisture_sensor_port = m_port
         self.water_pump_port = w_port
         self.name = plant_name
         self.water_data = water_data
-        self.image_url = image_url
+        self.image_url = self.get_image_url(image_dir, image_type)
         self.plant_type = plant_type
 
         mongo_worker = MongoHandler()
         mongo_worker.update_array_doc('users', { "username": username, "plants.plant_id": self.plant_id } , 'plants', self.to_doc())
+
+    def get_image_url(self, image_dir, image_type):
+        if image_dir:
+            return '%s/%s.%s' % (image_dir, self.plant_id, image_type)
+
+        return None
 
     def to_doc(self):
         plant_doc = vars(self)
