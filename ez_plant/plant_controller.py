@@ -15,6 +15,17 @@ class PlantController(object):
     def delete_plant(self, plant_id):
         self.user.delete_plant(plant_id)
 
+    def get_plants(self):
+        plants = {'plants': []}
+        if self.user.plants:
+            for plant in self.user.plants:
+                water_data_json = vars(plant.water_data)
+                plant_json = vars(plant)
+                plant_json['water_data'] = water_data_json
+                plants['plants'].append(plant_json)
+
+        return plants
+
     def jsonify_plant(self, plant):
         plant_json = vars(plant)
 

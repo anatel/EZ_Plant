@@ -27,16 +27,8 @@ def root():
 @app.route('/get_user_data', methods=['GET'])
 def get_user_data():
     if current_user.is_authenticated:
-        plants = {'plants': []}
-        if current_user.plants:
-            for plant in current_user.plants:
-                water_data_json = vars(plant.water_data)
-                plant_json = vars(plant)
-                plant_json['water_data'] = water_data_json
-                plants['plants'].append(plant_json)
-
         return jsonify(is_logged_in=True, first_name=current_user.first_name,
-                       last_name=current_user.last_name, plants=plants)
+                       last_name=current_user.last_name)
 
     return jsonify({'is_logged_in': False})
 
@@ -81,7 +73,7 @@ def register():
     return jsonify(result="success")
 
 @flask_login.login_required
-@app.route('/plant', methods=['GET', 'POST', 'DELETE'])
+@app.route('/plants', methods=['GET', 'POST', 'DELETE'])
 def plant():
     plant_controller = PlantController(current_user)
     if request.method == 'POST':
@@ -119,11 +111,8 @@ def plant():
 
         return jsonify(result="success", plant=new_plant)
     elif request.method == 'GET':
-        plant = current_user.get_plant(request.args.get('plant_id'))
-        if plant:
-            return plant
-
-        return jsonify(result="error")
+        return jsonify(plant_controller.get_plants())
+        
     else:
         if request.args.get('plant_id'):
             plant_controller.delete_plant(request.args.get('plant_id'))
