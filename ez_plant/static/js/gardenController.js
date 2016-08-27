@@ -3,8 +3,18 @@ var ez_plant = angular.module('ez_plant');
 
 ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', '$timeout', '$http', function($scope, AuthService, $rootScope, $timeout, $http) {
   $scope.userDetails = AuthService.getUser();
-  var plantsString = [{"plant_id":"a","name":"Plant1","plant_type":"Rose","moisture_sensor_port":"A0","water_pump_port":2,"image_url":"static/assets/images/red-rose-plant.png","water_data":{"water_mode":"schedule","repeat_every":5,"hour":"14:00","last_watered":"23/07/16 16:39","next_watering":"23/07/16 16:39"}},{"plant_id":"b","name":"Plant2","plant_type":"Cactus","moisture_sensor_port":"A1","water_pump_port":3,"image_url":"static/assets/images/img-thing.jpg","water_data":{"water_mode":"moisture","low_threshold":50,"last_watered":"23/07/17 17:00"}},{"plant_id":"c","name":"Lilu","plant_type":"Lilac","moisture_sensor_port":"A2","water_pump_port":4,"image_url":"static/assets/images/lilac.jpg","water_data":{"water_mode":"moisture","low_threshold":20,"last_watered":"23/07/18 17:00"}}];
-  $scope.plants = plantsString;
+  $http({
+      method : "GET",
+      url : "/plants"
+  }).then(function onSuccess(response) {
+      $scope.plants = response.data.plants;
+  }, function myError(response) {
+      $scope.errMsg = 'There was an error loading plants';
+      $("#errMsg").fadeIn("fast");
+      console.log('error');
+  });
+  //var plantsString = [{"plant_id":"a","name":"Plant1","plant_type":"Rose","moisture_sensor_port":"A0","water_pump_port":2,"image_url":"static/assets/images/red-rose-plant.png","water_data":{"water_mode":"schedule","repeat_every":5,"hour":"14:00","last_watered":"23/07/16 16:39","next_watering":"23/07/16 16:39"}},{"plant_id":"b","name":"Plant2","plant_type":"Cactus","moisture_sensor_port":"A1","water_pump_port":3,"image_url":"static/assets/images/img-thing.jpg","water_data":{"water_mode":"moisture","low_threshold":50,"last_watered":"23/07/17 17:00"}},{"plant_id":"c","name":"Lilu","plant_type":"Lilac","moisture_sensor_port":"A2","water_pump_port":4,"image_url":"static/assets/images/lilac.jpg","water_data":{"water_mode":"moisture","low_threshold":20,"last_watered":"23/07/18 17:00"}}];
+  //$scope.plants = plantsString;
   $scope.showForm = false;
   $scope.content = 'details';
 
@@ -95,7 +105,7 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
       }
       $http({
           method : "DELETE",
-          url : "/plant?plant_id="+plantToDel.plant_id
+          url : "/plants?plant_id="+plantToDel.plant_id
       }).then(function onSuccess(response) {
           $scope.plants.splice(plantIndex, 1);
           $scope.successMsg = "The plant: " + plantToDel.name + " was successfully deleted.";
@@ -122,7 +132,7 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
     formData.append("file", $("#inputId")[0].files[0]);
     $http({
       method  : 'POST',
-      url     : '/plant',
+      url     : '/plants',
       data    : formData,  // pass in data as strings
       headers : { 'Content-Type': undefined }  // set the headers so angular passing info as form data (not request payload)
    })

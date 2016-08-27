@@ -18,7 +18,7 @@ angular.module('ez_plant').factory('AuthService',
   {
     return user;
   }
-  
+
   function isLoggedIn() {
     console.log('user: ' + user);
     var deferred = $q.defer();
@@ -36,7 +36,6 @@ angular.module('ez_plant').factory('AuthService',
           deferred.resolve();
         }
       })
-    // handle error
       .error(function (data) {
         user = false;
         deferred.reject();
