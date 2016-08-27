@@ -15,7 +15,13 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
     }).then(function onSuccess(response) {
         if (response.data){
           $scope.sensorPorts = response.data.free_moisture_ports;
+          if ($scope.plant.moisture_sensor_port != undefined){
+            $scope.sensorPorts.unshift($scope.plant.moisture_sensor_port);
+          }
           $scope.pumpPorts = response.data.free_water_pump_ports;
+          if ($scope.plant.water_pump_port != undefined){
+            $scope.pumpPorts.unshift($scope.plant.water_pump_port);
+          }
           $scope.showPlantDetails(plantIndex);
         }
         else {
