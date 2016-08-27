@@ -97,6 +97,7 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
           method : "DELETE",
           url : "/plant?plant_id="+plantToDel.plant_id
       }).then(function onSuccess(response) {
+          $scope.plants.splice(plantIndex, 1);
           $scope.successMsg = "The plant: " + plantToDel.name + " was successfully deleted.";
           $scope.handleAlerts('success');
       }, function myError(response) {
