@@ -31,7 +31,8 @@
                 <a id="deletePlantTrash" title="Delete" class="plantBtn"  ng-click="$event.stopPropagation();deletePlant($index)" role="button"> <i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
                 <a id="editPlantPencil" title="Edit" class="plantBtn" role="button"> <i class="fa fa-pencil fa-lg" aria-hidden="true"></i></a>
               </p>
-              <p class="lastWateredTxt marginFix">Last watered: [[plant.water_data.last_watered]]</p>
+              <p ng-show="plant.water_data.last_watered != null" class="lastWateredTxt marginFix">Last watered: [[plant.water_data.last_watered]]</p>
+              <p ng-show="plant.water_data.last_watered == null" class="lastWateredTxt marginFix">Last watered: Never</p>
             </div>
           </div>
         </div>

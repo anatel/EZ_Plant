@@ -14,8 +14,6 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
       $("#errMsg").fadeIn("fast");
       console.log('error');
   });
-  //var plantsString = [{"plant_id":"a","name":"Plant1","plant_type":"Rose","moisture_sensor_port":"A0","water_pump_port":2,"image_url":"static/assets/images/red-rose-plant.png","water_data":{"water_mode":"schedule","repeat_every":5,"hour":"14:00","last_watered":"23/07/16 16:39","next_watering":"23/07/16 16:39"}},{"plant_id":"b","name":"Plant2","plant_type":"Cactus","moisture_sensor_port":"A1","water_pump_port":3,"image_url":"static/assets/images/img-thing.jpg","water_data":{"water_mode":"moisture","low_threshold":50,"last_watered":"23/07/17 17:00"}},{"plant_id":"c","name":"Lilu","plant_type":"Lilac","moisture_sensor_port":"A2","water_pump_port":4,"image_url":"static/assets/images/lilac.jpg","water_data":{"water_mode":"moisture","low_threshold":20,"last_watered":"23/07/18 17:00"}}];
-  //$scope.plants = plantsString;
   $scope.showForm = false;
   $scope.content = 'details';
 
@@ -25,6 +23,7 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
     if (plantIndex!=undefined && !$scope.plant.water_data.next_watering){
       $scope.calcNextWatering();
     }
+
     $http({
         method : "GET",
         url : "/get_free_ports"
@@ -56,6 +55,7 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
     $scope.changeTabContent('details');
     $(".plantDetails").show();
     placeArrow();
+    $("#submitPlantBtn").prop('disabled', true);
 
     $('html, body').animate({
         scrollTop: $(".plantDetailsWrapper").offset().top
