@@ -8,7 +8,9 @@ class WaterMode(Enum):
     MOISTURE = "moisture"
 
 class Plant(object):
-    def __init__(self, moisture_sensor_port, water_pump_port, plant_type, plant_id=None, name=None, water_data=None, image_dir=None, image_type=None):
+    def __init__(self, moisture_sensor_port, water_pump_port, plant_type,
+                 plant_id=None, name=None, water_data=None, image_dir=None,
+                 image_type=None, image_url=None):
         if not plant_id:
             plant_id = ''.join(random.choice(string.ascii_uppercase) for _ in range(12))
 
@@ -16,7 +18,10 @@ class Plant(object):
         self.plant_type = plant_type
         self.name = name
         self.water_data = self.WateringData(water_data)
-        self.image_url = self.get_image_url(image_dir, image_type)
+        if image_url:
+            self.image_url = image_url
+        else:
+            self.image_url = self.get_image_url(image_dir, image_type)
         self.moisture_sensor_port = moisture_sensor_port
         self.water_pump_port = water_pump_port
 

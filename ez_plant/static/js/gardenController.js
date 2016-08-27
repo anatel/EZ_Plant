@@ -7,6 +7,7 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
       method : "GET",
       url : "/plants"
   }).then(function onSuccess(response) {
+    console.log(response);
       $scope.plants = response.data.plants;
   }, function myError(response) {
       $scope.errMsg = 'There was an error loading plants';
