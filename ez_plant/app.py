@@ -69,6 +69,7 @@ def register():
     encrypted_password = hashing_handler.encrypt(data['password'])
     user = User(data['username'], encrypted_password, data['firstName'], data['lastName'])
     user.save_to_database()
+    login_user(user)
 
     return jsonify(result="success")
 
