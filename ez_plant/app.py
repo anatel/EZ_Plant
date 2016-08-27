@@ -30,7 +30,7 @@ def get_user_data():
         return jsonify(is_logged_in=True, first_name=current_user.first_name,
                        last_name=current_user.last_name)
 
-    return jsonify({'is_logged_in': False})
+    return jsonify(is_logged_in=False)
 
 @app.route('/templates/<page_name>')
 def angularPage(page_name):
@@ -52,9 +52,9 @@ def login():
     if user_doc and hashing_handler.verify(data['password'], user_doc['password']):
         user = User(user_doc['username'], user_doc['password'], user_doc['first_name'], user_doc['last_name'], user_doc['plants'])
         login_user(user)
-        return jsonify({'is_logged_in': True, 'first_name': current_user.first_name, 'last_name': current_user.last_name})
+        return jsonify(is_logged_in=True, first_name=current_user.first_name, last_name=current_user.last_name)
 
-    return jsonify({'is_logged_in': False})
+    return jsonify(is_logged_in=False)
 
 @flask_login.login_required
 @app.route('/logout')
@@ -71,7 +71,7 @@ def register():
     user.save_to_database()
     login_user(user)
 
-    return jsonify(result="success")
+    return jsonify(is_logged_in=True, first_name=current_user.first_name, last_name=current_user.last_name)
 
 @flask_login.login_required
 @app.route('/plants', methods=['GET', 'POST', 'DELETE'])
