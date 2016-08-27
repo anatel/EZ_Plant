@@ -45,7 +45,7 @@ ez_plant.controller('mainController', ['$scope', 'AuthService', '$location',
 ez_plant.run(function ($rootScope, $location, $route, AuthService) {
   $rootScope.$on('$routeChangeStart', function (event, next, current) {
     AuthService.isLoggedIn().then (function(){
-      if (next && next.$$route.originalPath != '/register' && !AuthService.checkUser()) {
+      if (next && next.$$route.originalPath != '/register' && next.$$route.originalPath != '/about' && !AuthService.checkUser()) {
         $location.path('/login');
       }
     });

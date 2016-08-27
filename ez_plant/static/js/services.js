@@ -102,6 +102,7 @@ angular.module('ez_plant').factory('AuthService',
         .success(function (data, status) {
           if(status === 200 && data.result){
             user = data;
+            console.log(data);
             deferred.resolve(data);
           } else {
             deferred.reject(data);
@@ -109,6 +110,8 @@ angular.module('ez_plant').factory('AuthService',
         })
         // handle error
         .error(function (data) {
+          console.log(data);
+          console.log('error');
           deferred.reject(data);
         });
       // return promise object

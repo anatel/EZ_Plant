@@ -71,7 +71,7 @@ def register():
     user.save_to_database()
     login_user(user)
 
-    return jsonify(is_logged_in=True, first_name=current_user.first_name, last_name=current_user.last_name)
+    return jsonify(result="success", is_logged_in=True, first_name=current_user.first_name, last_name=current_user.last_name)
 
 @flask_login.login_required
 @app.route('/plants', methods=['GET', 'POST', 'DELETE'])
