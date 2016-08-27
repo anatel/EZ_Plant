@@ -5,7 +5,11 @@
 
   <link rel="stylesheet" href="{{ url_for('static', filename='css/garden.css')}}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.timepicker.css')  }}">
+  <script type="text/javascript">
+    google.charts.load('current', {packages: ['corechart', 'line']});
+  </script>
   <script src="{{ url_for('static', filename='js/jquery.timepicker.min.js')}}"></script>
+
 </head>
 
 <body>
@@ -58,8 +62,8 @@
       <div class="formDiv">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" ng-class="{'active': content=='details'}"><a ng-click="changeTabContent('details')" aria-controls="addplant" role="tab" data-toggle="tab">Details</a></li>
-          <li role="presentation" ng-class="{'active': content=='stats'}"><a  ng-click="changeTabContent('stats')" aria-controls="statistics" role="tab" data-toggle="tab">Statistics</a></li>
+          <li role="presentation" ng-class="{'active': content=='details'}"><a ng-click="changeTabContent('details')" aria-controls="addplant" role="tab" data-toggle="tab"><span class="tabText">Details</span></a></li>
+          <li role="presentation" ng-class="{'active': content=='stats'}"><a ng-click="changeTabContent('stats'); drawChart()" aria-controls="statistics" role="tab" data-toggle="tab"><span class="tabText">Statistics<span></a></li>
         </ul>
         <div class="tab-content">
           <form role="tabpanel" class="tab-pane active" id="formTab" ng-show="content == 'details'" name="plantForm" ng-submit="submitPlant()">
@@ -150,7 +154,17 @@
           </form>
 
           <div  style ="text-align: center;" role="tabpanel" id="statsTab" ng-show="content == 'stats'">
-            <img src="static/assets/images/stats.png"/>
+            <div ng-show="!statsErr">
+              <h2 class="statsTitle">Moisture % of the last 24 hours</h2>
+              <div id="plantStatsChart"></div>
+              <a title="Refresh" ng-click="refreshing = true;drawChart()" class="refreshStats"  role="button">
+                <i ng-show="!refreshing" class="fa fa-refresh"></i>
+                <i ng-show="refreshing" class="fa fa-refresh fa-spin"></i></a>
+            </div>
+
+            <div ng-show="statsErr" style="height: 430px;">
+              There was an error loading plant's statistics...
+            </div>
           </div>
         </div>
       </div>

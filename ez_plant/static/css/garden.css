@@ -7,7 +7,7 @@
   height: 150px;
 }
 
-.image{
+.image {
   width: 497px;
   height: 150px;
   line-height: 190px;
@@ -24,7 +24,7 @@
   font-family: 'Lobster Two', cursive;
 }
 
-.thumbnail{
+.thumbnail {
     width: 200px;
     height: 293px;
     overflow: auto;
@@ -43,38 +43,41 @@
   transform: scale(1.5);
 }
 
-.thumbnail:hover{
+.thumbnail:hover {
   transition: all .2s ease-in-out;
   transform: scale(1.1);
 }
 
-#editPlantPencil{
+#editPlantPencil {
   margin-right:5px;
 
 }
 
-#deletePlantTrash{
+#deletePlantTrash {
   margin-left: 5px;
   transition: all .2s ease-in-out;
 }
 
-#deletePlantTrash:hover{
+#deletePlantTrash:hover {
   transform: scale(1.5);
 }
+
 #deletePlantTrash:hover ~#editPlantPencil {
   color: #3a3939;
   transform: scale(1.0);
 }
 
-.btnContainer{
+.btnContainer {
   margin-right: 3px;
   display: flex;
     flex-direction: row-reverse;
     justify-content: center;
 }
+
 .row {
   text-align: -webkit-center;
 }
+
 .plantsContainer {
   width: 80%;
   margin-left: auto;
@@ -90,11 +93,11 @@
   text-align: center;
 }
 
-.water-every{
+.water-every {
   padding-right: 10px;
 }
 
-.moisture-input{
+.moisture-input {
     margin-left: -62px;
 }
 
@@ -103,12 +106,12 @@
   padding-right: 10px;
 }
 
-.plantBtn{
+.plantBtn {
   cursor: pointer;
   color: #3a3939;
 }
 
-.btn-info{
+.btn-info {
     background: green;
 }
 
@@ -116,43 +119,43 @@
   color: green;
   text-decoration: none;
 }
-.plantNameTxt{
+
+.plantNameTxt {
   margin-top: 0px;
   color: #5a5454;
 }
 
-.plantNameType{
+.plantNameType {
   color: #b5b1b1;
 }
 
-.lastWateredTxt{
+.lastWateredTxt {
   font-size: smaller;
   color: gray;
 }
 
-.marginFix{
+.marginFix {
   margin-bottom: 0px;
 }
 
-.addPlant{
-  /*height: 307px;*/
+.addPlant {
   border-style: dashed;
   border-width: medium;
 }
 
-.plusTxt{
+.plusTxt {
   font-size: 120px;
   color: gray;
 }
 
-.addPlantTxt{
+.addPlantTxt {
   color: gray;
   font-size: 18px;
   font-weight: lighter;
   margin-top: -25px;
 }
 
-.thumbnail img{
+.thumbnail img {
   width: 190px;
   height: 190px;
 }
@@ -168,13 +171,12 @@
 .nav li {
   cursor: pointer;
 }
+
 .nextWatering {
   padding-left: 15px;
   color: green;
   text-align: left;
   margin-top: 10px;
-}
-.arrow {
 }
 
 .arrow img{
@@ -182,9 +184,9 @@
   position: relative;
   opacity: 0.93;
 }
+
 .formDiv {
   margin-top: -1px;
-  /*height: 300px;*/
   background-color: rgba(255, 255, 255, 0.93);
   width: 80%;
   margin-left: auto;
@@ -192,10 +194,6 @@
   radius: 4px;
   border-radius: 18px;
   border: 1px solid #ddd;
-}
-
-.plantFields{
-  /*width: 60%;*/
 }
 
 .imgContainer {
@@ -213,6 +211,7 @@
 .innerFormDiv {
   padding-top: 17px;
 }
+
 .imgContainer img {
   width: 190px;
   height: 190px;
@@ -221,9 +220,10 @@
   border-style: outset;
 }
 
-.radioiDiv{
+.radioiDiv {
   padding-left: 0px;
 }
+
 .pencil {
   position: absolute;
   left: 5px;
@@ -236,20 +236,55 @@
   color: green;
 }
 
-.ng-invalid.ng-dirty
-{
+.ng-invalid.ng-dirty {
   border-color: red;
 }
 
-.submit-msg{
+.submit-msg {
   width: 50%;
   margin: auto;
   margin-top: 5px;
   text-align: center;
 }
 
-.hideClass{
+.hideClass {
   display: none;
+}
+
+#plantStatsChart {
+  margin-top: -85px;
+}
+
+.statsTitle {
+  font-weight: bold;
+  font-size: 24px;
+  display: inline-block;
+}
+
+#statsTab {
+  position: relative;
+}
+
+.tabText {
+  cursor: pointer;
+}
+
+.refreshStats {
+  font-size: 35px;
+  position: absolute;
+  top: 2%;
+  right: 25%;
+  color: aqua;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+  transform: scale(1.0);
+}
+
+.refreshStats:hover {
+  color: chartreuse;
+  text-decoration: none;
+  transition: all .2s ease-in-out;
+  transform: scale(1.5);
 }
 /*.fadeTransition{
   transition: opacity .5s;

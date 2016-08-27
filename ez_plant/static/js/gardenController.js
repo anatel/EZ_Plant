@@ -20,9 +20,6 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
   $scope.openPlantDetails = function(plantIndex){
     $scope.plantIndex = plantIndex;
     $scope.plant = plantIndex==undefined? {"water_data": { "water_mode": "schedule", "last_watered": "Never"}} : angular.copy($scope.plants[plantIndex]);
-    if (plantIndex!=undefined && !$scope.plant.water_data.next_watering){
-      $scope.calcNextWatering();
-    }
 
     $http({
         method : "GET",
@@ -50,6 +47,63 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
     });
   };
 
+  $scope.drawChart = function(){
+    google.charts.setOnLoadCallback($scope.getPlantStats);
+  };
+
+  $scope.getPlantStats = function(){
+  //   $http({
+  //     method  : 'GET',
+  //     url     : '/get_plant_stats?plant_id=' + $scope.plant.plant_id,
+  //  })
+  //  .then(function onSuccess(response) {
+  //    console.log(response);
+     var data = new google.visualization.DataTable();
+     data.addColumn('timeofday', 'Time');
+     data.addColumn('number', 'Moisture %');
+
+     data.addRows([
+         [[8, 30, 45], 5],
+         [[9, 0, 0], 10],
+         [[10, 0, 0, 0], 12],
+         [[10, 45, 0, 0], 13],
+         [[11, 0, 0, 0], 15],
+         [[12, 15, 45, 0], 20],
+         [[13, 0, 0, 0], 22],
+         [[14, 30, 0, 0], 25],
+         [[15, 12, 0, 0], 30],
+         [[16, 45, 0], 32],
+         [[16, 59, 0], 42]
+     ]);
+
+     var options = {
+       titlePosition: 'none',
+       backgroundColor: { fill:'transparent' },
+       'width': 1000,
+       'height': 480,
+       pointSize: 15,
+       pointShape: 'star',
+       hAxis: {
+         title: 'Time'
+       },
+       vAxis: {
+         title: 'Moisture %'
+       },
+       colors: ['green']
+     }
+     var chart = new google.visualization.LineChart($("#plantStatsChart")[0]);
+     chart.draw(data, options);
+     $timeout(function () {$scope.refreshing = false;}, 1000);
+     $scope.statsErr = false;
+  //  }, function onFailure(){
+  //     $scope.refreshing = false;
+  //     $scope.statsErr = true;
+  //     $('html, body').animate({
+  //         scrollTop: $(".plantDetailsWrapper").offset().top
+  //     }, 200);
+  //  });
+  };
+
   $scope.showPlantDetails = function(plantIndex){
     $scope.showForm = true;
     $scope.changeTabContent('details');
@@ -60,9 +114,10 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
     $('html, body').animate({
         scrollTop: $(".plantDetailsWrapper").offset().top
     }, 1000);
+    $scope.calcNextWatering();
     $timeout(function () { $('.waterTime').timepicker({ 'timeFormat': 'H:i' }); $scope.plantForm.$setPristine();});
 
-  }
+  };
 
   $scope.changeTabContent = function(tab){
     $scope.content = tab;
