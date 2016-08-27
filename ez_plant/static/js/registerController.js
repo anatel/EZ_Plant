@@ -5,7 +5,7 @@ ez_plant.controller('registerController',['$scope', 'AuthService', '$location',
   $scope.userDetails = {};
   $scope.showError = false;
   $scope.errorMessage;
-  
+
   $scope.register = function () {
       // initial values
       $scope.dataLoading = true;
@@ -14,13 +14,12 @@ ez_plant.controller('registerController',['$scope', 'AuthService', '$location',
       AuthService.register($scope.userDetails)
         // handle success
         .then(function () {
-          $location.path('/login');//TODO: show message on login page - account created successfuly, now you can login.
+          $location.path('/');
           $scope.dataLoading = false;
           $scope.registerForm = {};
         })
         // handle error
         .catch(function () {
-          // $scope.errorMessage = "Invalid username and/or password";
           $scope.showError = true;
           $scope.dataLoading = false;
           $scope.registerForm = {};

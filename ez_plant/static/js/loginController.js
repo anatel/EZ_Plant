@@ -24,4 +24,3 @@ ez_plant.controller('loginController',['$scope', 'AuthService', '$location',
         });
     };
 }]);
-//TODO: http://cdn.rawgit.com/cornflourblue/angular-registration-login-example/master/login/login.controller.js
