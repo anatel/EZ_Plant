@@ -96,7 +96,7 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
       $http({
           method : "DELETE",
           url : "/plant",
-          data: plantToDel.plant_id
+          data: {"plant_id": plantToDel.plant_id}
       }).then(function onSuccess(response) {
           $scope.successMsg = "The plant: " + plantToDel.name + " was successfully deleted.";
           $scope.handleAlerts('success');
