@@ -150,9 +150,9 @@ def get_watering_config():
 
 @app.route('/push_moisture_data', methods=['POST'])
 def push_moisture_data():
-    data = request.get_json()
-    if 'plant_id' in data and 'moisture_value' in data:
-        moisture_data = MoistureData(data['plant_id'], data['moisture_value'])
+    if 'username' in request.args and 'plant_id' in request.args and 'moisture' in request.args:
+        moisture_data = MoistureData(request.args.get('username'), request.args.get('plant_id'),
+                                     request.args.get('moisture'))
         moisture_data.save_to_database()
         return jsonify(result="success")
 

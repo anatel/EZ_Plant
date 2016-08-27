@@ -2,11 +2,20 @@ from ez_plant.mongo_handler import MongoHandler
 import datetime
 
 class MoistureData(object):
-    def __init__(self, plant_id, moisture_value):
+    def __init__(self, username, plant_id, moisture, timestamp=None):
+        self.username = username
+        self.moisture = self.moisture_value_to_percentage(moisture)
         self.plant_id = plant_id
-        self.moisture_value = moisture_value
-        self.timestamp = datetime.datetime.now()
+        self.timestamp = timestamp if timestamp is not None else datetime.datetime.now()
 
     def save_to_database(self):
         mongo_worker = MongoHandler()
-        mongo_worker.insert_object(vars(self), 'moisture_stats')
+        moisture_stats_object = {}
+        moisture_stats_object['moisture'] = int(self.moisture)
+        moisture_stats_object['timestamp'] = self.timestamp
+        mongo_worker.add_doc_to_nested_array('moisture_stats',
+                                            { "username": self.username, "plants.plant_id": self.plant_id },
+                                            'plants', 'stats', moisture_stats_object)
+
+    def moisture_value_to_percentage(self, moisture):
+        return moisture

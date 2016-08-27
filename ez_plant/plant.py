@@ -46,6 +46,11 @@ class Plant(object):
         self.remove_from_database(username)
         mongo_worker.add_doc_to_array('users', { "username": username}, 'plants', self.to_doc())
 
+        moisture_stats_object = {}
+        moisture_stats_object['plant_id'] = self.plant_id
+        moisture_stats_object['stats'] = []
+        mongo_worker.add_doc_to_array('moisture_stats', { "username": username}, 'plants', moisture_stats_object)
+
     def remove_from_database(self, username):
         mongo_worker = MongoHandler()
         mongo_worker.delete_doc_from_array('users', { "username": username}, 'plants', { "plant_id": self.plant_id } )

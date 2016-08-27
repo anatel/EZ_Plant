@@ -21,6 +21,10 @@ class User(UserMixin):
     def save_to_database(self):
         mongo_worker = MongoHandler()
         mongo_worker.insert_object(vars(self), 'users')
+        moisture_stats_object = {}
+        moisture_stats_object['plants'] = []
+        moisture_stats_object['username'] = self.username
+        mongo_worker.insert_object(moisture_stats_object, 'moisture_stats')
 
     @classmethod
     def get_from_database(self, username):
