@@ -1,0 +1,11 @@
+body {
+  text-align: center;
+}
+
+.aboutText{
+  color: green;
+  font-size: x-large;
+  font-weight: bold;
+  text-shadow: 1px 1px 5px chartreuse;
+  margin-bottom: 20px;
+}

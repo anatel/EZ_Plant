@@ -1,22 +1,10 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html ng-app="ez_plant">
-<head>
-  <!-- load bootstrap and fontawesome via CDN -->
-  <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" /> -->
-  <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" /> -->
-
-  <!-- SPELLS -->
-  <!-- load angular and angular route via CDN -->
-  <!-- <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script> -->
-      <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular-route.js"></script> -->
-  <!-- <script src="{{ url_for('static', filename='js/aboutController.js')}}"></script> -->
-</head>
-
-<!-- define angular controller -->
-<body ng-controller="aboutController">
-    <div id="main">
-        [[ message ]]
-    </div>
-</body>
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css')}}" />
+  </head>
+  <body ng-controller="aboutController">
+      <div class="aboutText">Watch our video to learn more about us!</div>
+      <iframe width="700" height="400" src="https://www.youtube.com/embed/dAVC25F_oo0" frameborder="0" allowfullscreen></iframe>
+  </body>
 </html>

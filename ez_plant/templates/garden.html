@@ -1,4 +1,4 @@
-</head>
+<head>
   <link href='https://fonts.googleapis.com/css?family=Lobster+Two:700' rel='stylesheet' type='text/css'>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
@@ -6,8 +6,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/garden.css')}}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.timepicker.css')  }}">
   <script src="{{ url_for('static', filename='js/jquery.timepicker.min.js')}}"></script>
-  <!-- <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"> -->
-  <!-- <script src="{{ url_for('static', filename='js/plantController.js')}}"></script> -->
+</head>
 
 <body>
     <div class="headDiv">
@@ -29,7 +28,7 @@
               <h4 class="plantNameTxt marginFix">[[plant.name]]</h4>
               <p class="plantName marginFix">[[plant.plant_type]]</p>
               <p class="marginFix btnContainer">
-                <a id="deletePlantTrash" title="Delete" class="plantBtn"  ng-click="$event.stopPropagation();deletePlant()" role="button"> <i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
+                <a id="deletePlantTrash" title="Delete" class="plantBtn"  ng-click="$event.stopPropagation();deletePlant($index)" role="button"> <i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
                 <a id="editPlantPencil" title="Edit" class="plantBtn" role="button"> <i class="fa fa-pencil fa-lg" aria-hidden="true"></i></a>
               </p>
               <p class="lastWateredTxt marginFix">Last watered: [[plant.water_data.last_watered]]</p>
@@ -146,7 +145,7 @@
             </div>
           </div>
           <div class="form-group row clearfix">
-              <button type="submit" class="btn btn-info" ng-disabled="!plantForm.$dirty"><i class="fa fa-envira" aria-hidden="true"></i> Submit Plant</button>
+              <button id="submitPlantBtn" type="submit" class="btn btn-info" ng-disabled="!plantForm.$dirty"><i class="fa fa-envira" aria-hidden="true"></i> Submit Plant</button>
           </div>
           </form>
 

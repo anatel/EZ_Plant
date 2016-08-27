@@ -9,6 +9,11 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
   $scope.content = 'details';
 
   $scope.openPlantDetails = function(plantIndex){
+    $scope.plantIndex = plantIndex;
+    $scope.plant = plantIndex==undefined? {"water_data": { "water_mode": "schedule", "last_watered": "Never"}} : angular.copy($scope.plants[plantIndex]);
+    if (plantIndex!=undefined && !$scope.plant.water_data.next_watering){
+      $scope.calcNextWatering();
+    }
     $http({
         method : "GET",
         url : "/get_free_ports"
@@ -39,8 +44,6 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
     $scope.showForm = true;
     $scope.changeTabContent('details');
     $(".plantDetails").show();
-    $scope.plantIndex = plantIndex;
-    $scope.plant = plantIndex==undefined? {"water_data": { "water_mode": "schedule", "last_watered": "Never"}} : angular.copy($scope.plants[plantIndex]);
     placeArrow();
 
     $('html, body').animate({
@@ -80,16 +83,31 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
     $("#inputId").click();
   };
 
-  $scope.deletePlant = function()
+  $scope.deletePlant = function(plantIndex)
   {
-    var plantId = $scope.plant.plant_id;
-    if ($scope.showForm)
-    {
-      $(".plantDetails").slideUp("slow",function(){
-        $scope.showForm = false;
+    var plantToDel = $scope.plants[plantIndex];
+    if (confirm("Are you sure you want to delete plant: " + plantToDel.name + "?")){
+      if ($scope.showForm)
+      {
+        $(".plantDetails").slideUp("slow",function(){
+          $scope.showForm = false;
+        });
+      }
+      $http({
+          method : "DELETE",
+          url : "/plant",
+          data: plantToDel.plant_id
+      }).then(function onSuccess(response) {
+          $scope.successMsg = "The plant: " + plantToDel.name + " was successfully deleted.";
+          $scope.handleAlerts('success');
+      }, function myError(response) {
+          $scope.errMsg = 'There was an error deleting plant...';
+          $scope.handleAlerts('fail');
+          $timeout(function () { $("#errMsg").fadeOut("fast"); }, 5000);
+          console.log('error');
       });
+      $scope.plant = {};
     }
-    console.log(plantId);
   }
 
   $scope.submitPlant = function() {
@@ -142,10 +160,12 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
       $("#errMsg").fadeIn("fast");
     }
   }
+
+  //change plant photo
   $scope.readURL = function(input) {
     if (input.files && input.files[0]) {
+      $("#submitPlantBtn").prop('disabled', false);
       var reader = new FileReader();
-
       reader.onload = function(e) {
         $('.imgContainer img')
           .attr('src', e.target.result);
