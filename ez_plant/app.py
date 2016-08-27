@@ -112,9 +112,14 @@ def plant():
         return jsonify(result="success", plant=new_plant)
     elif request.method == 'GET':
         return jsonify(plant_controller.get_plants())
-        
+
     else:
         if request.args.get('plant_id'):
+            plant_to_delete = current_user.get_plant(request.args.get('plant_id'))
+            if plant_to_delete.image_url:
+                image_to_delete = plant_to_delete.image_url.rsplit('/', 1)[1]
+                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], image_to_delete))
+
             plant_controller.delete_plant(request.args.get('plant_id'))
             return jsonify(result="success")
 
