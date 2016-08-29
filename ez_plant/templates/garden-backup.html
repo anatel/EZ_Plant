@@ -68,7 +68,7 @@
         <div class="tab-content">
           <form role="tabpanel" class="tab-pane active" id="formTab" ng-show="content == 'details'" name="plantForm" ng-submit="submitPlant()">
             <div class="innerFormDiv form-group row">
-              <div class="col-sm-3 col-sm-offset-1 photoDBG">
+                <div class="col-sm-3 col-sm-offset-1">
                   <div class="imgContainer" for="inputId" ng-click="openDialog();">
                     <img ng-if="[[plant.image_url]]  != ''" ng-src="[[plant.image_url]]"></img>
                     <img ng-if="[[plant.image_url]]  == ''" ng-src="static/assets/images/default_plant.png"></img>
@@ -77,94 +77,80 @@
                     </div>
                   </div>
                   <input id="inputId" type="file" name="plantPhoto" onchange="angular.element(this).scope().readURL(this);" style="position: fixed; top: -100em"/>
-              </div>
-
-              <!-- nickname row -->
-               <div class="col-sm-5 text-left">
-                    <div class="form-group row">
-                      <label for="nickname" class="col-sm-3 form-control-label">Nickname</label>
-                      <div class="col-sm-5">
-                        <input name="nickname" type="text" ng-model="plant.name" class="form-control" id="nickname" placeholder="Nickname" required>
-                      </div>
+                </div>
+                <div class="col-sm-7 text-left">
+                  <div class="form-group row">
+                    <label for="nickname" class="col-sm-3 form-control-label">Nickname</label>
+                    <div class="col-sm-5">
+                      <input name="nickname" type="text" ng-model="plant.name" class="form-control" id="nickname" placeholder="Nickname" required>
                     </div>
+                  </div>
 
-              <!-- plant type row -->
-                <div class="form-group row">
-                  <label for="plant_type" class="col-sm-3 form-control-label">Type</label>
-                  <div class="col-sm-5">
+                  <div class="form-group row">
+                    <label for="plant_type" class="col-sm-3 form-control-label">Type</label>
+                    <div class="col-sm-5">
                       <input name="plant_type" type="text" class="form-control" id="plant_type" ng-model="plant.plant_type" placeholder="Type" required>
+                    </div>
                   </div>
-                </div>
 
-              <!-- sensor port row -->
-                <div class="form-group row">
-                      <label for="sensorPort" class="col-sm-3 form-control-label">Sensor Port</label>
-                      <div class="col-sm-5">
-                        <select name="sensor" id="sensorPort" class="form-control" ng-model="plant.moisture_sensor_port" ng-options="item for item in sensorPorts" required>
-                          <option></option>
-                        </select>
-                      </div>
+                  <div class="form-group row">
+                    <label for="sensorPort" class="col-sm-3 form-control-label">Sensor Port</label>
+                    <div class="col-sm-5">
+                      <select name="sensor" id="sensorPort" class="form-control" ng-model="plant.moisture_sensor_port" ng-options="item for item in sensorPorts" required>
+                        <option></option>
+                      </select>
                     </div>
+                  </div>
 
-              <!-- pump port row -->
-                <div class="form-group row">
-                      <label for="pumpPort" class="col-sm-3 form-control-label">Pump Port</label>
-                      <div class="col-sm-5">
-                        <select name="pump" id="pumpPort" class="form-control" ng-model="plant.water_pump_port" ng-options="item for item in pumpPorts" required>
-                          <option></option>
-                        </select>
-                      </div>
+                  <div class="form-group row">
+                    <label for="pumpPort" class="col-sm-3 form-control-label">Pump Port</label>
+                    <div class="col-sm-5">
+                      <select name="pump" id="pumpPort" class="form-control" ng-model="plant.water_pump_port" ng-options="item for item in pumpPorts" required>
+                        <option></option>
+                      </select>
                     </div>
+                  </div>
 
-
-               </div>
-
-                 <!-- watering method row -->
-               <div class="form-group row">
-                    <label for="" class="col-sm-2 col-sm-offset-4 text-left">Watering Method</label>
-                    <div class="radioiDiv">
-                      <div class="radio-inline col-sm-1">
+                  <div class="form-group row">
+                    <label  for class="col-sm-3">Watering Method</label>
+                    <div class="radioiDiv col-sm-6">
+                      <div class="radio-inline">
                         <label class="col-sm-1">
-                          <input type="radio" name="waterMethod" value="schedule" ng-model="plant.water_data.water_mode" class="ng-pristine ng-untouched ng-valid ng-not-empty">Scheduled
+                          <input type="radio" name="waterMethod" value="schedule" ng-model="plant.water_data.water_mode">Scheduled
                         </label>
                       </div>
-                      <div class="radio-inline col-sm-1">
+                      <div class="radio-inline">
                         <label class="col-sm-1">
-                          <input type="radio" name="waterMethod" value="moisture" ng-model="plant.water_data.water_mode" required="" class="ng-pristine ng-untouched ng-valid-required ng-not-empty ng-valid">Moisture
+                          <input  type="radio" name="waterMethod" value="moisture" ng-model="plant.water_data.water_mode" required>Moisture
                         </label>
                       </div>
                   </div>
-                  <img src="static/assets/images/water-now.jpg">
                 </div>
-
-
-            
-        <div class="col-sm-5 col-sm-offset-5">
-    <div class="well">
-                  <div class="row ng-hide" ng-show="plant.water_data.water_mode == 'schedule'">
+                <div class="well col-sm-offset-3">
+                  <div class="row" ng-show="plant.water_data.water_mode == 'schedule'">
                     <span class="water-every col-sm-3">Water every</span>
-                    <input name="days" type="number" id="daysInput" ng-change="calcNextWatering()" ng-model="plant.water_data.repeat_every" class="form-control col-sm-1 schedule-input ng-pristine ng-untouched ng-valid ng-empty ng-valid-required" ng-required="plant.water_data.water_mode == 'schedule'">
+                    <input  name="days" type="number" id="daysInput" ng-change="calcNextWatering()" ng-model="plant.water_data.repeat_every" class="form-control col-sm-1 schedule-input" ng-required="plant.water_data.water_mode == 'schedule'"></input>
                     <span class="days-at col-sm-2">days, at</span>
-                    <input name="hour" id="hourInput" type="text" ng-model="plant.water_data.hour" ng-change="calcNextWatering()" class="waterTime schedule-input form-control col-sm-1 ng-pristine ng-untouched ng-valid ng-empty ng-valid-required ui-timepicker-input" ng-required="plant.water_data.water_mode == 'schedule'" autocomplete="off">
+                    <input name="hour" id="hourInput" type="text" ng-model="plant.water_data.hour" ng-change="calcNextWatering()" class="waterTime schedule-input form-control col-sm-1" ng-required="plant.water_data.water_mode == 'schedule'"/>
                   </div>
-                  <div ng-show="plant.water_data.water_mode == 'schedule'" class="row nextWatering ng-hide">Next watering time:
-                    <input name="next" type="hidden" ng-model="plant.water_data.next_watering" class="ng-pristine ng-untouched ng-valid ng-empty">
-                    <span class="ng-binding"></span>
+                  <div  ng-show="plant.water_data.water_mode == 'schedule'" class="row nextWatering">Next watering time:
+                    <input name="next" type="hidden" name="nextWatering" ng-model="plant.water_data.next_watering">
+                    <span>[[plant.water_data.next_watering | date: 'dd.MM.y HH:mm']]</span>
                   </div>
 
                   <div class="row" ng-show="plant.water_data.water_mode == 'moisture'">
                     <span class="col-sm-8  col-lg-8 text-left">Water when moisture level is below</span>
                     <span class="input-group moisture-input">
-                      <input name="moistureLevel" type="number" min="0" max="80" ng-model="plant.water_data.low_threshold" class="form-control col-sm-1 col-lg-1 ng-pristine ng-untouched ng-valid ng-valid-min ng-valid-max ng-valid-required ng-not-empty" ng-required="plant.water_data.water_mode == 'moisture'" required="required">
+                      <input name="moistureLevel" type="number" min="0" max="80" ng-model="plant.water_data.low_threshold" class="form-control col-sm-1 col-lg-1" ng-required="plant.water_data.water_mode == 'moisture'"></input>
                       <span class="input-group-addon">%</span>
                     </span>
                   </div>
                 </div>
-        </div>
-        
-
-
             </div>
+          </div>
+          <div class="form-group row clearfix">
+              <button id="submitPlantBtn" type="submit" class="btn btn-info" ng-disabled="!plantForm.$dirty"><i class="fa fa-envira" aria-hidden="true"></i> Submit Plant</button>
+          </div>
           </form>
 
           <div  style ="text-align: center;" role="tabpanel" id="statsTab" ng-show="content == 'stats'">
