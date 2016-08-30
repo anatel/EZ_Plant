@@ -77,6 +77,16 @@ class Plant(object):
 
         return None
 
+    def get_stats(self, username):
+        mongo_worker = MongoHandler()
+        stats_cursor = mongo_worker.get_array_cursor(
+                             'moisture_stats',
+                             {"username": username, "plants":{"$elemMatch": {"plant_id": self.plant_id}}},
+                             {"plants.stats": 1})
+
+        res = stats_cursor['plants'][0]['stats']
+        return res
+
     def to_doc(self):
         plant_doc = vars(self)
         return plant_doc
