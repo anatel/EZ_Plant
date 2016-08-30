@@ -52,29 +52,31 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
   };
 
   $scope.getPlantStats = function(){
-  //   $http({
-  //     method  : 'GET',
-  //     url     : '/get_plant_stats?plant_id=' + $scope.plant.plant_id,
-  //  })
-  //  .then(function onSuccess(response) {
-  //    console.log(response);
+    $http({
+      method  : 'GET',
+      url     : '/get_plant_stats?plant_id=' + $scope.plant.plant_id,
+   })
+   .then(function onSuccess(response) {
+     console.log(response);
      var data = new google.visualization.DataTable();
      data.addColumn('timeofday', 'Time');
      data.addColumn('number', 'Moisture %');
 
-     data.addRows([
-         [[8, 30, 45], 5],
-         [[9, 0, 0], 10],
-         [[10, 0, 0, 0], 12],
-         [[10, 45, 0, 0], 13],
-         [[11, 0, 0, 0], 15],
-         [[12, 15, 45, 0], 20],
-         [[13, 0, 0, 0], 22],
-         [[14, 30, 0, 0], 25],
-         [[15, 12, 0, 0], 30],
-         [[16, 45, 0], 32],
-         [[16, 59, 0], 42]
-     ]);
+    //  data.addRows([
+    //      [[8, 30, 45], 5],
+    //      [[9, 0, 0], 10],
+    //      [[10, 0, 0, 0], 12],
+    //      [[10, 45, 0, 0], 13],
+    //      [[11, 0, 0, 0], 15],
+    //      [[12, 15, 45, 0], 20],
+    //      [[13, 0, 0, 0], 22],
+    //      [[14, 30, 0, 0], 25],
+    //      [[15, 12, 0, 0], 30],
+    //      [[16, 45, 0], 32],
+    //      [[16, 59, 0], 42]
+    //  ]);
+
+    data.addRows(response.data.stats);
 
      var options = {
        titlePosition: 'none',
@@ -93,15 +95,16 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
      }
      var chart = new google.visualization.LineChart($("#plantStatsChart")[0]);
      chart.draw(data, options);
-     $timeout(function () {$scope.refreshing = false;}, 1000);
+    //  $timeout(function () {$scope.refreshing = false;}, 1000);
+      $scope.refreshing = false;
      $scope.statsErr = false;
-  //  }, function onFailure(){
-  //     $scope.refreshing = false;
-  //     $scope.statsErr = true;
-  //     $('html, body').animate({
-  //         scrollTop: $(".plantDetailsWrapper").offset().top
-  //     }, 200);
-  //  });
+   }, function onFailure(){
+      $scope.refreshing = false;
+      $scope.statsErr = true;
+      $('html, body').animate({
+          scrollTop: $(".plantDetailsWrapper").offset().top
+      }, 200);
+   });
   };
 
   $scope.showPlantDetails = function(plantIndex){
@@ -209,6 +212,31 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
      $scope.handleAlerts('fail');
    });
   };
+
+  $scope.waterNow = function(){
+    if (confirm("Are you sure you want to water " + $scope.plant.name + " now?")) {
+      $scope.loading(true);
+      $http({
+        method  : 'POST',
+        url     : '/water_now?plant_id='+$scope.plant.plant_id,
+     })
+     .then(function onSuccess(response) {
+       console.log(response);
+       if (response.data.result == 'success')
+       {
+         $scope.loading(false);
+         alert($scope.plane.name + " will be watered in the next 5 minutes.");
+       }
+     }, function onFailure(){
+       $scope.loading(false);
+       alert("There was an unexpected error.");
+     });
+    }
+  }
+
+  $scope.loading = function(toggle) {
+    $scope.isLoading = toggle;
+  }
 
   $scope.handleAlerts = function(alertType){
     if (alertType == 'success'){
