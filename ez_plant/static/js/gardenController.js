@@ -48,6 +48,10 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
   };
 
   $scope.drawChart = function(){
+    if (!$scope.googleLoad){
+      google.charts.load('current', {packages: ['corechart', 'line']});
+      $scope.googleLoad = true;
+    }
     google.charts.setOnLoadCallback($scope.getPlantStats);
   };
 
@@ -76,9 +80,9 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
     //      [[16, 59, 0], 42]
     //  ]);
 
-    data.addRows(response.data.stats);
+      data.addRows(response.data.stats);
 
-     var options = {
+      var options = {
        titlePosition: 'none',
        backgroundColor: { fill:'transparent' },
        'width': 1000,
@@ -89,7 +93,9 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
          title: 'Time'
        },
        vAxis: {
-         title: 'Moisture %'
+         title: 'Moisture %',
+         minValue: 0,
+         maxValue: 100
        },
        colors: ['green']
      }
