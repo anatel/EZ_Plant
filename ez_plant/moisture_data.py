@@ -6,7 +6,7 @@ class MoistureData(object):
         self.username = username
         self.moisture = self.moisture_value_to_percentage(moisture)
         self.plant_id = plant_id
-        self.timestamp = timestamp if timestamp is not None else datetime.datetime.now()
+        self.timestamp = timestamp if timestamp is not None else datetime.datetime.utcnow()
 
     def save_to_database(self):
         mongo_worker = MongoHandler()

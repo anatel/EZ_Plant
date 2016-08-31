@@ -62,24 +62,15 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
    .then(function onSuccess(response) {
      console.log(response);
      var data = new google.visualization.DataTable();
-     data.addColumn('timeofday', 'Time');
+     data.addColumn('datetime', 'Time');
      data.addColumn('number', 'Moisture %');
 
-    //  data.addRows([
-    //      [[8, 30, 45], 5],
-    //      [[9, 0, 0], 10],
-    //      [[10, 0, 0, 0], 12],
-    //      [[10, 45, 0, 0], 13],
-    //      [[11, 0, 0, 0], 15],
-    //      [[12, 15, 45, 0], 20],
-    //      [[13, 0, 0, 0], 22],
-    //      [[14, 30, 0, 0], 25],
-    //      [[15, 12, 0, 0], 30],
-    //      [[16, 45, 0], 32],
-    //      [[16, 59, 0], 42]
-    //  ]);
+     stats_list = response.data.stats;
+     stats_list.forEach(function(stats_pair) {
+       stats_pair[0] = new Date(stats_pair[0]);
+     })
 
-      data.addRows(response.data.stats);
+     data.addRows(response.data.stats);
 
       var options = {
        titlePosition: 'none',

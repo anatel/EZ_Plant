@@ -198,5 +198,18 @@ def get_stats():
 
     return jsonify(stats=plant_stats, result="success")
 
+@flask_login.login_required
+@app.route('/water_now', methods=['GET', 'POST'])
+def water_now():
+    plant_controller = PlantController(current_user)
+    if request.method == 'POST':
+        if 'plant_id' not in request.args:
+            return jsonify(result="error")
+
+        plant_controller.set_water_now(request.args.get('plant_id'))
+        return jsonify(result="success")
+    else:
+        return jsonify(plant_controller.get_water_now_data(), result="success")
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)

@@ -15,7 +15,8 @@ class User(UserMixin):
             for plant in plants:
                 self.plants.append(Plant(plant['moisture_sensor_port'], plant['water_pump_port'],
                                          plant['plant_type'], plant['plant_id'],
-                                         plant['name'], plant['water_data'], image_url=plant['image_url']))
+                                         plant['name'], plant['water_data'], image_url=plant['image_url'],
+                                         water_now=plant['water_now']))
         self.password = password
 
     def save_to_database(self):
@@ -38,13 +39,13 @@ class User(UserMixin):
 
     def add_plant(self, m_port, w_port, plant_type, plant_name, water_data, image_dir, image_type):
         plant = Plant(m_port, w_port, plant_type, name=plant_name, water_data=water_data,
-                      image_dir=image_dir, image_type=image_type)
+                      image_dir=image_dir, image_type=image_type, water_now=False)
         self.plants.append(plant)
         plant.save_to_database(self.username)
 
         return plant
 
-    def update_plant(self, plant_id, m_port, w_port, plant_type, plant_name, water_data, image_dir, image_type):
+    def update_plant(self, plant_id, m_port, w_port, plant_type, plant_name, water_data, image_dir, image_type, water_now):
         plant_to_update = self.get_plant(plant_id)
         plant_to_update.update(self.username, m_port, w_port, plant_type,
                                plant_name, water_data, image_dir=image_dir, image_type=image_type)

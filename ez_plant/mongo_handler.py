@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-
+import datetime
 
 def singleton(cls):
     instances = {}
@@ -39,6 +39,15 @@ class MongoHandler(object):
         nested_array = '%s.$.%s' % (array_name, nested_array_name)
         self.db[collection_name].update(query, {'$push': {nested_array: doc}})
 
-    def get_array_cursor(self, collection_name, query, projection):
-        cursor = self.db[collection_name].find_one(query, projection)
-        return cursor
+    def stats_aggregate(self, collection_name, username, plant_id):
+        pipeline = [
+            { "$match": { "username": username}},
+            { "$unwind": "$plants"},
+            { "$match": { "plants.plant_id": plant_id}},
+            { "$unwind": "$plants.stats"},
+            { "$match": { "plants.stats.timestamp": {"$gt": datetime.datetime.utcnow() - datetime.timedelta(1)}}},
+            { "$project": { "plants.stats.timestamp":1, "plants.stats.moisture":1, "_id":0 }}
+        ]
+
+        res = list(self.db[collection_name].aggregate(pipeline))
+        return res

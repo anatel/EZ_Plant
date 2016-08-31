@@ -10,7 +10,7 @@ class WaterMode(Enum):
 class Plant(object):
     def __init__(self, moisture_sensor_port, water_pump_port, plant_type,
                  plant_id=None, name=None, water_data=None, image_dir=None,
-                 image_type=None, image_url=None):
+                 image_type=None, image_url=None, water_now=False):
         if not plant_id:
             plant_id = ''.join(random.choice(string.ascii_uppercase) for _ in range(12))
 
@@ -24,13 +24,14 @@ class Plant(object):
             self.image_url = self.get_image_url(image_dir, image_type)
         self.moisture_sensor_port = moisture_sensor_port
         self.water_pump_port = water_pump_port
+        self.water_now = water_now
 
     class WateringData(object):
         def __init__(self, water_data):
             if water_data:
                 self.water_mode = water_data['water_mode']
                 if self.water_mode == WaterMode.MOISTURE.value:
-                    self.low_threshold = water_data['low_threshold'] #TODO add test if value is ok (if not empty of if exeed range)
+                    self.low_threshold = water_data['low_threshold']
                 elif self.water_mode == WaterMode.SCHEDULE.value:
                     self.repeat_every = water_data['repeat_every']
                     self.hour = water_data['hour']
@@ -54,6 +55,7 @@ class Plant(object):
     def remove_from_database(self, username):
         mongo_worker = MongoHandler()
         mongo_worker.delete_doc_from_array('users', { "username": username}, 'plants', { "plant_id": self.plant_id } )
+        mongo_worker.delete_doc_from_array('moisture_stats', { "username": username}, 'plants', { "plant_id": self.plant_id } )
 
     def update(self, username, m_port, w_port, plant_type, plant_name, water_data, image_dir, image_type):
         self.moisture_sensor_port = m_port
@@ -79,13 +81,15 @@ class Plant(object):
 
     def get_stats(self, username):
         mongo_worker = MongoHandler()
-        stats_cursor = mongo_worker.get_array_cursor(
-                             'moisture_stats',
-                             {"username": username, "plants":{"$elemMatch": {"plant_id": self.plant_id}}},
-                             {"plants.stats": 1})
+        query_results = mongo_worker.stats_aggregate('moisture_stats', username, self.plant_id)
+        return query_results
 
-        res = stats_cursor['plants'][0]['stats']
-        return res
+    def set_water_now(self, username):
+        self.water_now = True
+        self.water_data = vars(self.water_data)
+
+        mongo_worker = MongoHandler()
+        mongo_worker.update_array_doc('users', {"username": username, "plants.plant_id": self.plant_id}, 'plants', self.to_doc())
 
     def to_doc(self):
         plant_doc = vars(self)

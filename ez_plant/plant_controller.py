@@ -31,20 +31,27 @@ class PlantController(object):
         plant = self.user.get_plant(plant_id)
         stats = plant.get_stats(self.user.username)
 
-        for stats_dict in stats:
-            now = datetime.datetime.now()
-            day_ago = now - datetime.timedelta(1)
-            if stats_dict['timestamp'] >= day_ago and stats_dict['timestamp'] <= now:
-                time_of_day = []
-                stats_pair = []
-                time_of_day.append(stats_dict['timestamp'].hour)
-                time_of_day.append(stats_dict['timestamp'].minute)
-                time_of_day.append(stats_dict['timestamp'].second)
-                stats_pair.append(time_of_day)
-                stats_pair.append(stats_dict['moisture'])
-                stats_res.append(stats_pair)
+        for stats_doc in stats:
+            stats_pair = []
+            stats_pair.append(stats_doc['plants']['stats']['timestamp'].isoformat())
+            stats_pair.append(stats_doc['plants']['stats']['moisture'])
+            stats_res.append(stats_pair)
 
         return stats_res
+
+    def set_water_now(self, plant_id):
+        plant = self.user.get_plant(plant_id)
+        plant.set_water_now(self.user.username)
+
+    def get_water_now_data(self):
+        water_now_data = {'water_now_data': {}}
+        if self.user.plants:
+            for plant in self.user.plants:
+                water_now_json = {}
+                water_now_json[plant.plant_id] = plant.water_now
+                water_now_data['water_now_data'].update(water_now_json)
+
+        return water_now_data
 
     def jsonify_plant(self, plant):
         plant_json = vars(plant)
