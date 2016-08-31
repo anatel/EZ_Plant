@@ -137,7 +137,7 @@
               <div class="waterNowWrapper col-sm-3" ng-show="plant.plant_id">
                 <button ng-click="waterNow()" class="btn btn-info col-sm-7" type="button" ng-disabled="plant.water_now">
                   <span ng-if="!plant.water_now"><img src="static/assets/images/wateringCan.png"/>Water Now!</span>
-                  <span ng-if="plant.water_now"><i class="waterNowSpinner fa fa-spinner fa-pulse fa-3x fa-fw"></i>Waiting to be watered...</span>
+                  <span class="waitingToWater" ng-if="plant.water_now"><i class="waterNowSpinner fa fa-spinner fa-pulse fa-3x fa-fw"></i>Waiting to be watered...</span>
                 </button>
               </div>
             </div>

@@ -230,8 +230,9 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
        console.log(response);
        if (response.data.result == 'success')
        {
+         $scope.plants[$scope.plantIndex].water_now = true;
          $scope.loading(false);
-         alert($scope.plane.name + " will be watered in the next 5 minutes.");
+         alert($scope.plant.name + " will be watered in the next 5 minutes.");
          $scope.poll();
        }
      }, function onFailure(){
