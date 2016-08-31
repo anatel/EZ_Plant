@@ -94,7 +94,7 @@
 }
 
 .waterNowWrapper button {
-    height: 80px;
+    height: 90px;
     font-size: 20px;
     font-weight: bold;
     margin-left: 20px;
@@ -103,6 +103,7 @@
 .waterNowWrapper button:focus {
   outline: thin dotted #333;
 }
+
 .waterNowWrapper button img {
     display: block;
     margin: auto;
@@ -192,6 +193,7 @@
 .nav li a {
   z-index: 100;
 }
+
 .nextWatering {
   padding-left: 15px;
   color: green;
@@ -372,4 +374,10 @@
 .waterMethodDiv {
   margin-left: 48%;
   width: 44%;
+}
+
+.waterNowSpinner {
+  font-size: 20px;
+  display: block;
+  margin: auto;
 }

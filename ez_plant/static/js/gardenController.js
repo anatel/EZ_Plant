@@ -8,7 +8,14 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
   }).then(function onSuccess(response) {
     console.log(response);
       $scope.plants = response.data.plants;
-  }, function myError(response) {
+      var keepGoing = true;
+      angular.forEach($scope.plants, function (value, key) {
+          if ($scope.plants[key].water_now == true && keepGoing) {
+            $scope.poll();
+            keepGoing = false;
+          }
+      });
+  }, function onFailure(response) {
       $scope.errMsg = 'There was an error loading plants';
       $("#errMsg").fadeIn("fast");
       console.log('error');
@@ -225,11 +232,44 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
        {
          $scope.loading(false);
          alert($scope.plane.name + " will be watered in the next 5 minutes.");
+         $scope.poll();
        }
      }, function onFailure(){
        $scope.loading(false);
        alert("There was an unexpected error.");
      });
+    }
+  }
+
+  $scope.poll = function() {
+    if (!$scope.polling){
+      var intervalId = setInterval(function(){
+        $http({
+          method  : 'GET',
+          url     : '/water_now',
+       })
+       .then(function onSuccess(response) {
+         console.log(response);
+         if (response.data.result == 'success'){
+           var plantWaiting = false;
+           angular.forEach($scope.plants, function(plant, index) {
+             if (response.data.water_now_data.hasOwnProperty(plant.plant_id)) {
+               plant.water_now = response.data.water_now_data[plant.plant_id];
+               if (plant.water_now){
+                 plantWaiting = true;
+               }
+             }
+           });
+           if (!plantWaiting) {
+             clearInterval(intervalId);
+             $scope.polling = false;
+           }
+           console.log($scope.plants);
+         }
+       }, function onFailure(){ //nothing should happen
+         console.log('error getting water data');
+       });
+      }, 60*1000);
     }
   }
 
