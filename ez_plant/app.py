@@ -199,10 +199,15 @@ def get_stats():
     return jsonify(stats=plant_stats, result="success")
 
 
-@flask_login.login_required
+# @flask_login.login_required
 @app.route('/water_now', methods=['GET', 'POST'])
 def water_now():
-    plant_controller = PlantController(current_user)
+    # plant_controller = PlantController(current_user)
+    user_doc = User.get_from_database("anat.eliahu@gmail.com")
+    user = User(user_doc['username'], user_doc['password'],
+                user_doc['first_name'], user_doc['last_name'],
+                user_doc['plants'])
+    plant_controller = PlantController(user)
     if request.method == 'POST':
         if 'plant_id' not in request.args:
             return jsonify(result="error")
