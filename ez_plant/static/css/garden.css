@@ -271,6 +271,17 @@
 
 #submitPlantBtn {
   clear: both;
+  border-color: green;
+}
+
+#submitPlantBtn:disabled {
+  border-color: #46b8da;
+}
+
+#submitPlantBtn:hover {
+  border-color: #46b8da;
+  color: #fff;
+  background-color: #39b3d7;
 }
 
 .clearfix {
@@ -281,6 +292,7 @@
   width: auto;
   padding-left: 0px;
 }
+
 #plantStatsChart {
   display: table;
   margin-left: auto;
@@ -296,10 +308,6 @@
 
 #statsTab {
   position: relative;
-}
-
-.tabText {
-  cursor: pointer;
 }
 
 .refreshStats {
@@ -346,23 +354,19 @@
   background-color: rgba(0,0,0,0.3);
 }
 
-.grayWatering{
+.grayWatering {
   margin-left: 48%;
   width: 44%;
 }
 
-#discardChangesBtn{
+#discardChangesBtn {
   background: white;
   color: green;
-/* border-color: #46b8da;*/
-}
-/*.fadeTransition{
-  transition: opacity .5s;
+  border-color: green;
 }
 
-.fadeOut {
-		opacity:0;
-    height: 0px;
-    padding: 0px;
-    margin: 0px;
-}*/
+#discardChangesBtn:hover {
+  color: #fff;
+  background-color: #39b3d7;
+  border-color: #46b8da;
+}
