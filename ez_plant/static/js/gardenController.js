@@ -231,6 +231,8 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
        if (response.data.result == 'success')
        {
          $scope.plants[$scope.plantIndex].water_now = true;
+         $scope.plant.water_now = true;
+
          $scope.loading(false);
          alert($scope.plant.name + " will be watered in the next 5 minutes.");
          $scope.poll();
@@ -256,6 +258,9 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
            angular.forEach($scope.plants, function(plant, index) {
              if (response.data.water_now_data.hasOwnProperty(plant.plant_id)) {
                plant.water_now = response.data.water_now_data[plant.plant_id];
+               if (plant.plant_id == $scope.plant.plant_id) {
+                 $scope.plant.water_now = plant.water_now;
+               }
                if (plant.water_now){
                  plantWaiting = true;
                }
