@@ -346,6 +346,10 @@
   background-color: rgba(0,0,0,0.3);
 }
 
+.tab{
+  cursor: pointer;
+}
+
 /*.fadeTransition{
   transition: opacity .5s;
 }
