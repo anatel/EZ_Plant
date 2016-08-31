@@ -91,6 +91,9 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
      }
      var chart = new google.visualization.LineChart($("#plantStatsChart")[0]);
      chart.draw(data, options);
+     $('html, body').animate({
+         scrollTop: $(".plantDetailsWrapper").offset().top
+     }, 200);
     //  $timeout(function () {$scope.refreshing = false;}, 1000);
       $scope.refreshing = false;
      $scope.statsErr = false;

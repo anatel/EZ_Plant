@@ -87,7 +87,7 @@
 
 .schedule-input {
   display: inline;
-  width: 130px;
+  width: 120px;
   padding-left: 2px;
   padding-right: 2px;
   text-align: center;
@@ -189,10 +189,9 @@
   margin-top: 12px;
 }
 
-.nav li {
-  cursor: pointer;
+.nav li a {
+  z-index: 100;
 }
-
 .nextWatering {
   padding-left: 15px;
   color: green;
@@ -274,14 +273,30 @@
   border-color: green;
 }
 
-#submitPlantBtn:disabled {
+#submitPlantBtn:disabled, #discardChangesBtn:disabled {
   border-color: #46b8da;
+}
+
+#discardChangesBtn:disabled {
+    color: #7BB7E0;
 }
 
 #submitPlantBtn:hover {
   border-color: #46b8da;
   color: #fff;
   background-color: #39b3d7;
+}
+
+#discardChangesBtn {
+  background: white;
+  color: green;
+  border-color: green;
+}
+
+#discardChangesBtn:hover {
+  color: #fff;
+  background-color: #39b3d7;
+  border-color: #46b8da;
 }
 
 .clearfix {
@@ -354,19 +369,7 @@
   background-color: rgba(0,0,0,0.3);
 }
 
-.grayWatering {
+.waterMethodDiv {
   margin-left: 48%;
   width: 44%;
-}
-
-#discardChangesBtn {
-  background: white;
-  color: green;
-  border-color: green;
-}
-
-#discardChangesBtn:hover {
-  color: #fff;
-  background-color: #39b3d7;
-  border-color: #46b8da;
 }
