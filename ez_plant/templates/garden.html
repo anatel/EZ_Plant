@@ -62,8 +62,8 @@
       <div class="formDiv">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" ng-class="{'active': content=='details'}"><a ng-click="changeTabContent('details')" aria-controls="addplant" role="tab" data-toggle="tab"><span class="tabText">Details</span></a></li>
-          <li role="presentation" ng-class="{'active': content=='stats'}"><a ng-click="changeTabContent('stats'); drawChart()" aria-controls="statistics" role="tab" data-toggle="tab"><span class="tabText">Statistics<span></a></li>
+          <li role="presentation" ng-class="{'active': content=='details'}"><a ng-click="changeTabContent('details')" aria-controls="addplant" role="tab" data-toggle="tab">Details</a></li>
+          <li role="presentation" ng-class="{'active': content=='stats'}"><a ng-click="changeTabContent('stats'); drawChart()" aria-controls="statistics" role="tab" data-toggle="tab">Statistics</a></li>
         </ul>
         <div class="tab-content">
           <form role="tabpanel" class="tab-pane active" id="formTab" ng-show="content == 'details'" name="plantForm" ng-submit="submitPlant()">

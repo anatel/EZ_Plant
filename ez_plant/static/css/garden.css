@@ -281,6 +281,7 @@
   width: auto;
   padding-left: 0px;
 }
+
 #plantStatsChart {
   display: table;
   margin-left: auto;
@@ -296,10 +297,6 @@
 
 #statsTab {
   position: relative;
-}
-
-.tabText {
-  cursor: pointer;
 }
 
 .refreshStats {
