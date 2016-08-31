@@ -85,7 +85,7 @@ class Plant(object):
         return query_results
 
     def set_water_now(self, username):
-        self.water_now = True
+        self.water_now = not self.water_now
         self.water_data = vars(self.water_data)
 
         mongo_worker = MongoHandler()

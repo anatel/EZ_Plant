@@ -198,6 +198,7 @@ def get_stats():
 
     return jsonify(stats=plant_stats, result="success")
 
+
 @flask_login.login_required
 @app.route('/water_now', methods=['GET', 'POST'])
 def water_now():
