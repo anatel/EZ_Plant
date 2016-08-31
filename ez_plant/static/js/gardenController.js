@@ -1,6 +1,5 @@
 var ez_plant = angular.module('ez_plant');
 
-
 ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', '$timeout', '$http', function($scope, AuthService, $rootScope, $timeout, $http) {
   $scope.userDetails = AuthService.getUser();
   $http({
