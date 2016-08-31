@@ -274,6 +274,12 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
     }
   };
 
+
+  $scope.undoChanges = function(){
+    alert("undoChanges");
+    $timeout(function () { $scope.plantForm.$setPristine();});
+  }
+
   function placeArrow()
   {
     var $thumbnail = $scope.plant.plant_id? $("#"+$scope.plant.plant_id ): $("#new");

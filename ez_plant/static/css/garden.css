@@ -346,10 +346,15 @@
   background-color: rgba(0,0,0,0.3);
 }
 
-.tab{
+/*.tab{
   cursor: pointer;
-}
+}*/
 
+/*#discardChangesBtn{
+  background: white;
+  color: green;
+  border-color: #46b8da;
+}*/
 /*.fadeTransition{
   transition: opacity .5s;
 }
