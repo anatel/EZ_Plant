@@ -140,8 +140,8 @@
                   <span class="waterNowTxt" ng-if="!plant.water_now"><img src="static/assets/images/wateringCan.png"/>Water Now!</span>
                   <span class="waitingToWater" ng-if="plant.water_now"><i class="waterNowSpinner fa fa-spinner fa-pulse fa-3x fa-fw"></i>Plant will be watered in the next 5 minutes...</span>
                 </button>
-                <p ng-show="plant.water_data.last_watered != null" class="lastWateredTxt col-sm-9">Last watered: [[plant.water_data.last_watered | date: 'dd/MM/y HH:mm']]</p>
-                <p ng-show="plant.water_data.last_watered == null" class="lastWateredTxt marginFix- col-sm-9">Last watered: Never</p>
+                <p style="margin-top: 2px; width: 72%" ng-show="plant.water_data.last_watered != null" class="lastWateredTxt col-sm-9"><strong>Last watered:</strong><br> [[plant.water_data.last_watered | date: 'dd/MM/y HH:mm']]</p>
+                <p style="margin-top: 2px; width: 72%" ng-show="plant.water_data.last_watered == null" class="lastWateredTxt col-sm-9">Last watered: Never</p>
               </div>
             </div>
             <!-- water method divs -->
