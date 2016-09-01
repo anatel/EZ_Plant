@@ -94,10 +94,12 @@
 }
 
 .waterNowWrapper button {
-    height: 90px;
-    font-size: 20px;
-    font-weight: bold;
-    margin-left: 20px;
+ /* height: 90px;*/
+  height: 120px;
+  font-size: 20px;
+  font-weight: bold;
+  /*margin-left: 20px;*/
+  margin-left: 15%;
 }
 
 .waterNowWrapper button:focus {

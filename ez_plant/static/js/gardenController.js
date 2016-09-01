@@ -315,8 +315,13 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
 
 
   $scope.undoChanges = function(){
-    alert("undoChanges");
-    $timeout(function () { $scope.plantForm.$setPristine();});
+    angular.forEach($scope.plants, function (value, key) {
+      if ($scope.plants[key].plant_id == $scope.plant.plant_id) {
+        $scope.plant = angular.copy($scope.plants[key]);
+      }
+  });
+
+  $scope.plantForm.$setPristine();
   }
 
   function placeArrow()

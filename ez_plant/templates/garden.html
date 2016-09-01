@@ -139,6 +139,7 @@
                   <span ng-if="!plant.water_now"><img src="static/assets/images/wateringCan.png"/>Water Now!</span>
                   <span class="waitingToWater" ng-if="plant.water_now"><i class="waterNowSpinner fa fa-spinner fa-pulse fa-3x fa-fw"></i>Waiting to be watered...</span>
                 </button>
+                <p class="lastWateredTxt marginFix col-sm-11" ng-show="plant.water_data.last_watered == null">Last watered: Never</p>
               </div>
             </div>
             <!-- water method divs -->
