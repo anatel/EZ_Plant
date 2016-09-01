@@ -119,6 +119,7 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
     $(".plantDetails").show();
     placeArrow();
     $("#submitPlantBtn").prop('disabled', true);
+    $("#undoChangesBtn").prop('disabled', true);
 
     $('html, body').animate({
         scrollTop: $(".plantDetailsWrapper").offset().top
@@ -234,7 +235,6 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
          $scope.plant.water_now = true;
 
          $scope.loading(false);
-         alert($scope.plant.name + " will be watered in the next 5 minutes.");
          $scope.poll();
        }
      }, function onFailure(){
@@ -256,10 +256,13 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
          if (response.data.result == 'success'){
            var plantWaiting = false;
            angular.forEach($scope.plants, function(plant, index) {
-             if (response.data.water_now_data.hasOwnProperty(plant.plant_id)) {
-               plant.water_now = response.data.water_now_data[plant.plant_id];
+             if (response.data.watering_data.hasOwnProperty(plant.plant_id)) {
+               plant.water_now = response.data.watering_data[plant.plant_id].water_now;
+               var lastWatered = response.data.watering_data[plant.plant_id].last_watered;
+               plant.watering_data.last_watered = lastWatered? new Date(lastWatered) : plant.watering_data.last_watered;
                if (plant.plant_id == $scope.plant.plant_id) {
                  $scope.plant.water_now = plant.water_now;
+                 $scope.plant.water_now = plant.water_data.last_watered;
                }
                if (plant.water_now){
                  plantWaiting = true;
@@ -313,7 +316,6 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
       reader.readAsDataURL(input.files[0]);
     }
   };
-
 
   $scope.undoChanges = function(){
     angular.forEach($scope.plants, function (value, key) {
