@@ -3,7 +3,7 @@ from ez_plant.plant import Plant
 from flask.ext.login import UserMixin
 
 AVAILABLE_MOISTURE_PORTS = ['A0', 'A1', 'A2', 'A3', 'A4', 'A5']
-AVAILABLE_WATER_PUMP_PORTS = [2, 3, 4, 5, 6, 7]
+AVAILABLE_WATER_PUMP_PORTS = [2, 3, 4, 5, 6]
 
 class User(UserMixin):
     def __init__(self, email, password, first_name, last_name, plants=None):
@@ -39,7 +39,7 @@ class User(UserMixin):
 
     def add_plant(self, m_port, w_port, plant_type, plant_name, water_data, image_dir, image_type):
         plant = Plant(m_port, w_port, plant_type, name=plant_name, water_data=water_data,
-                      image_dir=image_dir, image_type=image_type, water_now=False)
+                      image_dir=image_dir, image_type=image_type)
         self.plants.append(plant)
         plant.save_to_database(self.username)
 

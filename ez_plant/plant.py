@@ -2,6 +2,7 @@ from ez_plant.mongo_handler import MongoHandler
 from enum import Enum
 import random
 import string
+import datetime
 
 class WaterMode(Enum):
     SCHEDULE = "schedule"
@@ -38,7 +39,7 @@ class Plant(object):
                 else:
                     raise ValueError
 
-                self.last_watered = None
+                self.last_watered = water_data['last_watered']
 
     def save_to_database(self, username):
         mongo_worker = MongoHandler()
@@ -86,6 +87,14 @@ class Plant(object):
 
     def set_water_now(self, username):
         self.water_now = not self.water_now
+        self.water_data = vars(self.water_data)
+
+        mongo_worker = MongoHandler()
+        mongo_worker.update_array_doc('users', {"username": username, "plants.plant_id": self.plant_id}, 'plants', self.to_doc())
+
+    def report_watering(self, username):
+        self.water_now = False
+        self.water_data.last_watered = datetime.datetime.utcnow()
         self.water_data = vars(self.water_data)
 
         mongo_worker = MongoHandler()

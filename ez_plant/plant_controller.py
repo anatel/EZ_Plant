@@ -43,15 +43,21 @@ class PlantController(object):
         plant = self.user.get_plant(plant_id)
         plant.set_water_now(self.user.username)
 
-    def get_water_now_data(self):
-        water_now_data = {'water_now_data': {}}
+    def report_watering(self, plant_id):
+        plant = self.user.get_plant(plant_id)
+        plant.report_watering(self.user.username)
+
+    def get_watering_data(self):
+        watering_data = {'watering_data': {}}
         if self.user.plants:
             for plant in self.user.plants:
-                water_now_json = {}
-                water_now_json[plant.plant_id] = plant.water_now
-                water_now_data['water_now_data'].update(water_now_json)
+                watering_json = {}
+                watering_json[plant.plant_id] = {}
+                watering_json[plant.plant_id]['water_now'] = plant.water_now
+                watering_json[plant.plant_id]['last_watered'] = plant.water_data.last_watered
+                watering_data['watering_data'].update(watering_json)
 
-        return water_now_data
+        return watering_data
 
     def jsonify_plant(self, plant):
         plant_json = vars(plant)
