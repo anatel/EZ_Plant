@@ -45,7 +45,7 @@ class User(UserMixin):
 
         return plant
 
-    def update_plant(self, plant_id, m_port, w_port, plant_type, plant_name, water_data, image_dir, image_type, water_now):
+    def update_plant(self, plant_id, m_port, w_port, plant_type, plant_name, water_data, image_dir, image_type):
         plant_to_update = self.get_plant(plant_id)
         plant_to_update.update(self.username, m_port, w_port, plant_type,
                                plant_name, water_data, image_dir=image_dir, image_type=image_type)
