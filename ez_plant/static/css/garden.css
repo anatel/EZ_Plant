@@ -277,11 +277,11 @@
   border-color: green;
 }
 
-#submitPlantBtn:disabled, #discardChangesBtn:disabled {
+#submitPlantBtn:disabled, #undoChangesBtn:disabled {
   border-color: #46b8da;
 }
 
-#discardChangesBtn:disabled {
+#undoChangesBtn:disabled {
     color: #7BB7E0;
 }
 
@@ -291,13 +291,13 @@
   background-color: #39b3d7;
 }
 
-#discardChangesBtn {
+#undoChangesBtn {
   background: white;
   color: green;
   border-color: green;
 }
 
-#discardChangesBtn:hover {
+#undoChangesBtn:hover {
   color: #fff;
   background-color: #39b3d7;
   border-color: #46b8da;

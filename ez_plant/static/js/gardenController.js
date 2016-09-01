@@ -304,6 +304,7 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
   $scope.readURL = function(input) {
     if (input.files && input.files[0]) {
       $("#submitPlantBtn").prop('disabled', false);
+      $("#undoChangesBtn").prop('disabled', false);
       var reader = new FileReader();
       reader.onload = function(e) {
         $('.imgContainer img')
