@@ -324,9 +324,13 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
 
   $scope.undoChanges = function(){
     $scope.plantForm.$setPristine();
+    $("#submitPlantBtn").prop('disabled', true);
+    $("#undoChangesBtn").prop('disabled', true);
     if ($scope.plant.plant_id){
       $scope.plant = angular.copy($scope.plants[$scope.plantIndex]);
     } else {
+      $('.imgContainer img')
+        .attr('src','static/assets/images/default_plant.png');
       $scope.plant = {"water_data": { "water_mode": "schedule", "last_watered": "Never"}};
     }
   };

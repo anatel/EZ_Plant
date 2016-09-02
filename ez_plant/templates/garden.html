@@ -64,7 +64,7 @@
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
           <li role="presentation" ng-class="{'active': content=='details'}"><a id="detailsTabText" ng-click="changeTabContent('details')" aria-controls="addplant" role="tab" data-toggle="tab" href="">Details</a></li>
-          <li role="presentation" ng-class="{'active': content=='stats'}"><a id="statsTabText"  ng-click="changeTabContent('stats'); drawChart()" aria-controls="statistics" role="tab" data-toggle="tab" href="">Statistics</a></li>
+          <li role="presentation" ng-if="plant.plant_id" ng-class="{'active': content=='stats'}"><a id="statsTabText"  ng-click="changeTabContent('stats'); drawChart()" aria-controls="statistics" role="tab" data-toggle="tab" href="">Statistics</a></li>
         </ul>
         <div class="tab-content">
           <form role="tabpanel" class="tab-pane active" id="formTab" ng-show="content == 'details'" name="plantForm" ng-submit="submitPlant()">
