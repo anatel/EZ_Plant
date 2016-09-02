@@ -2,6 +2,7 @@ from ez_plant.mongo_handler import MongoHandler
 import datetime
 
 ARDUINO_MOISTURE_MIN_VALUE = 1024
+MAX_PERCENTAGE = 100
 
 class MoistureData(object):
     def __init__(self, username, plant_id, moisture, timestamp=None):
@@ -21,3 +22,7 @@ class MoistureData(object):
 
     def moisture_value_to_percentage(self, moisture):
         return float((abs(float(moisture) - ARDUINO_MOISTURE_MIN_VALUE) / ARDUINO_MOISTURE_MIN_VALUE) * 100)
+
+    @staticmethod
+    def percentage_to_moisture_value(percentage):
+        return int(((MAX_PERCENTAGE - percentage) * ARDUINO_MOISTURE_MIN_VALUE) / MAX_PERCENTAGE)

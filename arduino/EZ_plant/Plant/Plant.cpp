@@ -2,54 +2,90 @@
 
 Plant::Plant() {}
 
-Plant::Plant(int i_plant_id, int sensor_pin_num, int water_pump_pin_num)
+Plant::Plant(const char * i_plant_id, const char * sensor_pin_num, int water_pump_pin_num)
 {
   plant_id = i_plant_id;
   being_watered_now = false;
   moisture_sensor = MoistureSensor(sensor_pin_num);
   water_pump = WaterPump(water_pump_pin_num);
-  watering_handler = NULL;
-}
-
-bool Plant::is_being_watered_now()
-{
-  return being_watered_now;
-}
-
-bool Plant::is_it_time_to_water()
-{
-  return watering_handler->is_it_time_to_water();
+  low_threshold = 100;
 }
 
 int Plant::get_current_moisture_value()
 {
-  return watering_handler->get_current_moisture_value();
+  return current_moisture_value;
+}
+
+bool Plant::is_low_threshold_legal(int threshold)
+{
+  return (threshold >= 203 && threshold <= 1024);
+}
+
+bool Plant::is_it_time_to_water()
+{
+  if (is_low_threshold_legal(low_threshold))
+  {
+    return current_moisture_value >= low_threshold;
+  }
+
+  return false;
+}
+
+void Plant::set_low_threshold(int i_low_threshold)
+{
+  if (is_low_threshold_legal(i_low_threshold))
+  {
+    low_threshold = i_low_threshold;
+  }
+  else
+  {
+    Serial.println("Illegal moisture low threshold");
+  }
 }
 
 void Plant::update_current_moisture_value()
 {
-  watering_handler->update_current_moisture_value(moisture_sensor.get_moisture_value());
+  current_moisture_value = moisture_sensor.get_moisture_value();
 }
 
-void Plant::set_watering_handler(WateringHandler * new_watering_handler)
+void Plant::water_now()
 {
-  watering_handler = new_watering_handler;
+  if (!being_watered_now)
+  {
+    water_pump.start_pumping();
+    being_watered_now = true;
+  }
+
+  Serial.print("being water_now:"); Serial.println(being_watered_now);
+
+  // delay(2000); // #TODO Remove when we have a plant.
+}
+
+void Plant::stop_water()
+{
+  Serial.print("being water_now:"); Serial.println(being_watered_now);
+  if (being_watered_now)
+  {
+    water_pump.stop_pumping();
+    being_watered_now = false;
+  }
 }
 
 void Plant::start_watering_if_needed()
 {
-  if (watering_handler->is_it_time_to_water())
+  if (current_moisture_value >= low_threshold)
   {
-    water_pump.start_pumping();
-    being_watered_now = true;
+    water_now();
   }
 }
 
 void Plant::stop_watering_if_needed()
 {
-  if (get_current_moisture_value() >= max_moisture)
+  update_current_moisture_value();
+  Serial.print("moisture val:"); Serial.println(current_moisture_value);
+
+  if (current_moisture_value <= max_moisture)
   {
-    water_pump.stop_pumping();
-    being_watered_now = false;
+    stop_water();
   }
 }

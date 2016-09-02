@@ -69,29 +69,55 @@ void WebClient::print_wifi_status()
 
 void WebClient::post_json_to_server(JsonObject& json, String route)
 {
-  // Serial.println("\nStarting connection to server...");
+  // close_server_connection();
+  Serial.println("\n Post Starting connection to server...");
   if (client.connect(server, port))
   {
-    // Serial.println("connected to server");
+    json.printTo(Serial);
+    Serial.println(json.measureLength());
     client.println("POST " + route + " HTTP/1.1");
     client.println("Content-Type: application/json");
     client.print("Content-Length: ");
     client.println(json.measureLength());
     client.println();
-    // json.printTo(Serial);
-    // Serial.println(json.measureLength());
     json.printTo(client);
     client.println();
+    client.println();
+  }
+}
+
+void WebClient::post_data_to_server(String r)
+{
+  char c;
+
+  close_server_connection();
+  Serial.println("\nStarting connection to server...");
+  if (client.connect(server, port))
+  {
+    Serial.println("connected to server");
+    client.println("POST " + r + " HTTP/1.1");
+    client.println("User-Agent: ArduinoWiFi/1.1");
+    client.println("Connection: close");
+    client.println();
+  }
+
+  delay(2000);
+
+  while(client.available())
+  {
+    c = client.read();
   }
 }
 
 char * WebClient::get_json_from_server(String route)
 {
   char c;
-  char json[400] = "";
+  char json[2000] = "";
   int i = 0;
   bool json_started = false;
+  int loop_breaker = 0;
 
+  close_server_connection();
   Serial.println("\nStarting connection to server...");
   if (client.connect(server, port))
   {
@@ -102,7 +128,7 @@ char * WebClient::get_json_from_server(String route)
     client.println();
   }
 
-  delay(10000);
+  delay(2000);
 
   while(client.available())
   {
@@ -129,7 +155,7 @@ char * WebClient::get_json_from_server(String route)
 
 void WebClient::close_server_connection()
 {
-  delay(5000);
   client.flush();
   client.stop();
+  delay(2000);
 }

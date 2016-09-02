@@ -20,8 +20,9 @@ class WebClient
   public:
     WebClient();
     WebClient(char * address, int i_port, char * ssid, char * pass);
-    void post_json_to_server(JsonObject& json, String route);
+    void post_data_to_server(String route);
     char * get_json_from_server(String route);
+    void post_json_to_server(JsonObject& json, String route);
     void close_server_connection();
 };
 

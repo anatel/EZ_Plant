@@ -1,4 +1,5 @@
 import datetime
+from ez_plant.moisture_data import MoistureData
 
 class PlantController(object):
     def __init__(self, user):
@@ -58,6 +59,25 @@ class PlantController(object):
                 watering_data['watering_data'].update(watering_json)
 
         return watering_data
+
+
+    def compose_watering_config(self):
+        watering_config = {'plants': [], 'count': None}
+        if self.user.plants:
+            watering_config['count'] = len(self.user.plants)
+            for plant in self.user.plants:
+                plant_config = {}
+                plant_config['plant_id'] = plant.plant_id
+                plant_config['moisture_sensor_port'] = plant.moisture_sensor_port
+                plant_config['water_pump_port'] = plant.water_pump_port
+                plant_config['water_mode'] = plant.water_data.water_mode
+                plant_config['water_now'] = plant.water_now
+                if plant.water_data.water_mode == 'moisture':
+                    plant_config['low_threshold'] = MoistureData.percentage_to_moisture_value(plant.water_data.low_threshold)
+                watering_config['plants'].append(plant_config)
+
+        return watering_config
+
 
     def jsonify_plant(self, plant):
         plant_json = vars(plant)

@@ -146,7 +146,7 @@
             <div class="waterMethodDiv well col-sm-offset-5 col-sm-6 row">
                 <div class="row" ng-show="plant.water_data.water_mode == 'schedule'">
                   <span class="water-every col-sm-3">Water every</span>
-                  <input name="days" type="number" id="daysInput" ng-change="calcNextWatering()" ng-model="plant.water_data.repeat_every" class="form-control col-sm-1 schedule-input" ng-required="plant.water_data.water_mode == 'schedule'">
+                  <input name="days" type="number" id="daysInput" min="1" ng-change="calcNextWatering()" ng-model="plant.water_data.repeat_every" class="form-control col-sm-1 schedule-input" ng-required="plant.water_data.water_mode == 'schedule'">
                   <span class="days-at col-sm-2">days, at</span>
                   <input name="hour" id="hourInput" type="text" ng-model="plant.water_data.hour" ng-change="calcNextWatering()" class="waterTime schedule-input form-control col-sm-1 ui-timepicker-input" ng-required="plant.water_data.water_mode == 'schedule'" autocomplete="off">
                 </div>

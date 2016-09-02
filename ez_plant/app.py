@@ -3,6 +3,7 @@ Main flask application
 """
 import sys
 import json
+import pprint
 import glob
 import os.path
 from flask import Flask, jsonify, render_template, request
@@ -166,24 +167,20 @@ def get_watering_config():
     user = User(user_doc['username'], user_doc['password'],
                 user_doc['first_name'], user_doc['last_name'],
                 user_doc['plants'])
-    plants = {'plants': []}
-    if user.plants:
-        for plant in user.plants:
-            water_data_json = vars(plant.water_data)
-            plant_json = {}
-            plant_json['water_mode'] = water_data_json['water_mode']
-            plant_json['low_threshold'] = water_data_json['low_threshold']
-            plants['plants'].append(plant_json)
 
-    return jsonify(plants)
+    plant_controller = PlantController(user)
+    watering_config = plant_controller.compose_watering_config()
+
+    return jsonify(watering_config)
 
 
-@app.route('/push_moisture_data', methods=['POST'])
+@app.route('/p', methods=['POST'])
 def push_moisture_data():
-    if 'username' in request.args and 'plant_id' in request.args and 'moisture' in request.args:
-        moisture_data = MoistureData(request.args.get('username'),
-                                     request.args.get('plant_id'),
-                                     request.args.get('moisture'))
+##### url param names are deliberately short since arduino had issues with sending long strings. #####
+    if 'u' in request.args and 'pid' in request.args and 'm' in request.args:
+        moisture_data = MoistureData(request.args.get('u'),
+                                     request.args.get('pid'),
+                                     request.args.get('m'))
         moisture_data.save_to_database()
         return jsonify(result="success")
 
@@ -215,10 +212,10 @@ def water_now():
         return jsonify(plant_controller.get_watering_data(), result="success")
 
 
-@app.route('/report_watering', methods=['POST'])
+@app.route('/report', methods=['POST'])
 def report_watering():
-    if 'username' in request.args and 'plant_id' in request.args:
-        user_doc = User.get_from_database(request.args.get('username'))
+    if 'u' in request.args and 'pid' in request.args:
+        user_doc = User.get_from_database(request.args.get('u'))
         if not user_doc:
             return jsonify(result="error")
 
@@ -227,7 +224,7 @@ def report_watering():
                     user_doc['plants'])
 
         plant_controller = PlantController(user)
-        plant_controller.report_watering(request.args.get('plant_id'))
+        plant_controller.report_watering(request.args.get('pid'))
         return jsonify(result="success")
 
     return jsonify(result="error")

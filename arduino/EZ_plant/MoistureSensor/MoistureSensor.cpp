@@ -2,9 +2,11 @@
 
 MoistureSensor::MoistureSensor() {}
 
-MoistureSensor::MoistureSensor(int i_analog_pin_num)
+MoistureSensor::MoistureSensor(const char * i_analog_pin_num)
 {
-  analog_pin_num = i_analog_pin_num;
+  char num = i_analog_pin_num[1];
+
+  analog_pin_num = num - '0';
 }
 
 int MoistureSensor::get_moisture_value()

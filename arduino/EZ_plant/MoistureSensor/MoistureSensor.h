@@ -11,7 +11,7 @@ class MoistureSensor
 
   public:
     MoistureSensor();
-    MoistureSensor(int i_analog_pin_num);
+    MoistureSensor(const char * i_analog_pin_num);
     int get_moisture_value();
 };
 

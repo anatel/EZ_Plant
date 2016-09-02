@@ -92,8 +92,8 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
         backgroundColor: { fill:'transparent' },
         'width': 1000,
         'height': 480,
-        pointSize: 15,
-        pointShape: 'star',
+        pointSize: 4,
+        // pointShape: 'star',
         hAxis: {
           title: 'Time'
         },
@@ -132,7 +132,6 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
     $('html, body').animate({
         scrollTop: $(".plantDetailsWrapper").offset().top
     }, 1000);
-    $scope.calcNextWatering();
     $timeout(function () { $('.waterTime').timepicker({ 'timeFormat': 'H:i' }); $scope.plantForm.$setPristine();});
 
   };
@@ -148,12 +147,18 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
     if (days != '')
     {
       var date = new Date();
-      date.setDate(date.getDate() + parseInt(days));
       if (hour && hour != '')
       {
         hourArr = hour.split(':');
+        if (date.getHours() > parseInt(hourArr[0]) ||
+              (date.getHours() == parseInt(hourArr[0]) && date.getMinutes() >= parseInt(hourArr[1]))){
+          date.setDate(date.getDate() + 1);
+        }
         date.setHours(parseInt(hourArr[0]));
         date.setMinutes(parseInt(hourArr[1]));
+      }
+      else {
+        date.setDate(date.getDate() + 1);
       }
       $scope.plant.water_data.next_watering = date;
     }
