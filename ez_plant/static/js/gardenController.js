@@ -71,51 +71,54 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
       method  : 'GET',
       url     : '/get_plant_stats?plant_id=' + $scope.plant.plant_id,
    })
-   .then(function onSuccess(response) {
-     console.log(response);
-     var data = new google.visualization.DataTable();
-     data.addColumn('datetime', 'Time');
-     data.addColumn('number', 'Moisture %');
+   .then(
+     function onSuccess(response) {
+       console.log(response);
+       var data = new google.visualization.DataTable();
+       data.addColumn('datetime', 'Time');
+       data.addColumn('number', 'Moisture %');
 
-     stats_list = response.data.stats;
-     stats_list.forEach(function(stats_pair) {
-       stats_pair[0] = new Date(stats_pair[0]);
-     })
+       stats_list = response.data.stats;
+       stats_list.forEach(function(stats_pair) {
+         stats_pair[0] = new Date(stats_pair[0]);
+       })
 
-     data.addRows(response.data.stats);
+       data.addRows(response.data.stats);
+      //  $timeout(function () { $("#no_data_chart").animate({height: "28%"});}, 2000);
 
-      var options = {
-       titlePosition: 'none',
-       backgroundColor: { fill:'transparent' },
-       'width': 1000,
-       'height': 480,
-       pointSize: 15,
-       pointShape: 'star',
-       hAxis: {
-         title: 'Time'
-       },
-       vAxis: {
-         title: 'Moisture %',
-         minValue: 0,
-         maxValue: 100
-       },
-       colors: ['green']
-     }
-     var chart = new google.visualization.LineChart($("#plantStatsChart")[0]);
-     chart.draw(data, options);
-     $('html, body').animate({
-         scrollTop: $(".plantDetailsWrapper").offset().top
-     }, 200);
-    //  $timeout(function () {$scope.refreshing = false;}, 1000);
+       $scope.chartNoData = response.data.stats.length == 0;
+       var options = {
+        titlePosition: 'none',
+        backgroundColor: { fill:'transparent' },
+        'width': 1000,
+        'height': 480,
+        pointSize: 15,
+        pointShape: 'star',
+        hAxis: {
+          title: 'Time'
+        },
+        vAxis: {
+          title: 'Moisture %',
+          minValue: 0,
+          maxValue: 100
+        },
+        colors: ['green']
+      }
+      var chart = new google.visualization.LineChart($("#plantStatsChart")[0]);
+      chart.draw(data, options);
+      $('html, body').animate({
+        scrollTop: $(".plantDetailsWrapper").offset().top
+      }, 200);
       $scope.refreshing = false;
-     $scope.statsErr = false;
-   }, function onFailure(){
+      $scope.statsErr = false;
+    },
+    function onFailure(){
       $scope.refreshing = false;
       $scope.statsErr = true;
       $('html, body').animate({
-          scrollTop: $(".plantDetailsWrapper").offset().top
+        scrollTop: $(".plantDetailsWrapper").offset().top
       }, 200);
-   });
+    });
   };
 
   $scope.showPlantDetails = function(){
@@ -324,10 +327,18 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
 
   $scope.undoChanges = function(){
     $scope.plantForm.$setPristine();
+    $('#inputId').val("");
     $("#submitPlantBtn").prop('disabled', true);
     $("#undoChangesBtn").prop('disabled', true);
     if ($scope.plant.plant_id){
       $scope.plant = angular.copy($scope.plants[$scope.plantIndex]);
+      if ($scope.plant.image_url) {
+        $('.imgContainer img')
+          .attr('src',$scope.plant.image_url);
+      } else {
+        $('.imgContainer img')
+          .attr('src','static/assets/images/default_plant.png');
+      }
     } else {
       $('.imgContainer img')
         .attr('src','static/assets/images/default_plant.png');

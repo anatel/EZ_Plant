@@ -402,3 +402,24 @@
   font-weight: normal;
   line-height: normal;
 }
+
+#no_data_chart {
+   position: absolute;
+   top: 32%;
+   left: 31%;
+   z-index: 99;
+   width: 40%;
+   height: 28%;
+   border-radius: 7px;
+   border: 1px solid green;
+   background: rgba(255, 255, 255, .7);
+}
+
+#no_data_chart span {
+  position: absolute;
+  top: 39%;
+  width: 100%;
+  left: 0%;
+  font-size: 19px;
+  color: green;
+}

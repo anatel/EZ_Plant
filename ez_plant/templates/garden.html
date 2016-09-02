@@ -5,9 +5,6 @@
 
   <link rel="stylesheet" href="{{ url_for('static', filename='css/garden.css')}}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.timepicker.css')  }}">
-  <!-- <script type="text/javascript">
-    google.charts.load('current', {packages: ['corechart', 'line']});
-  </script> -->
   <script src="{{ url_for('static', filename='js/jquery.timepicker.min.js')}}"></script>
 </head>
 
@@ -144,6 +141,7 @@
                 <p style="margin-top: 2px; width: 72%" ng-show="plant.water_data.last_watered == null" class="lastWateredTxt col-sm-9">Last watered: Never</p>
               </div>
             </div>
+
             <!-- water method divs -->
             <div class="waterMethodDiv well col-sm-offset-5 col-sm-6 row">
                 <div class="row" ng-show="plant.water_data.water_mode == 'schedule'">
@@ -165,12 +163,16 @@
                   </span>
                 </div>
             </div>
+
             <div class="form-group row clearfix">
                 <button id="submitPlantBtn" type="submit" class="btn btn-info" ng-disabled="!plantForm.$dirty"><i class="fa fa-envira" aria-hidden="true"></i> Submit Plant</button>
                 <button id="undoChangesBtn" type="button" class="btn btn-info" ng-click="undoChanges()" ng-disabled="!plantForm.$dirty"><i class="fa fa-undo" aria-hidden="true"></i> Undo Changes</button>
             </div>
+
           </form>
+
           <div  style ="text-align: center;" role="tabpanel" id="statsTab" ng-show="content == 'stats'">
+
             <div ng-show="!statsErr">
               <h2 class="statsTitle">Moisture % of the last 24 hours</h2>
               <div id="plantStatsChart"></div>
@@ -180,9 +182,13 @@
               </a>
             </div>
 
+            <div ng-show="chartNoData" id="no_data_chart">
+              <span>There is no moisture data at this moment...</span>
+            </div>
             <div ng-show="statsErr" style="height: 430px;">
               There was an error loading plant's statistics...
             </div>
+
           </div>
         </div>
       </div>
