@@ -63,11 +63,12 @@ class Plant(object):
         self.water_pump_port = w_port
         self.name = plant_name
         self.water_data = water_data
-        self.image_url = self.get_image_url(image_dir, image_type)
+        if image_dir and image_type:
+            self.image_url = self.get_image_url(image_dir, image_type)
         self.plant_type = plant_type
 
         mongo_worker = MongoHandler()
-        mongo_worker.update_array_doc('users', { "username": username, "plants.plant_id": self.plant_id } , 'plants', self.to_doc())
+        mongo_worker.update_array_doc('users', {"username": username, "plants.plant_id": self.plant_id} , 'plants', self.to_doc())
 
     def get_image_url(self, image_dir, image_type):
         if hasattr(self, 'image_url'):
