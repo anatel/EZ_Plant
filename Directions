@@ -12,3 +12,7 @@ pump:
 
 
 The big relay has 6 inputs: 1 as +, 1 as -, and 4 relays.
+
+Moisture sensors:
+3.3V from now on
+AREF to 3.3V on bread board

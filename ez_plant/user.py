@@ -66,6 +66,7 @@ class User(UserMixin):
 
         self.plants.remove(plant_to_delete)
         plant_to_delete.remove_from_database(self.username)
+        plant_to_delete.remove_plant_stats(self.username)
 
     def get_free_ports(self, port_type):
         used_ports = []

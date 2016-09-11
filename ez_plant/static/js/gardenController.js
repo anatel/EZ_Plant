@@ -16,6 +16,10 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
           if (plant.water_data.last_watered) {
             plant.water_data.last_watered = new Date(plant.water_data.last_watered);
           }
+          if (plant.water_data.water_mode == 'schedule'){
+            plant.water_data.hour = $scope.convertUTCHoursToLocalTimeZone(plant.water_data.hour);
+            plant.water_data.next_watering = new Date(plant.water_data.next_watering);
+          }
       });
       if (shouldPoll) {
         $scope.poll();
@@ -203,7 +207,15 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
     console.log($scope.plant);
     var formData = new FormData();
     angular.forEach($scope.plant, function (value, key) {
-        if (key == 'water_data'){
+        if (key == 'water_data' && value.water_mode == 'schedule'){
+          var newValue = angular.copy(value );
+          delete newValue.next_watering; //dont send it to the server.
+          delete newValue.last_watered;
+          //convert hour to UTC
+          newValue.hour = $scope.convertHoursToUTC(value.hour);
+          value = JSON.stringify(newValue);
+        }
+        else if (key == 'water_data') {
           value = JSON.stringify(value);
         }
         formData.append(key, value);
@@ -219,6 +231,10 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
      console.log(data);
      if (data.data.result == 'success')
      {
+       if ($scope.plant.water_data.water_mode == 'schedule'){
+         data.data.plant.water_data.next_watering = new Date(data.data.plant.water_data.next_watering);
+         data.data.plant.water_data.hour = $scope.convertUTCHoursToLocalTimeZone(data.data.plant.water_data.hour)
+       }
        if ($scope.plantIndex != undefined){
          $scope.plants[$scope.plantIndex] = data.data.plant;
        } else {
@@ -231,6 +247,35 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
      $scope.errMsg = "An error occured while trying to submit plant...";
      $scope.handleAlerts('fail');
    });
+  };
+
+  $scope.convertHoursToUTC = function(hourStr) {
+    var hourArr = hourStr.split(':');
+    var hourInt = parseInt(hourArr[0]);
+    var minInt = parseInt(hourArr[1]);
+    var reqDate = new Date();
+    reqDate.setMinutes(minInt);
+    reqDate.setHours(hourInt);
+    return reqDate.getUTCHours().toString() + ':' + reqDate.getUTCMinutes().toString();
+  };
+
+  $scope.convertUTCHoursToLocalTimeZone = function(hourStr){
+    var hoursArr = hourStr.split(':');
+    var hourInt = parseInt(hoursArr[0]);
+    var minInt = parseInt(hoursArr[1]);
+    var reqDate = new Date();
+    reqDate.setUTCMinutes(minInt);
+    reqDate.setUTCHours(hourInt);
+    var hourStr = reqDate.getHours().toString();
+    var minStr = reqDate.getMinutes().toString();
+    return $scope.pad(hourStr) + ":" + $scope.pad(minStr);
+  };
+
+  $scope.pad = function(str) {
+      if (parseInt(str) < 10) {
+        return "0" + str;
+      }
+      return str;
   };
 
   $scope.waterNow = function(){

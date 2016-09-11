@@ -8,6 +8,7 @@ class WaterMode(Enum):
     SCHEDULE = "schedule"
     MOISTURE = "moisture"
 
+
 class Plant(object):
     def __init__(self, moisture_sensor_port, water_pump_port, plant_type,
                  plant_id=None, name=None, water_data=None, image_dir=None,
@@ -35,40 +36,65 @@ class Plant(object):
                     self.low_threshold = water_data['low_threshold']
                 elif self.water_mode == WaterMode.SCHEDULE.value:
                     self.repeat_every = water_data['repeat_every']
-                    self.hour = water_data['hour']
+                    self.hour = '%s:%s' % (water_data['hour'].split(':')[0].zfill(2), water_data['hour'].split(':')[1].zfill(2))
+                    if 'next_watering' in water_data:
+                        self.next_watering = water_data['next_watering']
+                    else:
+                        self.next_watering = self.calc_next_watering(self.repeat_every, self.hour)
                 else:
                     raise ValueError
 
-                self.last_watered = water_data['last_watered']
+                if 'last_watered' in water_data:
+                    self.last_watered = water_data['last_watered']
+                else:
+                    self.last_watered = None
+
+
+        def calc_next_watering(self, repeat_every, hour):
+            now = datetime.datetime.utcnow()
+            dt_hour = datetime.datetime.strptime(hour, '%H:%M').time()
+            time_now = now.time()
+            if dt_hour >= time_now:
+                next_watering = datetime.datetime.combine(now.date(), dt_hour)
+            else:
+                next_watering = datetime.datetime.combine(now.date() + datetime.timedelta(days=1), dt_hour)
+
+            return next_watering
 
     def save_to_database(self, username):
         mongo_worker = MongoHandler()
-        plant_doc = vars(self)
-        plant_doc['water_data'] = vars(self.water_data)
         self.remove_from_database(username)
-        mongo_worker.add_doc_to_array('users', { "username": username}, 'plants', self.to_doc())
+        mongo_worker.add_doc_to_array('users', {"username": username}, 'plants', self.to_doc())
 
         moisture_stats_object = {}
         moisture_stats_object['plant_id'] = self.plant_id
         moisture_stats_object['stats'] = []
-        mongo_worker.add_doc_to_array('moisture_stats', { "username": username}, 'plants', moisture_stats_object)
+        mongo_worker.add_doc_to_array('moisture_stats', {"username": username}, 'plants', moisture_stats_object)
 
     def remove_from_database(self, username):
         mongo_worker = MongoHandler()
-        mongo_worker.delete_doc_from_array('users', { "username": username}, 'plants', { "plant_id": self.plant_id } )
-        mongo_worker.delete_doc_from_array('moisture_stats', { "username": username}, 'plants', { "plant_id": self.plant_id } )
+        mongo_worker.delete_doc_from_array('users', {"username": username}, 'plants', {"plant_id": self.plant_id})
+
+    def remove_plant_stats(self, username):
+        mongo_worker = MongoHandler()
+        mongo_worker.delete_doc_from_array('moisture_stats', {"username": username}, 'plants', {"plant_id": self.plant_id})
 
     def update(self, username, m_port, w_port, plant_type, plant_name, water_data, image_dir, image_type):
         self.moisture_sensor_port = m_port
         self.water_pump_port = w_port
         self.name = plant_name
-        self.water_data = water_data
+        self.water_data = self.WateringData(water_data)
+        # if 'hour' in water_data:
+            # self.water_data.hour = '%s:%s' % (water_data['hour'].split(':')[0].zfill(2), water_data['hour'].split(':')[1].zfill(2))
+            # self.water_data.next_watering = self.water_data.calc_next_watering(self.water_data.repeat_every, self.water_data.hour)
+
         if image_dir and image_type:
             self.image_url = self.get_image_url(image_dir, image_type)
         self.plant_type = plant_type
 
         mongo_worker = MongoHandler()
-        mongo_worker.update_array_doc('users', {"username": username, "plants.plant_id": self.plant_id} , 'plants', self.to_doc())
+        self.remove_from_database(username)
+        mongo_worker.add_doc_to_array('users', {"username": username}, 'plants', self.to_doc())
 
     def get_image_url(self, image_dir, image_type):
         if hasattr(self, 'image_url'):
@@ -103,4 +129,5 @@ class Plant(object):
 
     def to_doc(self):
         plant_doc = vars(self)
+        plant_doc['water_data'] = vars(self.water_data)
         return plant_doc

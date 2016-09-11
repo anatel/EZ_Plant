@@ -71,9 +71,16 @@ class PlantController(object):
                 plant_config['moisture_sensor_port'] = plant.moisture_sensor_port
                 plant_config['water_pump_port'] = plant.water_pump_port
                 plant_config['water_mode'] = plant.water_data.water_mode
-                plant_config['water_now'] = plant.water_now
                 if plant.water_data.water_mode == 'moisture':
                     plant_config['low_threshold'] = MoistureData.percentage_to_moisture_value(plant.water_data.low_threshold)
+                else:
+                    now = datetime.datetime.utcnow()
+                    if now >= plant.water_data.next_watering:
+                        plant.water_now = True
+                        plant.water_data.next_watering += datetime.timedelta(days = plant.water_data.repeat_every)
+                        plant.save_to_database(self.user.username)
+
+                plant_config['water_now'] = plant.water_now
                 watering_config['plants'].append(plant_config)
 
         return watering_config
