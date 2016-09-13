@@ -3,7 +3,7 @@ from ez_plant.plant import Plant
 from flask.ext.login import UserMixin
 
 AVAILABLE_MOISTURE_PORTS = ['A0', 'A1', 'A2', 'A3', 'A4', 'A5']
-AVAILABLE_WATER_PUMP_PORTS = [2, 3, 4, 5, 6]
+AVAILABLE_WATER_PUMP_PORTS = [3, 5, 6, 8, 9]
 
 class User(UserMixin):
     def __init__(self, email, password, first_name, last_name, plants=None):

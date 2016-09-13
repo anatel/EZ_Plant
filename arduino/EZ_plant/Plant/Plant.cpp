@@ -23,6 +23,7 @@ bool Plant::is_low_threshold_legal(int threshold)
 
 bool Plant::is_it_time_to_water()
 {
+  update_current_moisture_value();
   if (is_low_threshold_legal(low_threshold))
   {
     return current_moisture_value >= low_threshold;
@@ -56,36 +57,19 @@ void Plant::water_now()
     being_watered_now = true;
   }
 
-  Serial.print("being water_now:"); Serial.println(being_watered_now);
-
-  // delay(2000); // #TODO Remove when we have a plant.
+  delay(3000);
 }
 
 void Plant::stop_water()
 {
   Serial.print("being water_now:"); Serial.println(being_watered_now);
-  if (being_watered_now)
-  {
-    water_pump.stop_pumping();
-    being_watered_now = false;
-  }
+  water_pump.stop_pumping();
+  being_watered_now = false;
 }
 
-void Plant::start_watering_if_needed()
-{
-  if (current_moisture_value >= low_threshold)
-  {
-    water_now();
-  }
-}
-
-void Plant::stop_watering_if_needed()
+void Plant::stop_watering()
 {
   update_current_moisture_value();
   Serial.print("moisture val:"); Serial.println(current_moisture_value);
-
-  if (current_moisture_value <= max_moisture)
-  {
-    stop_water();
-  }
+  stop_water();
 }

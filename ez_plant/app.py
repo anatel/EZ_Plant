@@ -103,7 +103,6 @@ def plant():
 
         image_dir = None if image_file is None else PLANT_IMAGES_FOLDER
         image_type = None if image_file is None else image_file.filename.rsplit('.', 1)[1]
-        print(request.form)
 
         if 'plant_id' in request.form:
             new_plant = plant_controller.update_plant(

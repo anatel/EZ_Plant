@@ -80,10 +80,7 @@ void loop()
     push_url += moisture_param;
     push_url += plant.get_current_moisture_value();
 
-    Serial.println(loop_count);
     if (loop_count >= SND_STATS_INTRVAL) {
-      loop_count = 1;
-//      delay(1000);
       web_client.post_data_to_server(push_url);
       web_client.close_server_connection();
     }
@@ -99,11 +96,17 @@ void loop()
         plant.water_now();
         report_url += plant_id_param;
         report_url += plant_id;
-//        delay(1000);
         web_client.post_data_to_server(report_url);
         web_client.close_server_connection();
-      }
-    plant.stop_watering_if_needed();
+     }
+    plant.stop_watering();
+    delay(2000);
   }
-  loop_count++;
+
+  Serial.println(loop_count);
+  if (loop_count >= SND_STATS_INTRVAL) {
+    loop_count = 1;
+  } else {
+    loop_count++;
+  }
 }

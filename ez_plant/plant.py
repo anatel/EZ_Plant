@@ -84,9 +84,6 @@ class Plant(object):
         self.water_pump_port = w_port
         self.name = plant_name
         self.water_data = self.WateringData(water_data)
-        # if 'hour' in water_data:
-            # self.water_data.hour = '%s:%s' % (water_data['hour'].split(':')[0].zfill(2), water_data['hour'].split(':')[1].zfill(2))
-            # self.water_data.next_watering = self.water_data.calc_next_watering(self.water_data.repeat_every, self.water_data.hour)
 
         if image_dir and image_type:
             self.image_url = self.get_image_url(image_dir, image_type)
@@ -114,7 +111,6 @@ class Plant(object):
 
     def set_water_now(self, username):
         self.water_now = not self.water_now
-        self.water_data = vars(self.water_data)
 
         mongo_worker = MongoHandler()
         mongo_worker.update_array_doc('users', {"username": username, "plants.plant_id": self.plant_id}, 'plants', self.to_doc())
@@ -122,7 +118,6 @@ class Plant(object):
     def report_watering(self, username):
         self.water_now = False
         self.water_data.last_watered = datetime.datetime.utcnow()
-        self.water_data = vars(self.water_data)
 
         mongo_worker = MongoHandler()
         mongo_worker.update_array_doc('users', {"username": username, "plants.plant_id": self.plant_id}, 'plants', self.to_doc())

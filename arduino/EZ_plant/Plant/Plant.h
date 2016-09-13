@@ -25,7 +25,7 @@ class Plant
     void update_current_moisture_value();
     int get_current_moisture_value();
     void start_watering_if_needed();
-    void stop_watering_if_needed();
+    void stop_watering();
     void set_low_threshold(int i_low_threshold);
     void water_now();
     void stop_water();
