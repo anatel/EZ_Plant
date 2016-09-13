@@ -83,6 +83,8 @@ class Plant(object):
         self.moisture_sensor_port = m_port
         self.water_pump_port = w_port
         self.name = plant_name
+        print(self.water_data.last_watered)
+        water_data['last_watered'] = self.water_data.last_watered
         self.water_data = self.WateringData(water_data)
 
         if image_dir and image_type:

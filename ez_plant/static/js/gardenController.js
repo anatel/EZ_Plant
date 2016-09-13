@@ -106,6 +106,7 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
           minValue: 0,
           maxValue: 100
         },
+        explorer: { actions: ['dragToZoom', 'rightClickToReset'], maxZoomIn: .03, zoomDelta: 0.5},
         colors: ['green']
       }
       var chart = new google.visualization.LineChart($("#plantStatsChart")[0]);
@@ -207,16 +208,15 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
     console.log($scope.plant);
     var formData = new FormData();
     angular.forEach($scope.plant, function (value, key) {
-        if (key == 'water_data' && value.water_mode == 'schedule'){
-          var newValue = angular.copy(value );
-          delete newValue.next_watering; //dont send it to the server.
-          delete newValue.last_watered;
-          //convert hour to UTC
-          newValue.hour = $scope.convertHoursToUTC(value.hour);
+        if (key == 'water_data') {
+          var newValue = angular.copy(value);
+          delete newValue.last_watered; // it will be calculated on the client side for the server
+          if (newValue.water_mode == 'schedule'){
+            delete newValue.next_watering; //we dont send it to the server.
+            //convert hour to UTC:
+            newValue.hour = $scope.convertHoursToUTC(value.hour);
+          }
           value = JSON.stringify(newValue);
-        }
-        else if (key == 'water_data') {
-          value = JSON.stringify(value);
         }
         formData.append(key, value);
     });
