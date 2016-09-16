@@ -240,6 +240,11 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
        } else {
          $scope.plants.push(data.data.plant);
        }
+
+       if (data.data.plant.water_data.last_watered) {
+         $scope.plant.water_data.last_watered = new Date(data.data.plant.water_data.last_watered);
+         $scope.plants[$scope.plantIndex].water_data.last_watered = new Date(data.data.plant.water_data.last_watered);
+       }
        $scope.successMsg = "Plant successfully submitted!";
        $scope.handleAlerts('success');
      }
@@ -336,7 +341,7 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
        }, function onFailure(){ //nothing should happen
          console.log('error getting water data');
        });
-      }, 60*1000);
+     }, 30*1000);
     }
   }
 
