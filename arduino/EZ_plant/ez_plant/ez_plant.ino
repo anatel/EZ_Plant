@@ -4,10 +4,10 @@
 #include <JsonParser.h>
 #include <WebClient.h>
 
-char username[] = "xxxx";
 char ssid[] = "xxxx";
 char pass[] = "xxxx";
-char address[] = "xxxx";
+char username[] = "xxxx";
+char address[] = "www.ezplantpro.com";
 
 char push_params_prefix[] = "?u=xxxx&pid=";
 char moisture_param[] = "&m=";
@@ -20,7 +20,7 @@ String config_url = base_config_url + username;
 String report_url = base_report_url + username;
 String moisture_water_mode = String("moisture");
 int port = 5000;
-const short SND_STATS_INTRVAL = 10;
+const short SND_STATS_INTRVAL = 4;
 const int MAX_SIZE_OF_JSON_RESPONSE = 3000;
 short loop_count = 1;
 WebClient web_client;
