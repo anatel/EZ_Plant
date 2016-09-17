@@ -223,7 +223,7 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
     $http({
       method  : 'POST',
       url     : '/plants',
-      data    : formData,  /
+      data    : formData,
       headers : { 'Content-Type': undefined }
    })
    .then(function onSuccess(data) {
