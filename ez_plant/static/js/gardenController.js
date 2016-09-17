@@ -88,7 +88,6 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
        })
 
        data.addRows(response.data.stats);
-      //  $timeout(function () { $("#no_data_chart").animate({height: "28%"});}, 2000);
 
        $scope.chartNoData = response.data.stats.length == 0;
        var options = {
@@ -172,7 +171,7 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
     }
   };
 
-  //choose image dialog
+  //show choose image dialog
   $scope.openDialog = function() {
     $("#inputId").click();
   };
@@ -210,7 +209,7 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
     angular.forEach($scope.plant, function (value, key) {
         if (key == 'water_data') {
           var newValue = angular.copy(value);
-          delete newValue.last_watered; // it will be calculated on the client side for the server
+          delete newValue.last_watered;
           if (newValue.water_mode == 'schedule'){
             delete newValue.next_watering; //we dont send it to the server.
             //convert hour to UTC:
@@ -224,8 +223,8 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
     $http({
       method  : 'POST',
       url     : '/plants',
-      data    : formData,  // pass in data as strings
-      headers : { 'Content-Type': undefined }  // set the headers so angular passing info as form data (not request payload)
+      data    : formData,  /
+      headers : { 'Content-Type': undefined }
    })
    .then(function onSuccess(data) {
      console.log(data);
@@ -338,7 +337,7 @@ ez_plant.controller('gardenController', ['$scope', 'AuthService', '$rootScope', 
            }
            console.log($scope.plants);
          }
-       }, function onFailure(){ //nothing should happen
+       }, function onFailure(){ //nothing should happen, the user is not supposed to know about this.
          console.log('error getting water data');
        });
      }, 30*1000);

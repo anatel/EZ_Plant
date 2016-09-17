@@ -7,10 +7,9 @@ ez_plant.controller('registerController',['$scope', 'AuthService', '$location',
   $scope.errorMessage;
 
   $scope.register = function () {
-      // initial values
       $scope.dataLoading = true;
       $scope.showError = false;
-      // call login from service
+
       AuthService.register($scope.userDetails)
         // handle success
         .then(function () {

@@ -7,11 +7,7 @@ ez_plant.config(function($routeProvider) {
          templateUrl : 'templates/garden.html',
          controller  : 'gardenController'
      })
-    //  .when('/statsTab', {
-    //      templateUrl : 'templates/statistics.html',
-    //      controller  : 'gardenController'
-    //  })
-   .when('/about', {
+     .when('/about', {
          templateUrl : 'templates/about.html',
          controller  : 'aboutController'
      })
@@ -25,6 +21,8 @@ ez_plant.config(function($routeProvider) {
      })
 });
 
+/*Because Angular and Flask use the same symbols for binding, we chose to change
+  Angular's default binding symbol to [[ ]], in order to prevent conflicts.*/
 ez_plant.config(['$interpolateProvider', function($interpolateProvider) {
   $interpolateProvider.startSymbol('[[');
   $interpolateProvider.endSymbol(']]');
@@ -33,7 +31,6 @@ ez_plant.config(['$interpolateProvider', function($interpolateProvider) {
 ez_plant.controller('mainController', ['$scope', 'AuthService', '$location',
   function($scope, AuthService, $location) {
     $scope.logout = function(){
-      // call logout from service
       AuthService.logout()
         .then(function () {
           $location.path('/login');
