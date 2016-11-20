@@ -11,6 +11,7 @@ import flask.ext.login as flask_login
 from flask.ext.login import LoginManager, login_user, logout_user, current_user
 from ez_plant.hashing_handler import HashingHandler
 from ez_plant.user import User
+from ez_plant.send_email import SendEmail
 from ez_plant.moisture_data import MoistureData
 from ez_plant.plant_controller import PlantController
 
@@ -28,6 +29,12 @@ login_manager.init_app(app)
 
 @app.route('/')
 def root():
+    try:
+        email = SendEmail()
+        email.send_mail("Someone entered EZ-plant from " + request.remote_addr + "!")
+    except Exception:
+        print("Failed to send email")
+
     return render_template('index.html')
 
 
@@ -63,6 +70,13 @@ def login():
     if user_doc and hashing_handler.verify(data['password'], user_doc['password']):
         user = User(user_doc['username'], user_doc['password'], user_doc['first_name'], user_doc['last_name'], user_doc['plants'])
         login_user(user)
+
+        try:
+            email = SendEmail()
+            email.send_mail("Someone has successfully logged in to EZ-plant from " + request.remote_addr + "!")
+        except Exception:
+            print("Failed to send email")
+
         return jsonify(is_logged_in=True, first_name=current_user.first_name,
                        last_name=current_user.last_name)
 
